@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
   s.homepage = 'https://github.com/xmartlabs/XLDataLoader'
   s.authors  = { 'Martin Barreto' => 'martin@xmartlabs.com', 'Miguel Revetria' => 'miguel@xmartlabs.com' }
   s.source   = { :git => 'https://github.com/xmartlabs/XLDataLoader.git', :branch => '1.x'}
-  s.source_files = 'XLDataLoader/XL/*.{h,m}'
+  s.source_files = 'XLDataLoader/XL/**/*.{h,m}'
   s.requires_arc = true
   s.dependency 'AFNetworking', '~> 1.3.3'
   s.ios.deployment_target = '5.0'
