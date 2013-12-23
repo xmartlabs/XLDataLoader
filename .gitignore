@@ -48,7 +48,6 @@
 
 *~.nib
 
-
 ####
 # Xcode build files -
 #
@@ -156,4 +155,10 @@ xcuserdata
 # UNKNOWN: recommended by others, but I can't discover what these files are
 #
 # ...none. Everything is now explained.
-XLMediaZoom.xcworkspace/xcshareddata/XLMediaZoom.xccheckout
+XLDataLoader.xcworkspace/xcshareddata/XLDataLoader.xccheckout
+
+#Pods
+Pods
+
+
+
