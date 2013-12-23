@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
                     Flexible solution for load async data using AFNetworking, cahing them on CoreData db and update either UITableView or UICollectionView based on core data updates.
                   DESC
   s.homepage = 'https://github.com/xmartlabs/XLDataLoader'
-  s.authors  = { 'Martin Barreto' => 'martin@xmartlabs.com' }
+  s.authors  = { 'Martin Barreto' => 'martin@xmartlabs.com', 'Miguel Revetria' => 'miguel@xmartlabs.com' }
   s.source   = { :git => 'https://github.com/xmartlabs/XLDataLoader.git', :tag => 'v1.0.0'}
   s.source_files = 'XLDataLoader/XL/*.{h,m}'
   s.requires_arc = true
