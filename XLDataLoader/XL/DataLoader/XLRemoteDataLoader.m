@@ -11,13 +11,11 @@
 
 @interface XLRemoteDataLoader()
 {
-    AFHTTPRequestOperation * _operation;
+    NSURLSessionDataTask * _task;
 }
 
 @property NSUInteger expiryTimeInterval;
 @property Class afRequestOperationclass;
-
--(AFHTTPRequestOperation *)prepareRequest;
 
 @end
 
@@ -25,7 +23,6 @@
 @implementation XLRemoteDataLoader
 
 @synthesize delegate = _delegate;
-@synthesize afRequestOperationclass = _afRequestOperationclass;
 
 // configutration properties
 @synthesize expiryTimeInterval = _expiryTimeInterval;
@@ -42,16 +39,11 @@
 
 @synthesize hasMoreToLoad = _hasMoreToLoad;
 
--(id)initWithAFHTTPRequestOperationClass:(Class)afRequestOperationclass
+-(id)init
 {
-    if (![afRequestOperationclass isSubclassOfClass:[AFHTTPRequestOperation class]])
-    {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:[NSString stringWithFormat:@"%@ musb be subclass of AFHTTPRequestOperation", NSStringFromClass([AFHTTPRequestOperation class])] userInfo:nil];
-    }
     self = [super init];
     if (self)
     {
-        _afRequestOperationclass = afRequestOperationclass;
         [self setDefaultValues];
     }
     return self;
@@ -60,6 +52,7 @@
 
 -(void)setDefaultValues
 {
+    _task = nil;
     _offset = 0;
     _limit = 20;
     _data = nil;
@@ -72,26 +65,37 @@
     _data = data;
 }
 
--(AFHTTPRequestOperation *)prepareRequest
+-(NSURLSessionDataTask *)prepareURLSessionTask
 {
-    NSMutableURLRequest * urlRequest = self.prepareURLRequest;
-    AFHTTPRequestOperation *op = [(AFHTTPRequestOperation *)[self.afRequestOperationclass alloc] initWithRequest:urlRequest];
+    NSMutableURLRequest * request = self.prepareURLRequest;
     XLRemoteDataLoader * __weak weakSelf = self;
-    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [weakSelf setData:(NSDictionary *)responseObject];
-        [weakSelf successulDataLoad];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [weakSelf unsuccessulDataLoadWithError:error];
+    return [[self sessionManager] dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        if (error) {
+            [weakSelf unsuccessulDataLoadWithError:error];
+        } else {
+            [weakSelf setData:(NSDictionary *)responseObject];
+            [weakSelf successulDataLoad];
+        }
     }];
-    return op;
 }
 
 -(NSMutableURLRequest *)prepareURLRequest
 {
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:[NSString stringWithFormat:@"You must overrite prepareURLRequest method of %@.", NSStringFromClass([self class])] userInfo:nil];
+    return [[self sessionManager].requestSerializer requestWithMethod:@"GET" URLString:[[NSURL URLWithString:[self URLString] relativeToURL:[[self sessionManager] baseURL]] absoluteString] parameters:[self parameters]];
 }
 
--(AFHTTPClient *)AFHTTPClient
+
+-(NSString *)URLString
+{
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:[NSString stringWithFormat:@"You must overrite AFHTTPClient method of %@.", NSStringFromClass([self class])] userInfo:nil];
+}
+
+-(NSDictionary *)parameters
+{
+    return nil;
+}
+
+-(AFHTTPSessionManager *)sessionManager;
 {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:[NSString stringWithFormat:@"You must overrite AFHTTPClient method of %@.", NSStringFromClass([self class])] userInfo:nil];
 }
@@ -131,8 +135,8 @@
     if (!_isLoadingMore)
     {
         _isLoadingMore = YES;
-        _operation = [self prepareRequest];
-        [[self AFHTTPClient] enqueueHTTPRequestOperation:_operation];
+        _task = [self prepareURLSessionTask];
+        [_task resume];
         if (self.delegate){
             [self.delegate dataLoaderDidStartLoadingData:self];
         }
@@ -142,9 +146,9 @@
 
 -(void)forceReload
 {
-    if (_operation){
-        [_operation cancel];
-        _operation = nil;
+    if (_task){
+        [_task cancel];
+        _task = nil;
     }
     [self setDefaultValues];
     [self load];

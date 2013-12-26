@@ -31,8 +31,7 @@
 @property (nonatomic, readonly) NSUInteger limit;
 @property (nonatomic, readonly) NSString * searchString;
 
-// designated initializer
--(id)initWithAFHTTPRequestOperationClass:(Class)class;
+-(id)init;
 
 // call this method to force reload of data with the current offset limit values
 -(void)forceReload;
@@ -42,10 +41,13 @@
 //////////////////////////////////////////////////////////////////////////////////////////
 
 // You must override this method
--(NSMutableURLRequest *)prepareURLRequest;
+-(NSString *)URLString;
+
+// You must override this method
+-(NSDictionary *)parameters;
 
 // You must override this method.
--(AFHTTPClient *)AFHTTPClient;
+-(AFHTTPSessionManager *)sessionManager;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
