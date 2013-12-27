@@ -376,7 +376,9 @@
 {
     if (self.tableView == tableView)
     {
-        if (self.localDataLoader){
+        if (self.localDataLoader && !self.searchDisplayController.isActive) {
+            // Just return the section title for self.tableView when the searchDisplayController is not active, this
+            // fix issue "Tableview's sections are shown over the searchDisplayController.searchResultsTableView"
             return [[[self.localDataLoader sections] objectAtIndex:section] name];
         }
         return nil;
