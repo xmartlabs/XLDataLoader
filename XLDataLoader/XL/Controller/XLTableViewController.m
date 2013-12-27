@@ -165,6 +165,10 @@
     self.remoteDataLoader.delegate = self;
     [self didChangeGridContent];
     [[self tableView] reloadData];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(contentSizeCategoryChanged:)
+                                                 name:UIContentSizeCategoryDidChangeNotification
+                                               object:nil];
 }
 
 -(void)viewDidDisappear:(BOOL)animated
@@ -172,6 +176,9 @@
     [super viewDidDisappear:animated];
     self.localDataLoader.delegate = nil;
     self.searchLocalDataLoader.delegate = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIContentSizeCategoryDidChangeNotification
+                                                  object:nil];
 }
 
 
@@ -279,6 +286,12 @@
 }
 
 #pragma mark - Helpers
+
+
+- (void)contentSizeCategoryChanged:(NSNotification *)notification
+{
+    [self.tableView reloadData];
+}
 
 -(UISearchDisplayController *)createDisplayController
 {
