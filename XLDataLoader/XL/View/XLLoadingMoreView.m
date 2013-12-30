@@ -60,7 +60,6 @@
                                                    attribute:NSLayoutAttributeCenterY
                                                   multiplier:1.f constant:0.f]];
     
-    //[result addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[activity]-|" options:0 metrics:0 views:@{@"activity": self.activityViewIndicator}]];
     return result;
 }
 
