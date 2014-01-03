@@ -15,7 +15,6 @@
 }
 
 @property NSUInteger expiryTimeInterval;
-@property Class afRequestOperationclass;
 
 @end
 
@@ -87,7 +86,7 @@
 
 -(NSString *)URLString
 {
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:[NSString stringWithFormat:@"You must overrite AFHTTPClient method of %@.", NSStringFromClass([self class])] userInfo:nil];
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:[NSString stringWithFormat:@"You must overrite sessionManager method of %@.", NSStringFromClass([self class])] userInfo:nil];
 }
 
 -(NSDictionary *)parameters
@@ -97,7 +96,7 @@
 
 -(AFHTTPSessionManager *)sessionManager;
 {
-    @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:[NSString stringWithFormat:@"You must overrite AFHTTPClient method of %@.", NSStringFromClass([self class])] userInfo:nil];
+    @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:[NSString stringWithFormat:@"You must overrite sessionManager method of %@.", NSStringFromClass([self class])] userInfo:nil];
 }
 
 
