@@ -249,8 +249,11 @@
             }
         }
     }
-    if ((self.localDataLoader == dataLoader) && !self.remoteDataLoader){
-        [self.refreshControl endRefreshing];
+    if (self.localDataLoader == dataLoader) {
+        if (!self.remoteDataLoader) {
+            [self.refreshControl endRefreshing];
+        }
+        [self didChangeGridContent];
     }
 }
 
@@ -524,7 +527,8 @@
 -(void)didChangeGridContent
 {
     // overrite this method to do something useful.
-    if ([self tableIsEmpty]){
+    if (self.localDataLoader.totalNumberOfObjects == 0) {
+        // Check for self.localDataLoader.totalNumberOfObjects because this method is called before the tableView's data be updated
         if (self.backgroundViewForEmptyTableView){
             if (!self.tableView.backgroundView){
                 self.tableView.backgroundView =[self backgroundViewForEmptyTableView];
