@@ -28,6 +28,7 @@
 		28E1DDE0181AB89D00E7FAF9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28E1DDDE181AB89D00E7FAF9 /* InfoPlist.strings */; };
 		28E1DDE2181AB89D00E7FAF9 /* XLDataLoaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E1DDE1181AB89D00E7FAF9 /* XLDataLoaderTests.m */; };
 		46320B47A1CD400BB4F46528 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 755CEEF52AC74E62A56A0893 /* libPods.a */; };
+		B23749691887283F002E0B8E /* XLCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B23749681887283F002E0B8E /* XLCollectionViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +75,8 @@
 		28E1DDE1181AB89D00E7FAF9 /* XLDataLoaderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XLDataLoaderTests.m; sourceTree = "<group>"; };
 		6AABF45162A9468DA55B3A6C /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		755CEEF52AC74E62A56A0893 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B23749671887283F002E0B8E /* XLCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLCollectionViewController.h; path = XL/Controller/XLCollectionViewController.h; sourceTree = "<group>"; };
+		B23749681887283F002E0B8E /* XLCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLCollectionViewController.m; path = XL/Controller/XLCollectionViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -214,6 +217,8 @@
 		28E1DDED181AD03300E7FAF9 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				B23749671887283F002E0B8E /* XLCollectionViewController.h */,
+				B23749681887283F002E0B8E /* XLCollectionViewController.m */,
 				2839F79118688CB800FEBD38 /* XLTableViewController.h */,
 				2839F79218688CB800FEBD38 /* XLTableViewController.m */,
 			);
@@ -352,6 +357,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B23749691887283F002E0B8E /* XLCollectionViewController.m in Sources */,
 				28E1DDCD181AB89D00E7FAF9 /* ViewController.m in Sources */,
 				2839F7A318688D7D00FEBD38 /* XLDataLoader.m in Sources */,
 				2839F79318688CB800FEBD38 /* XLTableViewController.m in Sources */,

@@ -7,7 +7,6 @@
 //
 
 #import "XLCollectionViewController.h"
-#import "XLKit.h"
 
 @interface XLCollectionViewController()
 
@@ -62,7 +61,6 @@
 
 -(void)dataLoaderDidStartLoadingData:(XLDataLoader *)dataLoader
 {
-    DBLog(@"DID Start loading");
     if ([dataLoader isKindOfClass:[XLRemoteDataLoader class]]){
         //[self.loadingMoreCell.activityViewIndicator startAnimating];
     }
@@ -70,7 +68,6 @@
 
 -(void)dataLoaderDidLoadData:(XLDataLoader *)dataLoader
 {
-    DBLog(@"DID end loading");
     if ([dataLoader isKindOfClass:[XLRemoteDataLoader class]]){
 //        [self.loadingMoreCell.activityViewIndicator stopAnimating];
 //        [self.refreshControl endRefreshing];
@@ -85,7 +82,6 @@
 
 -(void)dataLoaderDidFailLoadData:(XLDataLoader *)dataLoader withError:(NSError *)error
 {
-    DBLog(@"DID Start loading with error");
     if ([dataLoader isKindOfClass:[XLRemoteDataLoader class]]){
 //        [self.loadingMoreCell.activityViewIndicator stopAnimating];
 //        [self.refreshControl endRefreshing];
@@ -93,7 +89,16 @@
     if (self.localDataLoader && !self.remoteDataLoader){
 //        [self.refreshControl endRefreshing];
     }
-    [error showAlertViewWithTitle:@"Error Loading data"];
+    if (error.code != NSURLErrorCancelled){
+        // don't show cancel operation error
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error loading data"
+                                                                message:error.localizedDescription
+                                                               delegate:nil
+                                                      cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
+            [alertView show];
+        });
+    }
 }
 
 #pragma mark - UICollectionVIew
@@ -132,10 +137,11 @@
 
 #pragma mark - Fetched results controller
 
-
-
-- (void)localdataLoader:(XLLocalDataLoader *)localDataLoader controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
-           atIndex:(NSUInteger)sectionIndex forChangeType:(NSFetchedResultsChangeType)type
+- (void)localDataLoader:(XLLocalDataLoader *)localDataLoader
+             controller:(NSFetchedResultsController *)controller
+       didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
+                atIndex:(NSUInteger)sectionIndex
+          forChangeType:(NSFetchedResultsChangeType)type
 {
     
     NSMutableDictionary *change = [NSMutableDictionary new];
@@ -152,9 +158,12 @@
     [_sectionChanges addObject:change];
 }
 
-- (void)localdataLoader:(XLLocalDataLoader *)localDataLoader controller:(NSFetchedResultsController *)controller didChangeObject:(id)anObject
-       atIndexPath:(NSIndexPath *)indexPath forChangeType:(NSFetchedResultsChangeType)type
-      newIndexPath:(NSIndexPath *)newIndexPath
+- (void)localDataLoader:(XLLocalDataLoader *)localDataLoader
+             controller:(NSFetchedResultsController *)controller
+        didChangeObject:(id)anObject
+            atIndexPath:(NSIndexPath *)indexPath
+          forChangeType:(NSFetchedResultsChangeType)type
+           newIndexPath:(NSIndexPath *)newIndexPath
 {
     
     NSMutableDictionary *change = [NSMutableDictionary new];
@@ -176,7 +185,13 @@
     [_objectChanges addObject:change];
 }
 
-- (void)localdataLoader:(XLLocalDataLoader *)localDataLoader controllerDidChangeContent:(NSFetchedResultsController *)controller
+
+- (void)localDataLoader:(XLLocalDataLoader *)localDataLoader controllerWillChangeContent:(NSFetchedResultsController *)controller
+{
+#warning Implement this method if needed
+}
+
+- (void)localDataLoader:(XLLocalDataLoader *)localDataLoader controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     if ([_sectionChanges count] > 0)
     {

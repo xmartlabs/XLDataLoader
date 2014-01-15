@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'XLDataLoader'
-  s.version  = '2.0.0'
+  s.version  = '2.0.1'
   s.license  = 'MIT'
   s.summary  = 'Flexible and powerful AFNetworking data loaders.'
   s.description = <<-DESC 
