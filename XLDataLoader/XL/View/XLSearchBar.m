@@ -62,7 +62,8 @@
     if (searchField) {
         if (![searchField.rightView isKindOfClass:[UIActivityIndicatorView class]]){
             UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-            searchField.rightView = spinner;
+            searchField.rightView  = spinner;
+            searchField.rightViewMode = UITextFieldViewModeAlways;
         }
         [((UIActivityIndicatorView *)searchField.rightView) startAnimating];
     }

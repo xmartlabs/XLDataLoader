@@ -225,6 +225,11 @@
         if (self.searchLoadingPagingEnabled){
             [self.searchLoadingMoreView.activityViewIndicator startAnimating];
         }
+        if ([self.searchDisplayController.searchBar isKindOfClass:[XLSearchBar class]]){
+            XLSearchBar * searchBar = (XLSearchBar *)self.searchDisplayController.searchBar;
+            [searchBar startActivityIndicator];
+        }
+        
     }
 }
 
