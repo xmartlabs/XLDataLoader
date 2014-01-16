@@ -221,7 +221,7 @@
             [self.loadingMoreView.activityViewIndicator startAnimating];
         }
     }
-    else if (dataLoader == self.searchLocalDataLoader){
+    else if (dataLoader == self.searchRemoteDataLoader){
         if (self.searchLoadingPagingEnabled){
             [self.searchLoadingMoreView.activityViewIndicator startAnimating];
         }
