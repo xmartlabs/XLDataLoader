@@ -9,6 +9,7 @@
 #import "XLTableViewController.h"
 #import "XLRemoteDataLoader.h"
 #import "XLLoadingMoreView.h"
+#import "XLNetworkStatusView.h"
 #import "XLSearchBar.h"
 
 @interface XLTableViewController () <XLRemoteDataLoaderDelegate, XLLocalDataLoaderDelegate>
@@ -20,6 +21,7 @@
 @property BOOL searchBeganUpdates;
 @property (nonatomic) XLLoadingMoreView * loadingMoreView;
 @property (nonatomic) XLLoadingMoreView * searchLoadingMoreView;
+@property (nonatomic) XLNetworkStatusView * networkStatusView;
 
 @property (readonly) BOOL searchLoadingPagingEnabled;
 
@@ -39,10 +41,15 @@
 
 @synthesize loadingMoreView  = _loadingMoreView;
 @synthesize searchLoadingMoreView = _searchLoadingMoreView;
+@synthesize networkStatusView = _networkStatusView;
+
+@synthesize showNetworkReachability = _showNetworkReachability;
 
 
 @synthesize supportRefreshControl = _supportRefreshControl;
 @synthesize loadingPagingEnabled = _loadingPagingEnabled;
+
+@synthesize alwaysVisibleSearchBar = _alwaysVisibleSearchBar;
 
 @synthesize supportSearchController = _supportSearchController;
 
@@ -61,6 +68,8 @@
         self.supportRefreshControl = YES;
         self.loadingPagingEnabled = YES;
         self.supportSearchController = NO;
+        self.alwaysVisibleSearchBar = NO;
+        self.showNetworkReachability = YES;
     }
     return self;
 }
@@ -79,6 +88,14 @@
     if (_searchLoadingMoreView) return _searchLoadingMoreView;
     _searchLoadingMoreView = [[XLLoadingMoreView alloc] init];
     return _searchLoadingMoreView;
+}
+
+-(XLNetworkStatusView *)networkStatusView
+{
+    if (!_networkStatusView){
+        _networkStatusView = [[XLNetworkStatusView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 30)];
+    }
+    return _networkStatusView;
 }
 
 -(void)setLoadingPagingEnabled:(BOOL)loadingPagingEnabled
@@ -165,11 +182,21 @@
     self.remoteDataLoader.delegate = self;
     [self didChangeGridContent];
     [[self tableView] reloadData];
+    if (self.showNetworkReachability){
+        [self updateNetworkReachabilityView];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(networkingReachabilityDidChange:)
+                                                 name:AFNetworkingReachabilityDidChangeNotification
+                                               object:nil];
+    }
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(contentSizeCategoryChanged:)
                                                  name:UIContentSizeCategoryDidChangeNotification
                                                object:nil];
+
 }
+
+
 
 -(void)viewDidDisappear:(BOOL)animated
 {
@@ -179,6 +206,11 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIContentSizeCategoryDidChangeNotification
                                                   object:nil];
+    if (self.showNetworkReachability){
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:AFNetworkingReachabilityDidChangeNotification
+                                                  object:nil];
+    }
 }
 
 
@@ -301,12 +333,30 @@
     [self.tableView reloadData];
 }
 
+-(void)networkingReachabilityDidChange:(NSNotification *)notification
+{
+    [self updateNetworkReachabilityView];
+}
+
+-(void)updateNetworkReachabilityView
+{
+    if (![self.remoteDataLoader.sessionManager.reachabilityManager networkReachabilityStatus] == AFNetworkReachabilityStatusNotReachable){
+        if ([self.networkStatusView superview]){
+            [self.networkStatusView removeFromSuperview];
+        }
+    }
+    else{
+        if (![self.networkStatusView superview]){
+            [self.tableView addSubview:self.networkStatusView];
+        }
+    }
+}
+
 -(UISearchDisplayController *)createDisplayController
 {
-    XLSearchBar *searchBar = [[XLSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 44)];
+    XLSearchBar *searchBar = [[XLSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 44)];
     searchBar.placeholder = NSLocalizedString(@"Search", @"Search caption of search bar");
     searchBar.showsCancelButton = YES;
-    
     UISearchDisplayController *displayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
     displayController.delegate = self;
     displayController.searchResultsDataSource = self;
@@ -635,6 +685,15 @@
     _searchDelayTimer = nil;
 }
 
+
+#pragma mark - UIScrollViewDelegate
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    CGRect frame = self.networkStatusView.frame;
+    frame.origin.y = MAX(scrollView.contentOffset.y + scrollView.contentInset.top, 0);
+    self.networkStatusView.frame = frame;
+}
 
 
 
