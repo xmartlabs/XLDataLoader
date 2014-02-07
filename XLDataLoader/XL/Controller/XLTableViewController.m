@@ -49,8 +49,6 @@
 @synthesize supportRefreshControl = _supportRefreshControl;
 @synthesize loadingPagingEnabled = _loadingPagingEnabled;
 
-@synthesize alwaysVisibleSearchBar = _alwaysVisibleSearchBar;
-
 @synthesize supportSearchController = _supportSearchController;
 
 @synthesize backgroundViewForEmptyTableView = _backgroundViewForEmptyTableView;
@@ -68,7 +66,6 @@
         self.supportRefreshControl = YES;
         self.loadingPagingEnabled = YES;
         self.supportSearchController = NO;
-        self.alwaysVisibleSearchBar = NO;
         self.showNetworkReachability = YES;
     }
     return self;
@@ -627,9 +624,7 @@
 
 // when we start/end showing the search UI
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
-{
-    //self.tableView.contentOffset = CGPointMake(0.0f, -64.0f);
-    
+{    
     self.localDataLoader.delegate = nil;
     self.searchLocalDataLoader.delegate = self;
     [self.searchLocalDataLoader forceReload];

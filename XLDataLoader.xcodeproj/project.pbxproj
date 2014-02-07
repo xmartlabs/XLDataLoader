@@ -13,6 +13,7 @@
 		2839F7A518688D7D00FEBD38 /* XLRemoteDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2839F7A218688D7D00FEBD38 /* XLRemoteDataLoader.m */; };
 		2839F7AA18688F9500FEBD38 /* XLLoadingMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2839F7A918688F9500FEBD38 /* XLLoadingMoreView.m */; };
 		2839F7AD18688FC700FEBD38 /* XLSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2839F7AC18688FC700FEBD38 /* XLSearchBar.m */; };
+		284FDBAB18A44C800035C795 /* XLTableWithFixedSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 284FDBAA18A44C800035C795 /* XLTableWithFixedSearchViewController.m */; };
 		2896179718A282C90007B341 /* XLNetworkStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2896179618A282C90007B341 /* XLNetworkStatusView.m */; };
 		28E1DDB7181AB89D00E7FAF9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E1DDB6181AB89D00E7FAF9 /* Foundation.framework */; };
 		28E1DDB9181AB89D00E7FAF9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E1DDB8181AB89D00E7FAF9 /* CoreGraphics.framework */; };
@@ -55,6 +56,8 @@
 		2839F7A918688F9500FEBD38 /* XLLoadingMoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLLoadingMoreView.m; path = XL/View/XLLoadingMoreView.m; sourceTree = "<group>"; };
 		2839F7AB18688FC700FEBD38 /* XLSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLSearchBar.h; path = XL/View/XLSearchBar.h; sourceTree = "<group>"; };
 		2839F7AC18688FC700FEBD38 /* XLSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLSearchBar.m; path = XL/View/XLSearchBar.m; sourceTree = "<group>"; };
+		284FDBA918A44C800035C795 /* XLTableWithFixedSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLTableWithFixedSearchViewController.h; path = XL/Controller/XLTableWithFixedSearchViewController.h; sourceTree = "<group>"; };
+		284FDBAA18A44C800035C795 /* XLTableWithFixedSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLTableWithFixedSearchViewController.m; path = XL/Controller/XLTableWithFixedSearchViewController.m; sourceTree = "<group>"; };
 		2896179518A282C90007B341 /* XLNetworkStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLNetworkStatusView.h; path = XL/View/XLNetworkStatusView.h; sourceTree = "<group>"; };
 		2896179618A282C90007B341 /* XLNetworkStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLNetworkStatusView.m; path = XL/View/XLNetworkStatusView.m; sourceTree = "<group>"; };
 		28E1DDB3181AB89D00E7FAF9 /* XLDataLoader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XLDataLoader.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -226,6 +229,8 @@
 				B23749681887283F002E0B8E /* XLCollectionViewController.m */,
 				2839F79118688CB800FEBD38 /* XLTableViewController.h */,
 				2839F79218688CB800FEBD38 /* XLTableViewController.m */,
+				284FDBA918A44C800035C795 /* XLTableWithFixedSearchViewController.h */,
+				284FDBAA18A44C800035C795 /* XLTableWithFixedSearchViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -364,6 +369,7 @@
 			files = (
 				B23749691887283F002E0B8E /* XLCollectionViewController.m in Sources */,
 				28E1DDCD181AB89D00E7FAF9 /* ViewController.m in Sources */,
+				284FDBAB18A44C800035C795 /* XLTableWithFixedSearchViewController.m in Sources */,
 				2839F7A318688D7D00FEBD38 /* XLDataLoader.m in Sources */,
 				2839F79318688CB800FEBD38 /* XLTableViewController.m in Sources */,
 				28E1DDC7181AB89D00E7FAF9 /* AppDelegate.m in Sources */,
