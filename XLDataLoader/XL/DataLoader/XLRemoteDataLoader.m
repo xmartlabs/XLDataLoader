@@ -83,7 +83,8 @@
 
 -(NSMutableURLRequest *)prepareURLRequest
 {
-    return [[self sessionManager].requestSerializer requestWithMethod:@"GET" URLString:[[NSURL URLWithString:[self URLString] relativeToURL:[[self sessionManager] baseURL]] absoluteString] parameters:[self parameters] error:nil];
+    NSError * error;
+    return [[self sessionManager].requestSerializer requestWithMethod:@"GET" URLString:[[NSURL URLWithString:[self URLString] relativeToURL:[[self sessionManager] baseURL]] absoluteString] parameters:[self parameters] error:&error];
 }
 
 
