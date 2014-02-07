@@ -1,9 +1,9 @@
 //
-//  XLTableViewController.m
-//  XLKit
+//  XLTableWithFixedSearchViewController.m
+//  XLDataLoader
 //
-//  Created by Martin Barreto on 7/25/13.
-//  Copyright (c) 2013 Xmartlabs. All rights reserved.
+//  Created by Martin Barreto on 2/6/14.
+//  Copyright (c) 2014 Xmartlabs. All rights reserved.
 //
 
 #import "XLTableViewController.h"
@@ -12,7 +12,9 @@
 #import "XLNetworkStatusView.h"
 #import "XLSearchBar.h"
 
-@interface XLTableViewController () <XLRemoteDataLoaderDelegate, XLLocalDataLoaderDelegate>
+#import "XLTableWithFixedSearchViewController.h"
+
+@interface XLTableWithFixedSearchViewController () <XLRemoteDataLoaderDelegate, XLLocalDataLoaderDelegate>
 {
     NSTimer * _searchDelayTimer;
 }
@@ -25,9 +27,14 @@
 
 @property (readonly) BOOL searchLoadingPagingEnabled;
 
+@property (nonatomic) UIRefreshControl * refreshControl;
+
 @end
 
-@implementation XLTableViewController
+@implementation XLTableWithFixedSearchViewController
+
+@synthesize tableView = _tableView;
+@synthesize refreshControl = _refreshControl;
 
 @synthesize remoteDataLoader = _remoteDataLoader;
 @synthesize localDataLoader  = _localDataLoader;
@@ -45,11 +52,8 @@
 
 @synthesize showNetworkReachability = _showNetworkReachability;
 
-
 @synthesize supportRefreshControl = _supportRefreshControl;
 @synthesize loadingPagingEnabled = _loadingPagingEnabled;
-
-@synthesize supportSearchController = _supportSearchController;
 
 @synthesize backgroundViewForEmptyTableView = _backgroundViewForEmptyTableView;
 
@@ -65,13 +69,20 @@
         self.searchLocalDataLoader = nil;
         self.supportRefreshControl = YES;
         self.loadingPagingEnabled = YES;
-        self.supportSearchController = NO;
         self.showNetworkReachability = YES;
     }
     return self;
 }
 
 #pragma mark - Properties
+
+-(UIRefreshControl *)refreshControl
+{
+    if (_refreshControl) return _refreshControl;
+    _refreshControl = [[UIRefreshControl alloc] init];
+    [_refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
+    return _refreshControl;
+}
 
 -(XLLoadingMoreView *)loadingMoreView
 {
@@ -145,9 +156,37 @@
 
 #pragma mark - UIViewController life cycle.
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    UITableView * tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, self.view.bounds.size.width, self.view.bounds.size.height - 44)];
+    tableView.dataSource = self;
+    tableView.delegate = self;
+    [self.view addSubview:tableView];
+    _tableView = tableView;
+    
+    // This should not be necessary, see the ref for self.searchDisplayController
+    // self.searchDisplayController = displayController;
+    // But self.searchDisplayController is never asigned (it`s always nil).
+    // See this answer in StackOverflow: http://stackoverflow.com/a/17324921/1070393
+    
+    XLSearchBar *searchBar = [[XLSearchBar alloc] initWithFrame:CGRectZero];
+    [searchBar setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview:searchBar];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[topLayoutGuide][searchBar]" options:0 metrics:0 views:@{@"topLayoutGuide": self.topLayoutGuide, @"searchBar": searchBar}]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:searchBar attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:searchBar attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
+    
+    searchBar.placeholder = NSLocalizedString(@"Search", @"Search caption of search bar");
+    searchBar.showsCancelButton = YES;
+    UISearchDisplayController * searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+    
+    searchDisplayController.delegate = self;
+    searchDisplayController.searchResultsDataSource = self;
+    searchDisplayController.searchResultsDelegate = self;
+    [self performSelector:@selector(setSearchDisplayController:) withObject:searchDisplayController];
+    
     if (self.localDataLoader){
         [[self localDataLoader] forceReload];
     }
@@ -156,25 +195,18 @@
     }
     // initialize refresh Control
     if (self.supportRefreshControl){
-        self.refreshControl = [[UIRefreshControl alloc] init];
-        [self.refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
+        [self.tableView addSubview:self.refreshControl];
     }
     if (self.loadingPagingEnabled){
         self.tableView.tableFooterView = self.loadingMoreView;
     }
-    if (self.supportSearchController)
-    {
-        // This should not be necessary, see the ref for self.searchDisplayController
-        // self.searchDisplayController = displayController;
-        // But self.searchDisplayController is never asigned (it`s always nil).
-        // See this answer in StackOverflow: http://stackoverflow.com/a/17324921/1070393
-        [self performSelector:@selector(setSearchDisplayController:) withObject:[self createDisplayController]];
-    }
+
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    //self.tableView.contentOffset = CGPointMake(0, 0);
     self.localDataLoader.delegate = self;
     self.remoteDataLoader.delegate = self;
     [self didChangeGridContent];
@@ -182,15 +214,15 @@
     if (self.showNetworkReachability){
         [self updateNetworkReachabilityView];
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(networkingReachabilityDidChange:)
-                                                 name:AFNetworkingReachabilityDidChangeNotification
-                                               object:nil];
+                                                 selector:@selector(networkingReachabilityDidChange:)
+                                                     name:AFNetworkingReachabilityDidChangeNotification
+                                                   object:nil];
     }
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(contentSizeCategoryChanged:)
                                                  name:UIContentSizeCategoryDidChangeNotification
                                                object:nil];
-
+    
 }
 
 
@@ -205,8 +237,8 @@
                                                   object:nil];
     if (self.showNetworkReachability){
         [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:AFNetworkingReachabilityDidChangeNotification
-                                                  object:nil];
+                                                        name:AFNetworkingReachabilityDidChangeNotification
+                                                      object:nil];
     }
 }
 
@@ -308,7 +340,7 @@
         }
     }
     if (self.localDataLoader == dataLoader && !self.remoteDataLoader){
-         [self.refreshControl endRefreshing];
+        [self.refreshControl endRefreshing];
     }
     if (error.code != NSURLErrorCancelled){
         // don't show cancel operation error
@@ -349,16 +381,16 @@
     }
 }
 
--(UISearchDisplayController *)createDisplayController
+-(UISearchDisplayController *)createSearchDisplayController
 {
-    XLSearchBar *searchBar = [[XLSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 44)];
+    XLSearchBar *searchBar = [[XLSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
     searchBar.placeholder = NSLocalizedString(@"Search", @"Search caption of search bar");
     searchBar.showsCancelButton = YES;
-    UISearchDisplayController *displayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
-    displayController.delegate = self;
-    displayController.searchResultsDataSource = self;
-    displayController.searchResultsDelegate = self;
-    return displayController;
+    UISearchDisplayController * searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+    searchDisplayController.delegate = self;
+    searchDisplayController.searchResultsDataSource = self;
+    searchDisplayController.searchResultsDelegate = self;
+    return searchDisplayController;
 }
 
 
@@ -624,7 +656,7 @@
 
 // when we start/end showing the search UI
 - (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller
-{    
+{
     self.localDataLoader.delegate = nil;
     self.searchLocalDataLoader.delegate = self;
     [self.searchLocalDataLoader forceReload];
@@ -689,6 +721,7 @@
     frame.origin.y = MAX(scrollView.contentOffset.y + scrollView.contentInset.top, 0);
     self.networkStatusView.frame = frame;
 }
+
 
 
 
