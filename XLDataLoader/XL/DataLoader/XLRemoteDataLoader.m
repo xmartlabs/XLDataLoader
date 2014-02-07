@@ -70,7 +70,10 @@
     XLRemoteDataLoader * __weak weakSelf = self;
     return [[self sessionManager] dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
         if (error) {
-            [weakSelf unsuccessulDataLoadWithError:error];
+             NSMutableDictionary * newUserInfo = [error.userInfo mutableCopy];
+            [newUserInfo setObject:responseObject forKey:AFNetworkingTaskDidCompleteSerializedResponseKey];
+            NSError * newError = [NSError errorWithDomain:error.domain code:error.code userInfo:newUserInfo];
+            [weakSelf unsuccessulDataLoadWithError:newError];
         } else {
             [weakSelf setData:(NSDictionary *)responseObject];
             [weakSelf successulDataLoad];
@@ -80,7 +83,8 @@
 
 -(NSMutableURLRequest *)prepareURLRequest
 {
-    return [[self sessionManager].requestSerializer requestWithMethod:@"GET" URLString:[[NSURL URLWithString:[self URLString] relativeToURL:[[self sessionManager] baseURL]] absoluteString] parameters:[self parameters]];
+    NSError * error;
+    return [[self sessionManager].requestSerializer requestWithMethod:@"GET" URLString:[[NSURL URLWithString:[self URLString] relativeToURL:[[self sessionManager] baseURL]] absoluteString] parameters:[self parameters] error:&error];
 }
 
 
