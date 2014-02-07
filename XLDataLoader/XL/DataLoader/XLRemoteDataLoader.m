@@ -6,8 +6,9 @@
 //  Copyright (c) 2013 Xmartlabs. All rights reserved.
 //
 
+#import <AFNetworking/AFNetworking.h>
+
 #import "XLRemoteDataLoader.h"
-#import "AFNetworking.h"
 
 @interface XLRemoteDataLoader()
 {
@@ -70,10 +71,15 @@
     XLRemoteDataLoader * __weak weakSelf = self;
     return [[self sessionManager] dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
         if (error) {
-             NSMutableDictionary * newUserInfo = [error.userInfo mutableCopy];
-            [newUserInfo setObject:responseObject forKey:AFNetworkingTaskDidCompleteSerializedResponseKey];
-            NSError * newError = [NSError errorWithDomain:error.domain code:error.code userInfo:newUserInfo];
-            [weakSelf unsuccessulDataLoadWithError:newError];
+            if (responseObject){
+                NSMutableDictionary * newUserInfo = [error.userInfo mutableCopy];
+                [newUserInfo setObject:responseObject forKey:AFNetworkingTaskDidCompleteSerializedResponseKey];
+                NSError * newError = [NSError errorWithDomain:error.domain code:error.code userInfo:newUserInfo];
+                [weakSelf unsuccessulDataLoadWithError:newError];
+            }
+            else{
+                [weakSelf unsuccessulDataLoadWithError:error];
+            }
         } else {
             [weakSelf setData:(NSDictionary *)responseObject];
             [weakSelf successulDataLoad];
