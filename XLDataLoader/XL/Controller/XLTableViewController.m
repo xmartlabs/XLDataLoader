@@ -310,6 +310,11 @@
     if (self.localDataLoader == dataLoader && !self.remoteDataLoader){
          [self.refreshControl endRefreshing];
     }
+    [self showError:error];
+}
+
+
+-(void)showError:(NSError*)error{
     if (error.code != NSURLErrorCancelled){
         // don't show cancel operation error
         dispatch_async(dispatch_get_main_queue(), ^{
