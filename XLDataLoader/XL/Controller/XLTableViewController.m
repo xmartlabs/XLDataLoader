@@ -128,6 +128,9 @@
 -(void)setLocalDataLoader:(XLLocalDataLoader *)localDataLoader
 {
     _localDataLoader = localDataLoader;
+    if (self.loadingPagingEnabled == NO){
+        _localDataLoader.limit = 0;
+    }
 }
 
 

@@ -87,6 +87,7 @@
 // get offset and limit
 -(NSUInteger)offset;
 -(NSUInteger)limit;
+-(void)setLimit:(NSUInteger)limit;
 
 // get core data object at index path
 -(NSManagedObject *)objectAtIndexPath:(NSIndexPath *)indexPath;
