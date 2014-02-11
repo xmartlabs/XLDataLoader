@@ -117,6 +117,11 @@
     return _limit;
 }
 
+-(void)setLimit:(NSUInteger)limit
+{
+    _limit = limit;
+}
+
 // get core data object at index path
 -(NSManagedObject *)objectAtIndexPath:(NSIndexPath *)indexPath
 {
