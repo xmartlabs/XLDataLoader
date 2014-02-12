@@ -14,6 +14,14 @@
 
 #import "XLTableWithFixedSearchViewController.h"
 
+@protocol FixSetSearchViewController <NSObject>
+
+@optional
+
+-(void)setSearchDisplayController:(UISearchDisplayController *)searchDisplayController;
+
+@end
+
 @interface XLTableWithFixedSearchViewController () <XLRemoteDataLoaderDelegate, XLLocalDataLoaderDelegate>
 {
     NSTimer * _searchDelayTimer;
