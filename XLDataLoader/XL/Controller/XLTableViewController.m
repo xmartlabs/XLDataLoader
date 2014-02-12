@@ -353,7 +353,6 @@
     else{
         if (![self.networkStatusView superview]){
             [self.tableView addSubview:self.networkStatusView];
-            self.networkStatusView.layer.zPosition = MAXFLOAT;
         }
     }
 }
