@@ -361,7 +361,6 @@
 {
     XLSearchBar *searchBar = [[XLSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 44)];
     searchBar.placeholder = NSLocalizedString(@"Search", @"Search caption of search bar");
-    searchBar.showsCancelButton = YES;
     UISearchDisplayController *displayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
     displayController.delegate = self;
     displayController.searchResultsDataSource = self;

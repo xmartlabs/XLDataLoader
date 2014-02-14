@@ -179,7 +179,6 @@
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:searchBar attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
     
     searchBar.placeholder = NSLocalizedString(@"Search", @"Search caption of search bar");
-    searchBar.showsCancelButton = YES;
     UISearchDisplayController * searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
     
     searchDisplayController.delegate = self;

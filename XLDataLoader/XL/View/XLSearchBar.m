@@ -15,7 +15,6 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        
         UITextField * textField = [self textField:self];
         textField.clearButtonMode = UITextFieldViewModeNever;
     }
