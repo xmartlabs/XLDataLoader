@@ -12,7 +12,15 @@
 #import "XLNetworkStatusView.h"
 #import "XLSearchBar.h"
 
-@interface XLTableViewController () <XLRemoteDataLoaderDelegate, XLLocalDataLoaderDelegate>
+@protocol FixSetSearchViewController <NSObject>
+
+@optional
+
+-(void)setSearchDisplayController:(UISearchDisplayController *)searchDisplayController;
+
+@end
+
+@interface XLTableViewController () <XLRemoteDataLoaderDelegate, XLLocalDataLoaderDelegate, FixSetSearchViewController>
 {
     NSTimer * _searchDelayTimer;
 }
