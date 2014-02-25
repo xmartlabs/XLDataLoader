@@ -168,7 +168,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UITableView * tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 44, self.view.bounds.size.width, self.view.bounds.size.height - 44)];
+    UITableView * tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
     tableView.dataSource = self;
     tableView.delegate = self;
     [self.view addSubview:tableView];
@@ -209,6 +209,8 @@
     }
 
 }
+
+
 
 -(void)viewWillAppear:(BOOL)animated
 {
@@ -278,6 +280,11 @@
         }
     }
     return [[UIView alloc] initWithFrame:CGRectZero];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self.tableView setContentInset:UIEdgeInsetsMake(self.topLayoutGuide.length + 44, self.tableView.contentInset.left, self.tableView.contentInset.bottom, self.tableView.contentInset.right)];
 }
 
 #pragma mark - XLDataLoaderDelegate
