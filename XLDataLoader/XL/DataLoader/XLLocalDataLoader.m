@@ -32,21 +32,16 @@
 
 -(id)init
 {
-    self = [super init];
-    if (self){
-        // set default values for offset and limit
-        _limit = 20;
-        _trackDataUpdatesOfItems = NO;
-        _offset = 0;
-    }
-    return self;
+    return [self initWithLimit:20];
 }
 
 -(id)initWithLimit:(NSUInteger)limit
 {
-    self = [self init];
+    self = [super init];
     if (self){
         _limit = limit;
+        _trackDataUpdatesOfItems = NO;
+        _offset = 0;
     }
     return self;
 }
