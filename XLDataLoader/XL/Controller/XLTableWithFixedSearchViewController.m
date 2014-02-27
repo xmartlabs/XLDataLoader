@@ -110,6 +110,7 @@
 {
     if (!_networkStatusView){
         _networkStatusView = [[XLNetworkStatusView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 30)];
+        _networkStatusView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     }
     return _networkStatusView;
 }
@@ -169,6 +170,7 @@
 {
     [super viewDidLoad];
     UITableView * tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     tableView.dataSource = self;
     tableView.delegate = self;
     [self.view addSubview:tableView];
