@@ -21,8 +21,6 @@
 		28E1DDC1181AB89D00E7FAF9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28E1DDBF181AB89D00E7FAF9 /* InfoPlist.strings */; };
 		28E1DDC3181AB89D00E7FAF9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E1DDC2181AB89D00E7FAF9 /* main.m */; };
 		28E1DDC7181AB89D00E7FAF9 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E1DDC6181AB89D00E7FAF9 /* AppDelegate.m */; };
-		28E1DDCA181AB89D00E7FAF9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28E1DDC8181AB89D00E7FAF9 /* Main.storyboard */; };
-		28E1DDCD181AB89D00E7FAF9 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E1DDCC181AB89D00E7FAF9 /* ViewController.m */; };
 		28E1DDCF181AB89D00E7FAF9 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 28E1DDCE181AB89D00E7FAF9 /* Images.xcassets */; };
 		28E1DDD6181AB89D00E7FAF9 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E1DDD5181AB89D00E7FAF9 /* XCTest.framework */; };
 		28E1DDD7181AB89D00E7FAF9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E1DDB6181AB89D00E7FAF9 /* Foundation.framework */; };
@@ -70,9 +68,6 @@
 		28E1DDC4181AB89D00E7FAF9 /* XLDataLoader-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "XLDataLoader-Prefix.pch"; sourceTree = "<group>"; };
 		28E1DDC5181AB89D00E7FAF9 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		28E1DDC6181AB89D00E7FAF9 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		28E1DDC9181AB89D00E7FAF9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		28E1DDCB181AB89D00E7FAF9 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		28E1DDCC181AB89D00E7FAF9 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		28E1DDCE181AB89D00E7FAF9 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		28E1DDD4181AB89D00E7FAF9 /* XLDataLoaderTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XLDataLoaderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		28E1DDD5181AB89D00E7FAF9 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -161,9 +156,6 @@
 				28E1DDEB181ABAA600E7FAF9 /* XL */,
 				28E1DDC5181AB89D00E7FAF9 /* AppDelegate.h */,
 				28E1DDC6181AB89D00E7FAF9 /* AppDelegate.m */,
-				28E1DDC8181AB89D00E7FAF9 /* Main.storyboard */,
-				28E1DDCB181AB89D00E7FAF9 /* ViewController.h */,
-				28E1DDCC181AB89D00E7FAF9 /* ViewController.m */,
 				28E1DDCE181AB89D00E7FAF9 /* Images.xcassets */,
 				28E1DDBD181AB89D00E7FAF9 /* Supporting Files */,
 			);
@@ -315,7 +307,6 @@
 			files = (
 				28E1DDCF181AB89D00E7FAF9 /* Images.xcassets in Resources */,
 				28E1DDC1181AB89D00E7FAF9 /* InfoPlist.strings in Resources */,
-				28E1DDCA181AB89D00E7FAF9 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,7 +359,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B23749691887283F002E0B8E /* XLCollectionViewController.m in Sources */,
-				28E1DDCD181AB89D00E7FAF9 /* ViewController.m in Sources */,
 				284FDBAB18A44C800035C795 /* XLTableWithFixedSearchViewController.m in Sources */,
 				2839F7A318688D7D00FEBD38 /* XLDataLoader.m in Sources */,
 				2839F79318688CB800FEBD38 /* XLTableViewController.m in Sources */,
@@ -407,14 +397,6 @@
 				28E1DDC0181AB89D00E7FAF9 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		28E1DDC8181AB89D00E7FAF9 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				28E1DDC9181AB89D00E7FAF9 /* Base */,
-			);
-			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 		28E1DDDE181AB89D00E7FAF9 /* InfoPlist.strings */ = {
