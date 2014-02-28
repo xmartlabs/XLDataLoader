@@ -287,6 +287,7 @@
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     [self.tableView setContentInset:UIEdgeInsetsMake(self.topLayoutGuide.length + 44, self.tableView.contentInset.left, self.tableView.contentInset.bottom, self.tableView.contentInset.right)];
+    [self.tableView setScrollIndicatorInsets:self.tableView.contentInset];
 }
 
 #pragma mark - XLDataLoaderDelegate
@@ -737,8 +738,6 @@
     frame.origin.y = MAX(scrollView.contentOffset.y + scrollView.contentInset.top, 0);
     self.networkStatusView.frame = frame;
 }
-
-
 
 
 @end
