@@ -202,6 +202,12 @@
     if (self.remoteDataLoader){
         [[self remoteDataLoader] forceReload];
     }
+    if (self.searchLocalDataLoader){
+        [[self searchLocalDataLoader] forceReload];
+    }
+    if (self.searchRemoteDataLoader){
+        [[self searchRemoteDataLoader] forceReload];
+    }
     // initialize refresh Control
     if (self.supportRefreshControl){
         [self.tableView addSubview:self.refreshControl];
@@ -220,6 +226,14 @@
     //self.tableView.contentOffset = CGPointMake(0, 0);
     self.localDataLoader.delegate = self;
     self.remoteDataLoader.delegate = self;
+    if (self.searchLocalDataLoader)
+    {
+        self.searchLocalDataLoader.delegate = self;
+    }
+    if (self.searchRemoteDataLoader)
+    {
+        self.searchRemoteDataLoader.delegate = self;
+    }
     [self didChangeGridContent];
     [[self tableView] reloadData];
     if (self.showNetworkReachability){
@@ -243,6 +257,8 @@
     [super viewDidDisappear:animated];
     self.localDataLoader.delegate = nil;
     self.searchLocalDataLoader.delegate = nil;
+    self.searchLocalDataLoader.delegate = nil;
+    self.searchRemoteDataLoader.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIContentSizeCategoryDidChangeNotification
                                                   object:nil];
@@ -334,6 +350,12 @@
     }
     if (self.localDataLoader == dataLoader) {
         if (!self.remoteDataLoader) {
+            [self.refreshControl endRefreshing];
+        }
+        [self didChangeGridContent];
+    }
+    else if (self.searchLocalDataLoader == dataLoader) {
+        if (!self.searchRemoteDataLoader) {
             [self.refreshControl endRefreshing];
         }
         [self didChangeGridContent];
