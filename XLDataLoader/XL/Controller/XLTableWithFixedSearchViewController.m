@@ -196,18 +196,11 @@
     searchDisplayController.searchResultsDelegate = self;
     [self performSelector:@selector(setSearchDisplayController:) withObject:searchDisplayController];
     
-    if (self.localDataLoader){
-        [[self localDataLoader] forceReload];
-    }
-    if (self.remoteDataLoader){
-        [[self remoteDataLoader] forceReload];
-    }
-    if (self.searchLocalDataLoader){
-        [[self searchLocalDataLoader] forceReload];
-    }
-    if (self.searchRemoteDataLoader){
-        [[self searchRemoteDataLoader] forceReload];
-    }
+    [[self localDataLoader] forceReload];
+    [[self remoteDataLoader] forceReload];
+    [[self searchLocalDataLoader] forceReload];
+    [[self searchRemoteDataLoader] forceReload];
+
     // initialize refresh Control
     if (self.supportRefreshControl){
         [self.tableView addSubview:self.refreshControl];
@@ -226,14 +219,9 @@
     //self.tableView.contentOffset = CGPointMake(0, 0);
     self.localDataLoader.delegate = self;
     self.remoteDataLoader.delegate = self;
-    if (self.searchLocalDataLoader)
-    {
-        self.searchLocalDataLoader.delegate = self;
-    }
-    if (self.searchRemoteDataLoader)
-    {
-        self.searchRemoteDataLoader.delegate = self;
-    }
+    self.searchLocalDataLoader.delegate = self;
+    self.searchRemoteDataLoader.delegate = self;
+
     [self didChangeGridContent];
     [[self tableView] reloadData];
     if (self.showNetworkReachability){
@@ -350,12 +338,6 @@
     }
     if (self.localDataLoader == dataLoader) {
         if (!self.remoteDataLoader) {
-            [self.refreshControl endRefreshing];
-        }
-        [self didChangeGridContent];
-    }
-    else if (self.searchLocalDataLoader == dataLoader) {
-        if (!self.searchRemoteDataLoader) {
             [self.refreshControl endRefreshing];
         }
         [self didChangeGridContent];
