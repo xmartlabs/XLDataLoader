@@ -217,6 +217,9 @@
     //self.tableView.contentOffset = CGPointMake(0, 0);
     self.localDataLoader.delegate = self;
     self.remoteDataLoader.delegate = self;
+    self.searchLocalDataLoader.delegate = self;
+    self.searchRemoteDataLoader.delegate = self;
+
     [self didChangeGridContent];
     [[self tableView] reloadData];
     if (self.showNetworkReachability){
@@ -240,6 +243,8 @@
     [super viewDidDisappear:animated];
     self.localDataLoader.delegate = nil;
     self.searchLocalDataLoader.delegate = nil;
+    self.searchLocalDataLoader.delegate = nil;
+    self.searchRemoteDataLoader.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIContentSizeCategoryDidChangeNotification
                                                   object:nil];
