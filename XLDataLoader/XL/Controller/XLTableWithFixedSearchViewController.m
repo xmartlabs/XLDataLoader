@@ -196,12 +196,11 @@
     searchDisplayController.searchResultsDelegate = self;
     [self performSelector:@selector(setSearchDisplayController:) withObject:searchDisplayController];
     
-    if (self.localDataLoader){
-        [[self localDataLoader] forceReload];
-    }
-    if (self.remoteDataLoader){
-        [[self remoteDataLoader] forceReload];
-    }
+    [[self localDataLoader] forceReload];
+    [[self remoteDataLoader] forceReload];
+    [[self searchLocalDataLoader] forceReload];
+    [[self searchRemoteDataLoader] forceReload];
+
     // initialize refresh Control
     if (self.supportRefreshControl){
         [self.tableView addSubview:self.refreshControl];
@@ -220,6 +219,9 @@
     //self.tableView.contentOffset = CGPointMake(0, 0);
     self.localDataLoader.delegate = self;
     self.remoteDataLoader.delegate = self;
+    self.searchLocalDataLoader.delegate = self;
+    self.searchRemoteDataLoader.delegate = self;
+
     [self didChangeGridContent];
     [[self tableView] reloadData];
     if (self.showNetworkReachability){
@@ -243,6 +245,8 @@
     [super viewDidDisappear:animated];
     self.localDataLoader.delegate = nil;
     self.searchLocalDataLoader.delegate = nil;
+    self.searchLocalDataLoader.delegate = nil;
+    self.searchRemoteDataLoader.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIContentSizeCategoryDidChangeNotification
                                                   object:nil];
