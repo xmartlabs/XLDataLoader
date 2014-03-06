@@ -187,8 +187,6 @@
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[topLayoutGuide][searchBar]" options:0 metrics:0 views:@{@"topLayoutGuide": self.topLayoutGuide, @"searchBar": searchBar}]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:searchBar attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeWidth multiplier:1.0 constant:0]];
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:searchBar attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.view attribute:NSLayoutAttributeCenterX multiplier:1.0 constant:0]];
-    
-    searchBar.placeholder = NSLocalizedString(@"Search", @"Search caption of search bar");
     UISearchDisplayController * searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
     
     searchDisplayController.delegate = self;
@@ -196,12 +194,11 @@
     searchDisplayController.searchResultsDelegate = self;
     [self performSelector:@selector(setSearchDisplayController:) withObject:searchDisplayController];
     
-    if (self.localDataLoader){
-        [[self localDataLoader] forceReload];
+    if (self.loadingPagingEnabled == NO){
+        [[self localDataLoader] setLimit:0];
     }
-    if (self.remoteDataLoader){
-        [[self remoteDataLoader] forceReload];
-    }
+    [[self localDataLoader] forceReload];
+    [[self remoteDataLoader] forceReload];
     // initialize refresh Control
     if (self.supportRefreshControl){
         [self.tableView addSubview:self.refreshControl];
@@ -401,7 +398,6 @@
 -(UISearchDisplayController *)createSearchDisplayController
 {
     XLSearchBar *searchBar = [[XLSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
-    searchBar.placeholder = NSLocalizedString(@"Search", @"Search caption of search bar");
     searchBar.showsCancelButton = YES;
     UISearchDisplayController * searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
     searchDisplayController.delegate = self;

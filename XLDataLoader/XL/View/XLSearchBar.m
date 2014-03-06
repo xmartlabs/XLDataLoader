@@ -17,18 +17,11 @@
         // Initialization code
         UITextField * textField = [self textField:self];
         textField.clearButtonMode = UITextFieldViewModeNever;
+        self.placeholder = NSLocalizedString(@"Search", @"Search");
     }
     return self;
 }
 
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 -(UITextField *)textField:(UIView *)view
 {
@@ -48,8 +41,6 @@
     if (searchField) {
         if ([searchField.rightView isKindOfClass:[UIActivityIndicatorView class]]){
             [((UIActivityIndicatorView *)searchField.rightView) stopAnimating];
-            // replace old view
-            
         }
     }
     

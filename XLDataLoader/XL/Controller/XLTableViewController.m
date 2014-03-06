@@ -99,6 +99,7 @@
 {
     if (!_networkStatusView){
         _networkStatusView = [[XLNetworkStatusView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 30)];
+        _networkStatusView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     }
     return _networkStatusView;
 }
@@ -136,9 +137,6 @@
 -(void)setLocalDataLoader:(XLLocalDataLoader *)localDataLoader
 {
     _localDataLoader = localDataLoader;
-    if (self.loadingPagingEnabled == NO){
-        _localDataLoader.limit = 0;
-    }
 }
 
 
@@ -159,12 +157,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if (self.localDataLoader){
-        [[self localDataLoader] forceReload];
+    if (self.loadingPagingEnabled == NO){
+        [[self localDataLoader] setLimit:0];
     }
-    if (self.remoteDataLoader){
-        [[self remoteDataLoader] forceReload];
-    }
+    [[self localDataLoader] forceReload];
+    [[self remoteDataLoader] forceReload];
     // initialize refresh Control
     if (self.supportRefreshControl){
         self.refreshControl = [[UIRefreshControl alloc] init];
@@ -229,7 +226,6 @@
 }
 
 -(void)refreshView:(UIRefreshControl *)refresh {
-    
     [self.localDataLoader forceReload];
     [self.remoteDataLoader forceReload];
     [self.tableView reloadData];
@@ -368,7 +364,7 @@
 -(UISearchDisplayController *)createDisplayController
 {
     XLSearchBar *searchBar = [[XLSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.tableView.bounds.size.width, 44)];
-    searchBar.placeholder = NSLocalizedString(@"Search", @"Search caption of search bar");
+    searchBar.placeholder = NSLocalizedString(@"Search", @"Search");
     UISearchDisplayController *displayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
     displayController.delegate = self;
     displayController.searchResultsDataSource = self;
@@ -478,7 +474,6 @@
 
 
 #pragma mark - UITableViewDelegate
-
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -633,7 +628,6 @@
 {
     [self.searchLocalDataLoader setSuspendAutomaticTrackingOfChangesInManagedObjectContext:suspend];
 }
-
 
 #pragma mark - UISearchDisplayDelegate
 
