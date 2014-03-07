@@ -290,6 +290,7 @@
     [super viewDidLayoutSubviews];
     [self.tableView setContentInset:UIEdgeInsetsMake(self.topLayoutGuide.length + 44, self.tableView.contentInset.left, self.tableView.contentInset.bottom, self.tableView.contentInset.right)];
     [self.tableView setScrollIndicatorInsets:self.tableView.contentInset];
+    [self.searchDisplayController.searchResultsTableView setContentInset:UIEdgeInsetsZero];
 }
 
 #pragma mark - XLDataLoaderDelegate
