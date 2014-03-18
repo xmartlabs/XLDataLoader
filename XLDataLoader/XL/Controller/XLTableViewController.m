@@ -185,8 +185,10 @@
     [super viewWillAppear:animated];
     self.localDataLoader.delegate = self;
     self.remoteDataLoader.delegate = self;
-    [self didChangeGridContent];
     [[self tableView] reloadData];
+    if (self.searchDisplayController.isActive)
+        [self.searchDisplayController.searchResultsTableView reloadData];
+
     if (self.showNetworkReachability){
         [self updateNetworkReachabilityView];
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -294,7 +296,6 @@
         if (!self.remoteDataLoader) {
             [self.refreshControl endRefreshing];
         }
-        [self didChangeGridContent];
     }
 }
 
@@ -679,14 +680,17 @@
 ///
 - (void)beginRemoteSearch:(NSTimer *)sender
 {
-    NSString *filter = sender.userInfo[@"searchString"];
-    if ([self.searchDisplayController.searchBar isKindOfClass:[XLSearchBar class]]){
-        XLSearchBar * searchBar = (XLSearchBar *)self.searchDisplayController.searchBar;
-        [searchBar startActivityIndicator];
+    if (self.searchRemoteDataLoader)
+    {
+        NSString *filter = sender.userInfo[@"searchString"];
+        if ([self.searchDisplayController.searchBar isKindOfClass:[XLSearchBar class]]){
+            XLSearchBar * searchBar = (XLSearchBar *)self.searchDisplayController.searchBar;
+            [searchBar startActivityIndicator];
+        }
+        [self.searchRemoteDataLoader changeSearchString:filter];
+        
+        _searchDelayTimer = nil;
     }
-    [self.searchRemoteDataLoader changeSearchString:filter];
-    
-    _searchDelayTimer = nil;
 }
 
 

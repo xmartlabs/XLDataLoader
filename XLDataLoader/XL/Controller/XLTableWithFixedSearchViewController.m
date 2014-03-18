@@ -214,14 +214,14 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    //self.tableView.contentOffset = CGPointMake(0, 0);
-    self.localDataLoader.delegate = self;
     self.remoteDataLoader.delegate = self;
-    self.searchLocalDataLoader.delegate = self;
-    self.searchRemoteDataLoader.delegate = self;
-
-    [self didChangeGridContent];
+    self.localDataLoader.delegate = self;
     [[self tableView] reloadData];
+    self.searchRemoteDataLoader.delegate = self;
+    if (self.searchDisplayController.isActive){
+        self.searchLocalDataLoader.delegate = self;
+        [self.searchDisplayController.searchResultsTableView reloadData];
+    }
     if (self.showNetworkReachability){
         [self updateNetworkReachabilityView];
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -339,7 +339,6 @@
         if (!self.remoteDataLoader) {
             [self.refreshControl endRefreshing];
         }
-        [self didChangeGridContent];
     }
 }
 
@@ -721,14 +720,17 @@
 ///
 - (void)beginRemoteSearch:(NSTimer *)sender
 {
-    NSString *filter = sender.userInfo[@"searchString"];
-    if ([self.searchDisplayController.searchBar isKindOfClass:[XLSearchBar class]]){
-        XLSearchBar * searchBar = (XLSearchBar *)self.searchDisplayController.searchBar;
-        [searchBar startActivityIndicator];
+    if (self.searchRemoteDataLoader)
+    {
+        NSString *filter = sender.userInfo[@"searchString"];
+        if ([self.searchDisplayController.searchBar isKindOfClass:[XLSearchBar class]]){
+            XLSearchBar * searchBar = (XLSearchBar *)self.searchDisplayController.searchBar;
+            [searchBar startActivityIndicator];
+        }
+        [self.searchRemoteDataLoader changeSearchString:filter];
+        
+        _searchDelayTimer = nil;
     }
-    [self.searchRemoteDataLoader changeSearchString:filter];
-    
-    _searchDelayTimer = nil;
 }
 
 
