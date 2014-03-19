@@ -186,9 +186,9 @@
     self.localDataLoader.delegate = self;
     self.remoteDataLoader.delegate = self;
     [[self tableView] reloadData];
-    if (self.searchDisplayController.isActive)
+    if (self.searchDisplayController.isActive){
         [self.searchDisplayController.searchResultsTableView reloadData];
-
+    }
     if (self.showNetworkReachability){
         [self updateNetworkReachabilityView];
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -273,29 +273,31 @@
 
 -(void)dataLoaderDidLoadData:(XLDataLoader *)dataLoader
 {
-    if ([dataLoader isKindOfClass:[XLRemoteDataLoader class]]){
-        if (dataLoader == self.remoteDataLoader){
-            [self.loadingMoreView.activityViewIndicator stopAnimating];
-            [self.refreshControl endRefreshing];
-            if (self.localDataLoader){
-                [self.localDataLoader changeOffsetTo:self.remoteDataLoader.offset];
-            }
-        }
-        else{
-            [self.searchLoadingMoreView.activityViewIndicator stopAnimating];
-            if ([self.searchDisplayController.searchBar isKindOfClass:[XLSearchBar class]]){
-                XLSearchBar * searchBar = (XLSearchBar *)self.searchDisplayController.searchBar;
-                [searchBar stopActivityIndicator];
-            }
-            if (self.searchLocalDataLoader){
-                [self.searchLocalDataLoader changeOffsetTo:self.searchRemoteDataLoader.offset];
-            }
+    if (dataLoader == self.remoteDataLoader){
+        [self.loadingMoreView.activityViewIndicator stopAnimating];
+        [self.refreshControl endRefreshing];
+        if (self.localDataLoader){
+            [self.localDataLoader changeOffsetTo:self.remoteDataLoader.offset];
         }
     }
-    if (self.localDataLoader == dataLoader) {
+    else if (dataLoader == self.searchRemoteDataLoader){
+        [self.searchLoadingMoreView.activityViewIndicator stopAnimating];
+        if ([self.searchDisplayController.searchBar isKindOfClass:[XLSearchBar class]]){
+            XLSearchBar * searchBar = (XLSearchBar *)self.searchDisplayController.searchBar;
+            [searchBar stopActivityIndicator];
+        }
+        if (self.searchLocalDataLoader){
+            [self.searchLocalDataLoader changeOffsetTo:self.searchRemoteDataLoader.offset];
+        }
+    }
+    else if (dataLoader == self.localDataLoader) {
         if (!self.remoteDataLoader) {
             [self.refreshControl endRefreshing];
         }
+        [self didChangeGridContent];
+    }
+    else if (dataLoader == self.searchLocalDataLoader){
+        [self didChangeSearchGridContent];
     }
 }
 
