@@ -50,6 +50,8 @@
 @synthesize searchRemoteDataLoader = _searchRemoteDataLoader;
 @synthesize searchLocalDataLoader  = _searchLocalDataLoader;
 
+@synthesize fetchFromRemoteDataLoaderOnlyOnce = _fetchFromRemoteDataLoaderOnlyOnce;
+
 @synthesize beganUpdates     = _beganUpdates;
 @synthesize searchBeganUpdates = _searchBeganUpdates;
 
@@ -198,7 +200,6 @@
         [[self localDataLoader] setLimit:0];
     }
     [[self localDataLoader] forceReload];
-    [[self remoteDataLoader] forceReload];
     // initialize refresh Control
     if (self.supportRefreshControl){
         [self.tableView addSubview:self.refreshControl];
@@ -221,6 +222,9 @@
     if (self.searchDisplayController.isActive){
         self.searchLocalDataLoader.delegate = self;
         [self.searchDisplayController.searchResultsTableView reloadData];
+    }
+    if (!self.fetchFromRemoteDataLoaderOnlyOnce || self.isBeingPresented || self.isMovingToParentViewController){
+        [[self remoteDataLoader] forceReload];
     }
     if (self.showNetworkReachability){
         [self updateNetworkReachabilityView];

@@ -43,6 +43,8 @@
 @synthesize searchRemoteDataLoader = _searchRemoteDataLoader;
 @synthesize searchLocalDataLoader  = _searchLocalDataLoader;
 
+@synthesize fetchFromRemoteDataLoaderOnlyOnce = _fetchFromRemoteDataLoaderOnlyOnce;
+
 @synthesize beganUpdates     = _beganUpdates;
 @synthesize searchBeganUpdates = _searchBeganUpdates;
 
@@ -75,6 +77,7 @@
         self.loadingPagingEnabled = YES;
         self.supportSearchController = NO;
         self.showNetworkReachability = YES;
+        self.fetchFromRemoteDataLoaderOnlyOnce = YES;
     }
     return self;
 }
@@ -161,7 +164,6 @@
         [[self localDataLoader] setLimit:0];
     }
     [[self localDataLoader] forceReload];
-    [[self remoteDataLoader] forceReload];
     // initialize refresh Control
     if (self.supportRefreshControl){
         self.refreshControl = [[UIRefreshControl alloc] init];
@@ -188,6 +190,9 @@
     [[self tableView] reloadData];
     if (self.searchDisplayController.isActive){
         [self.searchDisplayController.searchResultsTableView reloadData];
+    }
+    if (!self.fetchFromRemoteDataLoaderOnlyOnce || self.isBeingPresented || self.isMovingToParentViewController){
+        [[self remoteDataLoader] forceReload];
     }
     if (self.showNetworkReachability){
         [self updateNetworkReachabilityView];

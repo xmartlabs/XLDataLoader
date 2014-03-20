@@ -30,6 +30,7 @@
 @property BOOL supportRefreshControl; // default YES
 @property BOOL loadingPagingEnabled;  // default YES
 @property BOOL showNetworkReachability; //Default YES
+@property BOOL fetchFromRemoteDataLoaderOnlyOnce; // Default YES
 
 // The loader notifies the controller using these methods. override it from your concrete class.
 
