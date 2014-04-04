@@ -357,14 +357,16 @@
 
 -(void)updateNetworkReachabilityView
 {
-    if (![self.remoteDataLoader.sessionManager.reachabilityManager networkReachabilityStatus] == AFNetworkReachabilityStatusNotReachable){
-        if ([self.networkStatusView superview]){
-            [self.networkStatusView removeFromSuperview];
+    if (self.remoteDataLoader){
+        if (![self.remoteDataLoader.sessionManager.reachabilityManager networkReachabilityStatus] == AFNetworkReachabilityStatusNotReachable){
+            if ([self.networkStatusView superview]){
+                [self.networkStatusView removeFromSuperview];
+            }
         }
-    }
-    else{
-        if (![self.networkStatusView superview]){
-            [self.tableView addSubview:self.networkStatusView];
+        else{
+            if (![self.networkStatusView superview]){
+                [self.tableView addSubview:self.networkStatusView];
+            }
         }
     }
 }
