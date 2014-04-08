@@ -194,7 +194,7 @@
     if (!self.fetchFromRemoteDataLoaderOnlyOnce || self.isBeingPresented || self.isMovingToParentViewController){
         [[self remoteDataLoader] forceReload];
     }
-    if (self.showNetworkReachability){
+    if (self.showNetworkReachability && self.remoteDataLoader){
         [self updateNetworkReachabilityView];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(networkingReachabilityDidChange:)
@@ -577,7 +577,7 @@
     if (localDataLoader == self.localDataLoader)
     {
         if (self.beganUpdates){
-            [self.tableView endUpdates];
+            [self.tableView performSelectorOnMainThread:@selector(endUpdates) withObject:nil waitUntilDone:YES];
             self.beganUpdates = NO;
         }
         [self didChangeGridContent];
@@ -585,7 +585,7 @@
     else if (localDataLoader == self.searchLocalDataLoader)
     {
         if (self.searchBeganUpdates){
-            [self.searchDisplayController.searchResultsTableView endUpdates];
+            [self.searchDisplayController.searchResultsTableView performSelectorOnMainThread:@selector(endUpdates) withObject:nil waitUntilDone:YES];
             self.searchBeganUpdates = NO;
         }
         [self didChangeSearchGridContent];
