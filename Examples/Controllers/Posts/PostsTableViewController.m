@@ -159,7 +159,6 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
 -(void)customizeAppearance
 {
     [self.tableView setBackgroundColor:[UIColor colorWithHex:__COLOR_GRAY_VERY_LIGHT]];
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
 }
 

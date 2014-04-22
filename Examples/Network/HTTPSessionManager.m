@@ -10,8 +10,11 @@
 
 @implementation HTTPSessionManager
 
-// Server Base URL
+//// Server Base URL
 static NSString * const AFAppDotNetAPIBaseURLString = @"http://obscure-refuge-3149.herokuapp.com";
+
+// Server Base URL for Staging
+// static NSString * const AFAppDotNetAPIBaseURLString = @"http://obscure-refuge-3149-staging.herokuapp.com";
 
 + (instancetype)sharedClient {
     static HTTPSessionManager *_sharedClient = nil;

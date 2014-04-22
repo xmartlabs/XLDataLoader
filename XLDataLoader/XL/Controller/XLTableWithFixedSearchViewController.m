@@ -292,23 +292,6 @@
     [self.tableView reloadData];
 }
 
-
--(UIView *)tableViewFooter:(UITableView *)tableView
-{
-    if (tableView == self.tableView){
-        if (self.loadingPagingEnabled){
-            return self.loadingMoreView;
-        }
-    }
-    else if (tableView == self.searchDisplayController.searchResultsTableView)
-    {
-        if (self.searchLoadingPagingEnabled){
-            return self.loadingMoreView;
-        }
-    }
-    return [[UIView alloc] initWithFrame:CGRectZero];
-}
-
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
     [self.tableView setContentInset:UIEdgeInsetsMake(self.topLayoutGuide.length + 44, self.tableView.contentInset.left, self.tableView.contentInset.bottom, self.tableView.contentInset.right)];
@@ -742,6 +725,11 @@
     return YES;
 }
 
+// Search Table View Footer
+- (void)searchDisplayController: (UISearchDisplayController *)controller willShowSearchResultsTableView: (UITableView *)searchTableView {
+    searchTableView.tableFooterView  = self.searchLoadingPagingEnabled ? self.searchLoadingMoreView : [[UIView alloc] initWithFrame:CGRectZero];
+}
+
 ///
 - (void)beginRemoteSearch:(NSTimer *)sender
 {
@@ -758,7 +746,6 @@
     }
 }
 
-
 #pragma mark - UIScrollViewDelegate
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -767,6 +754,5 @@
     frame.origin.y = MAX(scrollView.contentOffset.y + scrollView.contentInset.top, 0);
     self.networkStatusView.frame = frame;
 }
-
 
 @end
