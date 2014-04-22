@@ -33,7 +33,7 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
     if (self) {
         // Custom initialization
         [self setEdgesForExtendedLayout:UIRectEdgeNone];
-         self.loadingPagingEnabled = NO;
+         self.loadingPagingEnabled = YES;
         [self initializeDataLoaders];
     }
     return self;
@@ -111,12 +111,9 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
     [self setBackgroundViewForEmptyTableView:[self emptyCollectionView]];
     
     [self.tableView setBackgroundColor:[UIColor colorWithHex:__COLOR_GRAY_VERY_LIGHT]];
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
-    
-    
+        
     [self.searchDisplayController.searchResultsTableView setBackgroundColor:[UIColor colorWithHex:__COLOR_GRAY_VERY_LIGHT]];
-    self.searchDisplayController.searchResultsTableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     [self.searchDisplayController.searchResultsTableView setSeparatorInset:UIEdgeInsetsZero];
 }
 
