@@ -24,14 +24,43 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
+
+
 #import <UIKit/UIKit.h>
 
 #import "XLRemoteDataLoader.h"
 #import "XLLocalDataLoader.h"
 
-@interface XLCollectionViewController : UICollectionViewController <XLRemoteDataLoaderDelegate, XLLocalDataLoaderDelegate>
+@interface XLCollectionViewController : UICollectionViewController <XLRemoteDataLoaderDelegate, XLLocalDataLoaderDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) XLRemoteDataLoader * remoteDataLoader;
 @property (nonatomic) XLLocalDataLoader  * localDataLoader;
+
+
+@property (nonatomic) XLRemoteDataLoader * searchRemoteDataLoader;
+@property (nonatomic) XLLocalDataLoader  * searchLocalDataLoader;
+
+@property (nonatomic) UIView * backgroundViewForEmptyCollectionView;
+
+@property BOOL supportRefreshControl; // default YES
+@property BOOL loadingPagingEnabled;  // default YES
+@property BOOL supportSearchController; // default NO
+@property BOOL alwaysVisibleSearchBar; // default NO
+@property BOOL showNetworkReachability; //Default YES
+@property BOOL fetchFromRemoteDataLoaderOnlyOnce; // Default YES
+
+// The loader notifies the controller using these methods. override it from your concrete class.
+
+-(void)dataLoaderDidStartLoadingData:(XLDataLoader *)dataLoader;
+-(void)dataLoaderDidLoadData:(XLDataLoader *)dataSource;
+-(void)dataLoaderDidFailLoadData:(XLDataLoader *)dataSource withError:(NSError *)error;
+
+
+// overrite to be notified about change on table rows
+-(void)didChangeGridContent;
+
+-(void)didChangeSearchGridContent;
+
+-(BOOL)collectionViewIsEmpty;
 
 @end

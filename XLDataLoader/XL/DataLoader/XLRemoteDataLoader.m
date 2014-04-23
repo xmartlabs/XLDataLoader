@@ -31,7 +31,7 @@
 
 @interface XLRemoteDataLoader()
 {
-    NSURLSessionDataTask * _task;
+    AFHTTPRequestOperation * _task;
 }
 
 @property NSUInteger expiryTimeInterval;
@@ -61,8 +61,7 @@
 -(id)init
 {
     self = [super init];
-    if (self)
-    {
+    if (self){
         [self setDefaultValues];
     }
     return self;
@@ -84,32 +83,26 @@
     _data = data;
 }
 
--(NSURLSessionDataTask *)prepareURLSessionTask
+-(AFHTTPRequestOperation *)prepareURLSessionTask
 {
     NSMutableURLRequest * request = self.prepareURLRequest;
+    AFHTTPRequestOperation *op = [(AFHTTPRequestOperation *)[AFJSONRequestOperation alloc] initWithRequest:request];
     XLRemoteDataLoader * __weak weakSelf = self;
-    return [[self sessionManager] dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
-        if (error) {
-            if (responseObject){
-                NSMutableDictionary * newUserInfo = [error.userInfo mutableCopy];
-                [newUserInfo setObject:responseObject forKey:AFNetworkingTaskDidCompleteSerializedResponseKey];
-                NSError * newError = [NSError errorWithDomain:error.domain code:error.code userInfo:newUserInfo];
-                [weakSelf unsuccessulDataLoadWithError:newError];
-            }
-            else{
-                [weakSelf unsuccessulDataLoadWithError:error];
-            }
-        } else {
-            [weakSelf setData:(NSDictionary *)responseObject];
-            [weakSelf successulDataLoad];
-        }
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [weakSelf setData:(NSDictionary *)responseObject];
+        [weakSelf successulDataLoad];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [weakSelf unsuccessulDataLoadWithError:error];
     }];
+    return op;
 }
 
 -(NSMutableURLRequest *)prepareURLRequest
 {
-    NSError * error;
-    return [[self sessionManager].requestSerializer requestWithMethod:@"GET" URLString:[[NSURL URLWithString:[self URLString] relativeToURL:[[self sessionManager] baseURL]] absoluteString] parameters:[self parameters] error:&error];
+    NSMutableURLRequest * urlRequest = [[self sessionManager] requestWithMethod:@"GET"
+                                                                         path:[self URLString]
+                                                                   parameters:nil];
+    return urlRequest;
 }
 
 
@@ -123,7 +116,7 @@
     return nil;
 }
 
--(AFHTTPSessionManager *)sessionManager;
+-(AFHTTPClient *)sessionManager;
 {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:[NSString stringWithFormat:@"You must overrite sessionManager method of %@.", NSStringFromClass([self class])] userInfo:nil];
 }

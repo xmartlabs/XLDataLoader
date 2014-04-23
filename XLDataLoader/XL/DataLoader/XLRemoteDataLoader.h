@@ -66,7 +66,7 @@
 -(NSDictionary *)parameters;
 
 // You must override this method.
--(AFHTTPSessionManager *)sessionManager;
+-(AFHTTPClient *)sessionManager;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 

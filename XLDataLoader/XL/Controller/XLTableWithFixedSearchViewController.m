@@ -79,8 +79,6 @@
 @synthesize searchLoadingMoreView = _searchLoadingMoreView;
 @synthesize networkStatusView = _networkStatusView;
 
-@synthesize showNetworkReachability = _showNetworkReachability;
-
 @synthesize supportRefreshControl = _supportRefreshControl;
 @synthesize loadingPagingEnabled = _loadingPagingEnabled;
 
@@ -245,13 +243,6 @@
     if (!self.fetchFromRemoteDataLoaderOnlyOnce || self.isBeingPresented || self.isMovingToParentViewController){
         [[self remoteDataLoader] forceReload];
     }
-    if (self.showNetworkReachability){
-        [self updateNetworkReachabilityView];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(networkingReachabilityDidChange:)
-                                                     name:AFNetworkingReachabilityDidChangeNotification
-                                                   object:nil];
-    }
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(contentSizeCategoryChanged:)
                                                  name:UIContentSizeCategoryDidChangeNotification
@@ -271,11 +262,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIContentSizeCategoryDidChangeNotification
                                                   object:nil];
-    if (self.showNetworkReachability){
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                        name:AFNetworkingReachabilityDidChangeNotification
-                                                      object:nil];
-    }
 }
 
 
@@ -406,24 +392,6 @@
     [self.tableView reloadData];
 }
 
--(void)networkingReachabilityDidChange:(NSNotification *)notification
-{
-    [self updateNetworkReachabilityView];
-}
-
--(void)updateNetworkReachabilityView
-{
-    if (![self.remoteDataLoader.sessionManager.reachabilityManager networkReachabilityStatus] == AFNetworkReachabilityStatusNotReachable){
-        if ([self.networkStatusView superview]){
-            [self.networkStatusView removeFromSuperview];
-        }
-    }
-    else{
-        if (![self.networkStatusView superview]){
-            [self.tableView addSubview:self.networkStatusView];
-        }
-    }
-}
 
 -(UISearchDisplayController *)createSearchDisplayController
 {
