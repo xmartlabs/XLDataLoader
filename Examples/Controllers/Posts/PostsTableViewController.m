@@ -101,8 +101,13 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
 
 - (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!self.offScreenCell) {
-        [self initializeOffSCreenCell];
+    if (!self.offScreenCell)
+    {
+        self.offScreenCell = (PostCell *)[self.tableView dequeueReusableCellWithIdentifier:kCellIdentifier];
+        // Dummy Data
+        self.offScreenCell.userName.text = @"offscreen name";
+        self.offScreenCell.postDate.text = @"7m";
+        [self.offScreenCell.userImage setImage:[User defaultProfileImage]];
     }
     
     Post * post = (Post *)[self.localDataLoader objectAtIndexPath:indexPath];
@@ -155,22 +160,15 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
     }
 }
 
-
 -(void)customizeAppearance
 {
     [self.tableView setBackgroundColor:[UIColor colorWithHex:__COLOR_GRAY_VERY_LIGHT]];
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
 }
 
-
-- (void)initializeOffSCreenCell{
-    self.offScreenCell = [PostCell new];
-    // Dummy Data
-    self.offScreenCell.userName.text = @"offscreen name";
-    self.offScreenCell.postDate.text = @"7m";
-   
-    [self.offScreenCell.userImage setImage:[User defaultProfileImage]];
-    
+- (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
+    self.offScreenCell = nil;
+    [self.tableView reloadData];
 }
 
 @end
