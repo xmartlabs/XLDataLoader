@@ -29,7 +29,22 @@
 #import "AFNetworking.h"
 #import "XLDataLoader.h"
 
+
+NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse;
+
+@class XLRemoteDataLoader;
+
 @protocol XLRemoteDataLoaderDelegate <XLDataLoaderDelegate>
+
+@end
+
+@protocol XLRemoteDataLoaderCoreDataProviderProtocol <NSObject>
+
+@required
++(void)remoteDataLoaderCreateOrUpdateObjects:(XLRemoteDataLoader *)remoteDatLoader;
++(NSString *)remoteDataLoaderURLString:(XLRemoteDataLoader *)remoteDatLoader;
++(NSDictionary *)remoteDataLoaderParameters:(XLRemoteDataLoader *)remoteDatLoader;
++(NSString *)remoteDataLoaderCollectionKeyPath:(XLRemoteDataLoader *)remoteDataLoader;
 
 @end
 

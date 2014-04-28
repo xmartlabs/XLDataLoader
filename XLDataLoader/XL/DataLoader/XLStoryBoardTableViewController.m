@@ -1,36 +1,19 @@
 //
-//  XLCollectionViewController.m
-//  XLDataLoader ( https://github.com/xmartlabs/XLDataLoader )
+//  XLStoryBoardTableViewController.m
+//  XLDataLoader
 //
-//  Created by Martin Barreto on 10/25/13.
+//  Created by Martin Barreto on 4/24/14.
+//  Copyright (c) 2014 Xmartlabs. All rights reserved.
 //
-//  Copyright (c) 2014 Xmartlabs ( http://xmartlabs.com )
-//
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
 
-#import <SVPullToRefresh/SVPullToRefresh.h>
-
+#import "XLTableViewController.h"
+#import "XLRemoteDataLoader.h"
 #import "XLLoadingMoreView.h"
 #import "XLNetworkStatusView.h"
-#import "XLCollectionViewController.h"
 #import "XLSearchBar.h"
+
+
+#import "XLStoryBoardTableViewController.h"
 
 @protocol FixSetSearchViewController <NSObject>
 
@@ -40,47 +23,85 @@
 
 @end
 
-@interface XLCollectionViewController()
+@interface XLStoryBoardTableViewController () <XLRemoteDataLoaderDelegate, XLLocalDataLoaderDelegate>
 {
-    NSMutableArray *_objectChanges;
-    NSMutableArray *_sectionChanges;
     NSTimer * _searchDelayTimer;
 }
 
-@property UIRefreshControl * refreshControl;
 @property BOOL beganUpdates;
 @property BOOL searchBeganUpdates;
 @property (nonatomic) XLLoadingMoreView * loadingMoreView;
 @property (nonatomic) XLLoadingMoreView * searchLoadingMoreView;
 @property (nonatomic) XLNetworkStatusView * networkStatusView;
+
 @property (readonly) BOOL searchLoadingPagingEnabled;
+
+@property (nonatomic) UIRefreshControl * refreshControl;
 
 @end
 
+@implementation XLStoryBoardTableViewController
 
-@implementation XLCollectionViewController
+@synthesize tableView = _tableView;
+@synthesize refreshControl = _refreshControl;
 
+@synthesize remoteDataLoader = _remoteDataLoader;
+@synthesize localDataLoader  = _localDataLoader;
+
+@synthesize searchRemoteDataLoader = _searchRemoteDataLoader;
+@synthesize searchLocalDataLoader  = _searchLocalDataLoader;
+
+@synthesize fetchFromRemoteDataLoaderOnlyOnce = _fetchFromRemoteDataLoaderOnlyOnce;
+
+@synthesize beganUpdates     = _beganUpdates;
+@synthesize searchBeganUpdates = _searchBeganUpdates;
+
+
+@synthesize loadingMoreView  = _loadingMoreView;
+@synthesize searchLoadingMoreView = _searchLoadingMoreView;
+@synthesize networkStatusView = _networkStatusView;
+
+@synthesize supportRefreshControl = _supportRefreshControl;
 @synthesize loadingPagingEnabled = _loadingPagingEnabled;
 
--(id)initWithCollectionViewLayout:(UICollectionViewLayout *)layout
+@synthesize backgroundViewForEmptyTableView = _backgroundViewForEmptyTableView;
+
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithCollectionViewLayout:layout];
-    if (self){
-        _searchDelayTimer = nil;
-        self.remoteDataLoader = nil;
-        self.localDataLoader  = nil;
-        self.searchRemoteDataLoader = nil;
-        self.searchLocalDataLoader = nil;
-        self.supportRefreshControl = YES;
-        self.loadingPagingEnabled = YES;
-        self.supportSearchController = NO;
-        self.showNetworkReachability = YES;
-        self.fetchFromRemoteDataLoaderOnlyOnce = YES;
-    }
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) [self initializeController];
     return self;
 }
 
+-(void)awakeFromNib
+{
+    [super awakeFromNib];
+    [self initializeController];
+}
+
+
+-(void)initializeController{
+    _searchDelayTimer = nil;
+    self.remoteDataLoader = nil;
+    self.localDataLoader  = nil;
+    self.searchRemoteDataLoader = nil;
+    self.searchLocalDataLoader = nil;
+    self.supportRefreshControl = YES;
+    self.loadingPagingEnabled = YES;
+    self.showNetworkReachability = YES;
+
+}
+
 #pragma mark - Properties
+
+-(UIRefreshControl *)refreshControl
+{
+    if (_refreshControl) return _refreshControl;
+    _refreshControl = [[UIRefreshControl alloc] init];
+    [_refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
+    return _refreshControl;
+}
 
 -(XLLoadingMoreView *)loadingMoreView
 {
@@ -99,7 +120,7 @@
 -(XLNetworkStatusView *)networkStatusView
 {
     if (!_networkStatusView){
-        _networkStatusView = [[XLNetworkStatusView alloc] initWithFrame:CGRectMake(0, 0, self.collectionView.frame.size.width, 30)];
+        _networkStatusView = [[XLNetworkStatusView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 30)];
         _networkStatusView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     }
     return _networkStatusView;
@@ -118,6 +139,11 @@
 -(BOOL)searchLoadingPagingEnabled
 {
     return self.searchRemoteDataLoader != nil;
+}
+
+-(void)setBackgroundViewForEmptyTableView:(UIView *)backgroundViewForEmptyTableView
+{
+    _backgroundViewForEmptyTableView = backgroundViewForEmptyTableView;
 }
 
 
@@ -150,48 +176,42 @@
 
 #pragma mark - UIViewController life cycle.
 
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _objectChanges = [NSMutableArray new];
-    _sectionChanges = [NSMutableArray new];
+    UISearchDisplayController * searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+    
+    searchDisplayController.delegate = self;
+    searchDisplayController.searchResultsDataSource = self;
+    searchDisplayController.searchResultsDelegate = self;
+    [self performSelector:@selector(setSearchDisplayController:) withObject:searchDisplayController];
+    
     if (self.loadingPagingEnabled == NO){
         [[self localDataLoader] setLimit:0];
     }
     [[self localDataLoader] forceReload];
     // initialize refresh Control
     if (self.supportRefreshControl){
-        self.collectionView.alwaysBounceVertical = YES;
-        self.refreshControl = [[UIRefreshControl alloc] init];
-        [self.refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
-        [self.collectionView addSubview:self.refreshControl];
+        [self.tableView addSubview:self.refreshControl];
     }
     if (self.loadingPagingEnabled){
-        __typeof__(self) __weak weakSelf = self;
-        [self.collectionView addInfiniteScrollingWithActionHandler:^{
-            if (!weakSelf.remoteDataLoader.isLoadingMore){
-                [weakSelf.collectionView.infiniteScrollingView startAnimating];
-                [weakSelf.remoteDataLoader loadMoreForIndex:[weakSelf.localDataLoader totalNumberOfObjects]];
-            }
-        }];
+        self.tableView.tableFooterView = self.loadingMoreView;
     }
-    if (self.supportSearchController)
-    {
-        // This should not be necessary, see the ref for self.searchDisplayController
-        // self.searchDisplayController = displayController;
-        // But self.searchDisplayController is never asigned (it`s always nil).
-        // See this answer in StackOverflow: http://stackoverflow.com/a/17324921/1070393
-        [self performSelector:@selector(setSearchDisplayController:) withObject:[self createDisplayController]];
-    }
+    
 }
+
+
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.localDataLoader.delegate = self;
     self.remoteDataLoader.delegate = self;
-    [self.collectionView  reloadData];
+    self.localDataLoader.delegate = self;
+    [[self tableView] reloadData];
+    self.searchRemoteDataLoader.delegate = self;
     if (self.searchDisplayController.isActive){
+        self.searchLocalDataLoader.delegate = self;
         [self.searchDisplayController.searchResultsTableView reloadData];
     }
     if (!self.fetchFromRemoteDataLoaderOnlyOnce || self.isBeingPresented || self.isMovingToParentViewController){
@@ -211,14 +231,11 @@
     [super viewDidDisappear:animated];
     self.localDataLoader.delegate = nil;
     self.searchLocalDataLoader.delegate = nil;
+    self.searchLocalDataLoader.delegate = nil;
+    self.searchRemoteDataLoader.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIContentSizeCategoryDidChangeNotification
                                                   object:nil];
-    //    if (self.showNetworkReachability){
-    //        [[NSNotificationCenter defaultCenter] removeObserver:self
-    //                                                    name:AFNetworkingReachabilityDidChangeNotification
-    //                                                  object:nil];
-    //    }
 }
 
 
@@ -229,11 +246,28 @@
 }
 
 -(void)refreshView:(UIRefreshControl *)refresh {
+    
     [self.localDataLoader forceReload];
     [self.remoteDataLoader forceReload];
-    [self.collectionView reloadData];
+    [self.tableView reloadData];
 }
 
+
+-(UIView *)tableViewFooter:(UITableView *)tableView
+{
+    if (tableView == self.tableView){
+        if (self.loadingPagingEnabled){
+            return self.loadingMoreView;
+        }
+    }
+    else if (tableView == self.searchDisplayController.searchResultsTableView)
+    {
+        if (self.searchLoadingPagingEnabled){
+            return self.loadingMoreView;
+        }
+    }
+    return [[UIView alloc] initWithFrame:CGRectZero];
+}
 
 #pragma mark - XLDataLoaderDelegate
 
@@ -265,7 +299,7 @@
             [self.localDataLoader changeOffsetTo:self.remoteDataLoader.offset];
         }
     }
-    else if (dataLoader == self.searchRemoteDataLoader){
+    else if (dataLoader ==  self.searchRemoteDataLoader){
         [self.searchLoadingMoreView.activityViewIndicator stopAnimating];
         if ([self.searchDisplayController.searchBar isKindOfClass:[XLSearchBar class]]){
             XLSearchBar * searchBar = (XLSearchBar *)self.searchDisplayController.searchBar;
@@ -281,7 +315,7 @@
         }
         [self didChangeGridContent];
     }
-    else if (dataLoader == self.searchLocalDataLoader){
+    else if (dataLoader == self.searchLocalDataLoader) {
         [self didChangeSearchGridContent];
     }
 }
@@ -305,11 +339,6 @@
     if (self.localDataLoader == dataLoader && !self.remoteDataLoader){
         [self.refreshControl endRefreshing];
     }
-    [self showError:error];
-}
-
-
--(void)showError:(NSError*)error{
     if (error.code != NSURLErrorCancelled){
         // don't show cancel operation error
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -327,19 +356,19 @@
 
 - (void)contentSizeCategoryChanged:(NSNotification *)notification
 {
-    [self.collectionView reloadData];
+    [self.tableView reloadData];
 }
 
 
--(UISearchDisplayController *)createDisplayController
+-(UISearchDisplayController *)createSearchDisplayController
 {
-    XLSearchBar *searchBar = [[XLSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.collectionView.bounds.size.width, 44)];
-    searchBar.placeholder = NSLocalizedString(@"Search", @"Search");
-    UISearchDisplayController *displayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
-    displayController.delegate = self;
-    displayController.searchResultsDataSource = self;
-    displayController.searchResultsDelegate = self;
-    return displayController;
+    XLSearchBar *searchBar = [[XLSearchBar alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 44)];
+    searchBar.showsCancelButton = YES;
+    UISearchDisplayController * searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:searchBar contentsController:self];
+    searchDisplayController.delegate = self;
+    searchDisplayController.searchResultsDataSource = self;
+    searchDisplayController.searchResultsDelegate = self;
+    return searchDisplayController;
 }
 
 
@@ -358,23 +387,6 @@
     return ([self isLastSection:indexPath.section inTableView:tableView] && [self isLastRowOfSection:indexPath.section row:indexPath.row inTableView:tableView]);
 }
 
--(BOOL)isLastSection:(NSUInteger)section inCollectionView:(UICollectionView*)collectionView
-{
-    return (section == ([self numberOfSectionsInCollectionView:collectionView] - 1));
-}
-
--(BOOL)isLastItemOfSection:(NSUInteger)section item:(NSUInteger)item collectionView:(UICollectionView*)collectionView
-
-{
-    return (item == ([self collectionView:collectionView numberOfItemsInSection:section] - 1));
-}
-
--(BOOL)isLastCellIndex:(NSIndexPath *)indexPath collectionView:(UICollectionView*)collectionView
-
-{
-    return ([self isLastSection:indexPath.section inCollectionView:collectionView] && [self isLastItemOfSection:indexPath.section item:indexPath.item collectionView:collectionView]);
-}
-
 -(NSUInteger)indexWithoutSection:(NSIndexPath *)indexPath localDataLoader:(XLLocalDataLoader *)localDataLoader
 {
     if (localDataLoader){
@@ -388,32 +400,14 @@
     return 0;
 }
 
-
-#pragma mark - UICollectionViewDataSource
-
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+-(UITableView *)localDataLoaderTable:(XLLocalDataLoader *)localDataLoader
 {
-    if (self.collectionView == collectionView){
-        if (self.localDataLoader){
-            return [self.localDataLoader numberOfSections];
-        }
+    if (localDataLoader == self.localDataLoader){
+        return self.tableView;
     }
-    return 0;
-}
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
-{
-    if (self.collectionView == collectionView){
-        if (self.localDataLoader){
-            return [self.localDataLoader numberOfRowsInSection:section];
-        }
+    else if (localDataLoader == self.searchLocalDataLoader){
+        return self.searchDisplayController.searchResultsTableView;
     }
-    return 0;
-}
-
-// The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
-{
     return nil;
 }
 
@@ -421,7 +415,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.searchDisplayController.searchResultsTableView == tableView){
+    if (self.tableView == tableView){
+        if (self.localDataLoader){
+            return [self.localDataLoader numberOfSections];
+        }
+    }
+    else if (self.searchDisplayController.searchResultsTableView == tableView){
         if(self.searchLocalDataLoader){
             return [self.searchLocalDataLoader numberOfSections];
         }
@@ -431,7 +430,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.searchDisplayController.searchResultsTableView == tableView){
+    if (self.tableView == tableView){
+        if (self.localDataLoader){
+            // add numbers of items provided by localDataLoader
+            return [self.localDataLoader numberOfRowsInSection:section];
+        }
+    }
+    else if (self.searchDisplayController.searchResultsTableView == tableView){
         if (self.searchLocalDataLoader){
             // add numbers of items provided by searchLocalDataLoader
             return [self.searchLocalDataLoader numberOfRowsInSection:section];
@@ -447,10 +452,21 @@
 
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (self.searchDisplayController.searchResultsTableView){
+    if (self.tableView == tableView)
+    {
+        if (self.localDataLoader && !self.searchDisplayController.isActive) {
+            // Just return the section title for self.tableView when the searchDisplayController is not active, this
+            // fix issue "Tableview's sections are shown over the searchDisplayController.searchResultsTableView"
+            return [[[self.localDataLoader sections] objectAtIndex:section] name];
+        }
+        return nil;
+    }
+    else if (self.searchDisplayController.searchResultsTableView)
+    {
         if (self.searchLocalDataLoader){
             return [[[self.searchLocalDataLoader sections] objectAtIndex:section] name];
         }
+        return nil;
     }
     return nil;
 }
@@ -458,9 +474,21 @@
 
 #pragma mark - UITableViewDelegate
 
+
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.searchDisplayController.searchResultsTableView == tableView){
+    if (self.tableView == tableView){
+        if (self.loadingPagingEnabled){
+            if ([self isLastCellIndex:indexPath tableView:tableView]){
+                if (!self.remoteDataLoader.isLoadingMore){
+                    [self.loadingMoreView.activityViewIndicator startAnimating];
+                    [self.remoteDataLoader loadMoreForIndex:([self indexWithoutSection:indexPath localDataLoader:self.localDataLoader] + 1)];
+                }
+            }
+        }
+    }
+    else if (self.searchDisplayController.searchResultsTableView == tableView)
+    {
         if (self.searchLoadingPagingEnabled){
             if ([self isLastCellIndex:indexPath tableView:tableView]){
                 if (!self.searchRemoteDataLoader.isLoadingMore){
@@ -482,6 +510,7 @@
 {
     if (localDataLoader == self.localDataLoader){
         self.beganUpdates = YES;
+        [self.tableView beginUpdates];
     }
     else if (localDataLoader == self.searchLocalDataLoader){
         self.searchBeganUpdates = YES;
@@ -494,31 +523,15 @@
                 atIndex:(NSUInteger)sectionIndex
           forChangeType:(NSFetchedResultsChangeType)type
 {
-    if (self.searchLocalDataLoader == localDataLoader){
-        switch(type)
-        {
-            case NSFetchedResultsChangeInsert:
-                [self.searchDisplayController.searchResultsTableView insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-                break;
-                
-            case NSFetchedResultsChangeDelete:
-                [self.searchDisplayController.searchResultsTableView deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
-                break;
-        }
-    }
-    else if (self.localDataLoader == localDataLoader){
-        NSMutableDictionary *change = [NSMutableDictionary new];
-        
-        switch(type) {
-            case NSFetchedResultsChangeInsert:
-                change[@(type)] = @(sectionIndex);
-                break;
-            case NSFetchedResultsChangeDelete:
-                change[@(type)] = @(sectionIndex);
-                break;
-        }
-        
-        [_sectionChanges addObject:change];
+    switch(type)
+    {
+        case NSFetchedResultsChangeInsert:
+            [[self localDataLoaderTable:localDataLoader] insertSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [[self localDataLoaderTable:localDataLoader] deleteSections:[NSIndexSet indexSetWithIndex:sectionIndex] withRowAnimation:UITableViewRowAnimationFade];
+            break;
     }
 }
 
@@ -530,44 +543,23 @@
           forChangeType:(NSFetchedResultsChangeType)type
            newIndexPath:(NSIndexPath *)newIndexPath
 {
-    if (self.searchLocalDataLoader == localDataLoader){
-        switch(type)
-        {
-            case NSFetchedResultsChangeInsert:
-                [self.searchDisplayController.searchResultsTableView  insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-                break;
-                
-            case NSFetchedResultsChangeDelete:
-                [self.searchDisplayController.searchResultsTableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-                break;
-                
-            case NSFetchedResultsChangeUpdate:
-                [self.searchDisplayController.searchResultsTableView  reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-                break;
-            case NSFetchedResultsChangeMove:
-                [self.searchDisplayController.searchResultsTableView  deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-                [self.searchDisplayController.searchResultsTableView  insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
-                break;
-        }
-    }
-    else if (self.localDataLoader == localDataLoader){
-        NSMutableDictionary *change = [NSMutableDictionary new];
-        switch(type)
-        {
-            case NSFetchedResultsChangeInsert:
-                change[@(type)] = newIndexPath;
-                break;
-            case NSFetchedResultsChangeDelete:
-                change[@(type)] = indexPath;
-                break;
-            case NSFetchedResultsChangeUpdate:
-                change[@(type)] = indexPath;
-                break;
-            case NSFetchedResultsChangeMove:
-                change[@(type)] = @[indexPath, newIndexPath];
-                break;
-        }
-        [_objectChanges addObject:change];
+    switch(type)
+    {
+        case NSFetchedResultsChangeInsert:
+            [[self localDataLoaderTable:localDataLoader] insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeDelete:
+            [[self localDataLoaderTable:localDataLoader] deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+            
+        case NSFetchedResultsChangeUpdate:
+            [[self localDataLoaderTable:localDataLoader] reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
+        case NSFetchedResultsChangeMove:
+            [[self localDataLoaderTable:localDataLoader] deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+            [[self localDataLoaderTable:localDataLoader] insertRowsAtIndexPaths:[NSArray arrayWithObject:newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+            break;
     }
 }
 
@@ -577,7 +569,7 @@
     if (localDataLoader == self.localDataLoader)
     {
         if (self.beganUpdates){
-            [self localDataLoaderDidChangeContent];
+            [self.tableView endUpdates];
             self.beganUpdates = NO;
         }
         [self didChangeGridContent];
@@ -585,7 +577,7 @@
     else if (localDataLoader == self.searchLocalDataLoader)
     {
         if (self.searchBeganUpdates){
-            [self.searchDisplayController.searchResultsTableView performSelectorOnMainThread:@selector(endUpdates) withObject:nil waitUntilDone:YES];
+            [self.searchDisplayController.searchResultsTableView endUpdates];
             self.searchBeganUpdates = NO;
         }
         [self didChangeSearchGridContent];
@@ -599,15 +591,15 @@
     // overrite this method to do something useful.
     if (self.localDataLoader.totalNumberOfObjects == 0) {
         // Check for self.localDataLoader.totalNumberOfObjects because this method is called before the tableView's data be updated
-        if (self.backgroundViewForEmptyCollectionView){
-            if (!self.collectionView.backgroundView){
-                self.collectionView.backgroundView = [self backgroundViewForEmptyCollectionView];
+        if (self.backgroundViewForEmptyTableView){
+            if (!self.tableView.backgroundView){
+                self.tableView.backgroundView =[self backgroundViewForEmptyTableView];
             }
-            [self.backgroundViewForEmptyCollectionView setHidden:NO];
+            [self.backgroundViewForEmptyTableView setHidden:NO];
         }
     }
     else{
-        [self.collectionView.backgroundView setHidden:YES];
+        [self.tableView.backgroundView setHidden:YES];
     }
 }
 
@@ -616,9 +608,9 @@
     // overrite this method to do something useful.
 }
 
--(BOOL)collectionViewIsEmpty
+-(BOOL)tableIsEmpty
 {
-    return (([self.collectionView numberOfSections] == 0) || ([self.collectionView numberOfSections] == 1 && [self.collectionView numberOfItemsInSection:0] == 0));
+    return (([self.tableView numberOfSections] == 0) || ([self.tableView numberOfSections] == 1 && [self.tableView numberOfRowsInSection:0] == 0));
 }
 
 -(BOOL)searchTableIsEmpty
@@ -637,6 +629,7 @@
     [self.searchLocalDataLoader setSuspendAutomaticTrackingOfChangesInManagedObjectContext:suspend];
 }
 
+
 #pragma mark - UISearchDisplayDelegate
 
 // when we start/end showing the search UI
@@ -653,7 +646,7 @@
     self.searchLocalDataLoader.delegate = nil;
     self.localDataLoader.delegate = self;
     [self.localDataLoader forceReload];
-    [self.collectionView reloadData];
+    [self.tableView reloadData];
 }
 
 - (void)searchDisplayControllerDidEndSearch:(UISearchDisplayController *)controller
@@ -709,116 +702,6 @@
     frame.origin.y = MAX(scrollView.contentOffset.y + scrollView.contentInset.top, 0);
     self.networkStatusView.frame = frame;
 }
-
-
-#pragma mark - Helpers
-
-
-- (void)localDataLoaderDidChangeContent
-{
-    if ([_sectionChanges count] > 0){
-        [self.collectionView performBatchUpdates:^{
-            
-            for (NSDictionary *change in _sectionChanges){
-                [change enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, id obj, BOOL *stop) {
-                    
-                    NSFetchedResultsChangeType type = [key unsignedIntegerValue];
-                    switch (type)
-                    {
-                        case NSFetchedResultsChangeInsert:
-                            [self.collectionView insertSections:[NSIndexSet indexSetWithIndex:[obj unsignedIntegerValue]]];
-                            break;
-                        case NSFetchedResultsChangeDelete:
-                            [self.collectionView deleteSections:[NSIndexSet indexSetWithIndex:[obj unsignedIntegerValue]]];
-                            break;
-                        case NSFetchedResultsChangeUpdate:
-                            [self.collectionView reloadSections:[NSIndexSet indexSetWithIndex:[obj unsignedIntegerValue]]];
-                            break;
-                    }
-                }];
-            }
-        } completion:nil];
-    }
-    
-    if ([_objectChanges count] > 0 && [_sectionChanges count] == 0){
-        
-        if ([self shouldReloadCollectionViewToPreventKnownIssue] || self.collectionView.window == nil) {
-            // This is to prevent a bug in UICollectionView from occurring.
-            // The bug presents itself when inserting the first object or deleting the last object in a collection view.
-            // http://stackoverflow.com/questions/12611292/uicollectionview-assertion-failure
-            // This code should be removed once the bug has been fixed, it is tracked in OpenRadar
-            // http://openradar.appspot.com/12954582
-            [self.collectionView reloadData];
-            
-        }
-        else {
-            
-            [self.collectionView performBatchUpdates:^{
-                
-                for (NSDictionary *change in _objectChanges)
-                {
-                    [change enumerateKeysAndObjectsUsingBlock:^(NSNumber *key, id obj, BOOL *stop) {
-                        
-                        NSFetchedResultsChangeType type = [key unsignedIntegerValue];
-                        switch (type)
-                        {
-                            case NSFetchedResultsChangeInsert:
-                                [self.collectionView insertItemsAtIndexPaths:@[obj]];
-                                break;
-                            case NSFetchedResultsChangeDelete:
-                                [self.collectionView deleteItemsAtIndexPaths:@[obj]];
-                                break;
-                            case NSFetchedResultsChangeUpdate:
-                                [self.collectionView reloadItemsAtIndexPaths:@[obj]];
-                                break;
-                            case NSFetchedResultsChangeMove:
-                                [self.collectionView moveItemAtIndexPath:obj[0] toIndexPath:obj[1]];
-                                break;
-                        }
-                    }];
-                }
-            } completion:nil];
-        }
-    }
-    
-    [_sectionChanges removeAllObjects];
-    [_objectChanges removeAllObjects];
-}
-
-- (BOOL)shouldReloadCollectionViewToPreventKnownIssue {
-    __block BOOL shouldReload = NO;
-    for (NSDictionary *change in _objectChanges) {
-        [change enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            NSFetchedResultsChangeType type = [key unsignedIntegerValue];
-            NSIndexPath *indexPath = obj;
-            switch (type) {
-                case NSFetchedResultsChangeInsert:
-                    if ([self.collectionView numberOfItemsInSection:indexPath.section] == 0) {
-                        shouldReload = YES;
-                    } else {
-                        shouldReload = NO;
-                    }
-                    break;
-                case NSFetchedResultsChangeDelete:
-                    if ([self.collectionView numberOfItemsInSection:indexPath.section] == 1) {
-                        shouldReload = YES;
-                    } else {
-                        shouldReload = NO;
-                    }
-                    break;
-                case NSFetchedResultsChangeUpdate:
-                    shouldReload = NO;
-                    break;
-                case NSFetchedResultsChangeMove:
-                    shouldReload = NO;
-                    break;
-            }
-        }];
-    }
-    
-    return shouldReload;
-}
-
 
 
 @end

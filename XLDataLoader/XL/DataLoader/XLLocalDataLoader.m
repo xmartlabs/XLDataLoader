@@ -90,15 +90,14 @@
     {
         _fetchedResultsController = fetchedResultsController;
         // set delegate to track changes
-        //[_fetchedResultsController setDelegate:self];
+        [_fetchedResultsController setDelegate:self];
         [self forceReload];
     }
 }
 
 -(void)setPredicate:(NSPredicate *)predicate
 {
-    if (_fetchedResultsController)
-    {
+    if (_fetchedResultsController){
         [_fetchedResultsController.fetchRequest setPredicate:predicate];
         [self forceReload];
     }

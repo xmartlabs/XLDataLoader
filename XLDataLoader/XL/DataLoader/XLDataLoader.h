@@ -27,10 +27,12 @@
 
 #import <Foundation/Foundation.h>
 
+
 extern NSString * const XLDataLoaderErrorDomain;
 
 
 @class XLDataLoader;
+
 
 @protocol XLDataLoaderDelegate <NSObject>
 
@@ -43,8 +45,6 @@ extern NSString * const XLDataLoaderErrorDomain;
 
 
 @end
-
-
 
 
 @interface XLDataLoader : NSObject
