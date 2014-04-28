@@ -90,7 +90,7 @@
     {
         _fetchedResultsController = fetchedResultsController;
         // set delegate to track changes
-        [_fetchedResultsController setDelegate:self];
+        //[_fetchedResultsController setDelegate:self];
         [self forceReload];
     }
 }

@@ -33,7 +33,7 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
 
 @interface XLRemoteDataLoader()
 {
-    AFHTTPRequestOperation * _task;
+    NSURLSessionDataTask * _task;
 }
 
 @property NSUInteger expiryTimeInterval;
@@ -86,30 +86,36 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
     _data = data;
 }
 
--(AFHTTPRequestOperation *)prepareURLSessionTask
+-(NSURLSessionDataTask *)prepareURLSessionTask
 {
     NSMutableURLRequest * request = self.prepareURLRequest;
-    AFHTTPRequestOperation *op = [(AFHTTPRequestOperation *)[AFJSONRequestOperation alloc] initWithRequest:request];
     XLRemoteDataLoader * __weak weakSelf = self;
-    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [responseObject isKindOfClass:[NSDictionary class]] ? [weakSelf setData:(NSDictionary *)responseObject] : [weakSelf setData:@{kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse : responseObject}];
-        [weakSelf successulDataLoad];
-        // notify via delegate
-        if (weakSelf.delegate){
-            [weakSelf.delegate dataLoaderDidLoadData:self];
+    return [[self sessionManager] dataTaskWithRequest:request completionHandler:^(NSURLResponse *response, id responseObject, NSError *error) {
+        if (error) {
+            if (responseObject){
+                NSMutableDictionary * newUserInfo = [error.userInfo mutableCopy];
+                [newUserInfo setObject:responseObject forKey:AFNetworkingTaskDidCompleteSerializedResponseKey];
+                NSError * newError = [NSError errorWithDomain:error.domain code:error.code userInfo:newUserInfo];
+                [weakSelf unsuccessulDataLoadWithError:newError];
+            }
+            else{
+                [weakSelf unsuccessulDataLoadWithError:error];
+            }
+        } else {
+            [responseObject isKindOfClass:[NSDictionary class]] ? [weakSelf setData:(NSDictionary *)responseObject] : [weakSelf setData:@{kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse : responseObject}];
+            [weakSelf successulDataLoad];
+            // notify via delegate
+            if (weakSelf.delegate){
+                [weakSelf.delegate dataLoaderDidLoadData:self];
+            }
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [weakSelf unsuccessulDataLoadWithError:error];
     }];
-    return op;
 }
 
 -(NSMutableURLRequest *)prepareURLRequest
 {
-    NSMutableURLRequest * urlRequest = [[self sessionManager] requestWithMethod:@"GET"
-                                                                         path:[self URLString]
-                                                                   parameters:nil];
-    return urlRequest;
+    NSError * error;
+    return [[self sessionManager].requestSerializer requestWithMethod:@"GET" URLString:[[NSURL URLWithString:[self URLString] relativeToURL:[[self sessionManager] baseURL]] absoluteString] parameters:[self parameters] error:&error];
 }
 
 
@@ -123,7 +129,7 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
     return nil;
 }
 
--(AFHTTPClient *)sessionManager;
+-(AFHTTPSessionManager *)sessionManager;
 {
     @throw [NSException exceptionWithName:NSInternalInconsistencyException reason:[NSString stringWithFormat:@"You must overrite sessionManager method of %@.", NSStringFromClass([self class])] userInfo:nil];
 }
@@ -158,7 +164,7 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
     if (!_isLoadingMore){
         _isLoadingMore = YES;
         _task = [self prepareURLSessionTask];
-        [[self sessionManager] enqueueHTTPRequestOperation:_task];
+        [_task resume];
         if (self.delegate){
             [self.delegate dataLoaderDidStartLoadingData:self];
         }

@@ -79,6 +79,8 @@
 @synthesize searchLoadingMoreView = _searchLoadingMoreView;
 @synthesize networkStatusView = _networkStatusView;
 
+@synthesize showNetworkReachability = _showNetworkReachability;
+
 @synthesize supportRefreshControl = _supportRefreshControl;
 @synthesize loadingPagingEnabled = _loadingPagingEnabled;
 
@@ -224,7 +226,7 @@
     if (self.loadingPagingEnabled){
         self.tableView.tableFooterView = self.loadingMoreView;
     }
-
+    
 }
 
 
@@ -242,6 +244,13 @@
     }
     if (!self.fetchFromRemoteDataLoaderOnlyOnce || self.isBeingPresented || self.isMovingToParentViewController){
         [[self remoteDataLoader] forceReload];
+    }
+    if (self.showNetworkReachability){
+        [self updateNetworkReachabilityView];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(networkingReachabilityDidChange:)
+                                                     name:AFNetworkingReachabilityDidChangeNotification
+                                                   object:nil];
     }
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(contentSizeCategoryChanged:)
@@ -262,6 +271,11 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIContentSizeCategoryDidChangeNotification
                                                   object:nil];
+    if (self.showNetworkReachability){
+        [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                        name:AFNetworkingReachabilityDidChangeNotification
+                                                      object:nil];
+    }
 }
 
 
@@ -276,23 +290,6 @@
     [self.localDataLoader forceReload];
     [self.remoteDataLoader forceReload];
     [self.tableView reloadData];
-}
-
-
--(UIView *)tableViewFooter:(UITableView *)tableView
-{
-    if (tableView == self.tableView){
-        if (self.loadingPagingEnabled){
-            return self.loadingMoreView;
-        }
-    }
-    else if (tableView == self.searchDisplayController.searchResultsTableView)
-    {
-        if (self.searchLoadingPagingEnabled){
-            return self.loadingMoreView;
-        }
-    }
-    return [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -392,6 +389,24 @@
     [self.tableView reloadData];
 }
 
+-(void)networkingReachabilityDidChange:(NSNotification *)notification
+{
+    [self updateNetworkReachabilityView];
+}
+
+-(void)updateNetworkReachabilityView
+{
+    if (![self.remoteDataLoader.sessionManager.reachabilityManager networkReachabilityStatus] == AFNetworkReachabilityStatusNotReachable){
+        if ([self.networkStatusView superview]){
+            [self.networkStatusView removeFromSuperview];
+        }
+    }
+    else{
+        if (![self.networkStatusView superview]){
+            [self.tableView addSubview:self.networkStatusView];
+        }
+    }
+}
 
 -(UISearchDisplayController *)createSearchDisplayController
 {
@@ -710,6 +725,11 @@
     return YES;
 }
 
+// Search Table View Footer
+- (void)searchDisplayController: (UISearchDisplayController *)controller willShowSearchResultsTableView: (UITableView *)searchTableView {
+    searchTableView.tableFooterView  = self.searchLoadingPagingEnabled ? self.searchLoadingMoreView : [[UIView alloc] initWithFrame:CGRectZero];
+}
+
 ///
 - (void)beginRemoteSearch:(NSTimer *)sender
 {
@@ -726,7 +746,6 @@
     }
 }
 
-
 #pragma mark - UIScrollViewDelegate
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -735,6 +754,5 @@
     frame.origin.y = MAX(scrollView.contentOffset.y + scrollView.contentInset.top, 0);
     self.networkStatusView.frame = frame;
 }
-
 
 @end
