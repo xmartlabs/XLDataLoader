@@ -64,6 +64,7 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse;
 @property (nonatomic, readonly) NSUInteger offset;
 @property (nonatomic, readonly) NSUInteger limit;
 @property (nonatomic, readonly) NSString * searchString;
+@property (nonatomic) NSString * collectionKeyPath;
 
 -(id)init;
 
@@ -95,6 +96,7 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse;
 
 // invoqued when searchBar changes and view controller make use of searchTableViewController
 -(void)changeSearchString:(NSString *)searchString;
+
 
 
 @end

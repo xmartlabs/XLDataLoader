@@ -41,9 +41,6 @@
 -(void)successulDataLoad
 {
     [super successulDataLoad];
-    NSString * collectionValuePath = [self.coreDataProviderClass remoteDataLoaderCollectionKeyPath:self];
-    NSArray * itemsArray = (collectionValuePath && ![collectionValuePath isEqualToString:@""]) ? [self.fetchedData valueForKeyPath:collectionValuePath] : self.fetchedData[kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse];
-    _hasMoreToLoad = !((itemsArray.count == 0) || (itemsArray.count < _limit && itemsArray.count != 0));
     [self.coreDataProviderClass remoteDataLoaderCreateOrUpdateObjects:self];
 }
 
@@ -52,6 +49,11 @@
     if (_filters) return _filters;
     _filters = [NSMutableDictionary dictionary];
     return _filters;
+}
+
+-(NSString *)collectionKeyPath
+{
+    return [self.coreDataProviderClass remoteDataLoaderCollectionKeyPath:self];
 }
 
 

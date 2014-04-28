@@ -194,6 +194,12 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
     [self forceReload];
 }
 
+-(NSString *)collectionKeyPath
+{
+    return _collectionKeyPath;
+}
+
+
 
 
 

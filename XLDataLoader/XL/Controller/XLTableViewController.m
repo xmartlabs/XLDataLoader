@@ -241,23 +241,6 @@
     [self.tableView reloadData];
 }
 
-
--(UIView *)tableViewFooter:(UITableView *)tableView
-{
-    if (tableView == self.tableView){
-        if (self.loadingPagingEnabled){
-            return self.loadingMoreView;
-        }
-    }
-    else if (tableView == self.searchDisplayController.searchResultsTableView)
-    {
-        if (self.searchLoadingPagingEnabled){
-            return self.loadingMoreView;
-        }
-    }
-    return [[UIView alloc] initWithFrame:CGRectZero];
-}
-
 #pragma mark - XLDataLoaderDelegate
 
 -(void)dataLoaderDidStartLoadingData:(XLDataLoader *)dataLoader
@@ -669,6 +652,13 @@
     return YES;
 }
 
+// Search Table View Footer
+- (void)searchDisplayController: (UISearchDisplayController *)controller
+ willShowSearchResultsTableView: (UITableView *)searchTableView
+{
+    searchTableView.tableFooterView  = self.searchLoadingPagingEnabled ? self.searchLoadingMoreView : [[UIView alloc] initWithFrame:CGRectZero];
+}
+
 ///
 - (void)beginRemoteSearch:(NSTimer *)sender
 {
@@ -694,7 +684,5 @@
     frame.origin.y = MAX(scrollView.contentOffset.y + scrollView.contentInset.top, 0);
     self.networkStatusView.frame = frame;
 }
-
-
 
 @end
