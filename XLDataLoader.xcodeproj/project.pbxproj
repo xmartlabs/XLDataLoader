@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28175721190EC3C100D25038 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAE20231906DE20001B53CB /* AppDelegate.m */; };
 		2839F79318688CB800FEBD38 /* XLTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2839F79218688CB800FEBD38 /* XLTableViewController.m */; };
 		2839F7A318688D7D00FEBD38 /* XLDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2839F79E18688D7D00FEBD38 /* XLDataLoader.m */; };
 		2839F7A418688D7D00FEBD38 /* XLLocalDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2839F7A018688D7D00FEBD38 /* XLLocalDataLoader.m */; };
@@ -28,7 +29,6 @@
 		28E1DDE0181AB89D00E7FAF9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28E1DDDE181AB89D00E7FAF9 /* InfoPlist.strings */; };
 		28E1DDE2181AB89D00E7FAF9 /* XLDataLoaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E1DDE1181AB89D00E7FAF9 /* XLDataLoaderTests.m */; };
 		3C951F571906E5210016552A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3C951F561906E5210016552A /* Images.xcassets */; };
-		3CAE20631906DE20001B53CB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAE20231906DE20001B53CB /* AppDelegate.m */; };
 		3CAE20641906DE20001B53CB /* PostsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAE20271906DE20001B53CB /* PostsTableViewController.m */; };
 		3CAE20651906DE20001B53CB /* PostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAE202A1906DE20001B53CB /* PostCell.m */; };
 		3CAE20661906DE20001B53CB /* PostTextLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAE202C1906DE20001B53CB /* PostTextLabel.m */; };
@@ -593,7 +593,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CAE20691906DE20001B53CB /* UsersTableWithFixedSearchViewController.m in Sources */,
-				3CAE20631906DE20001B53CB /* AppDelegate.m in Sources */,
 				B23749691887283F002E0B8E /* XLCollectionViewController.m in Sources */,
 				3CAE20791906DE20001B53CB /* HTTPSessionManager.m in Sources */,
 				3CAE20781906DE20001B53CB /* Constants.m in Sources */,
@@ -607,13 +606,13 @@
 				3CAE20771906DE20001B53CB /* UIView+Additions.m in Sources */,
 				3CAE20661906DE20001B53CB /* PostTextLabel.m in Sources */,
 				2839F79318688CB800FEBD38 /* XLTableViewController.m in Sources */,
-				28E1DDC7181AB89D00E7FAF9 /* AppDelegate.m in Sources */,
 				286D6E8F190995D00077BF2E /* XLStoryBoardTableViewController.m in Sources */,
 				3CAE207A1906DE20001B53CB /* PostLocalDataLoader.m in Sources */,
 				3CAE206E1906DE20001B53CB /* User+Additions.m in Sources */,
 				3CAE20721906DE20001B53CB /* NSError+Additions.m in Sources */,
 				2839F7AD18688FC700FEBD38 /* XLSearchBar.m in Sources */,
 				3CAE20741906DE20001B53CB /* NSObject+Additions.m in Sources */,
+				28175721190EC3C100D25038 /* AppDelegate.m in Sources */,
 				3CAE20731906DE20001B53CB /* NSManagedObject+Additions.m in Sources */,
 				3CAE206F1906DE20001B53CB /* User.m in Sources */,
 				2839F7A418688D7D00FEBD38 /* XLLocalDataLoader.m in Sources */,
