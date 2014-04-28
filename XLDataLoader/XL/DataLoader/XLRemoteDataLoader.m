@@ -25,8 +25,10 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <AFNetworking/AFNetworking.h>
 
+NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data";
+
+#import <AFNetworking/AFNetworking.h>
 #import "XLRemoteDataLoader.h"
 
 @interface XLRemoteDataLoader()
@@ -61,12 +63,12 @@
 -(id)init
 {
     self = [super init];
-    if (self)
-    {
+    if (self){
         [self setDefaultValues];
     }
     return self;
 }
+
 
 
 -(void)setDefaultValues
@@ -100,8 +102,12 @@
                 [weakSelf unsuccessulDataLoadWithError:error];
             }
         } else {
-            [weakSelf setData:(NSDictionary *)responseObject];
+            [responseObject isKindOfClass:[NSDictionary class]] ? [weakSelf setData:(NSDictionary *)responseObject] : [weakSelf setData:@{kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse : responseObject}];
             [weakSelf successulDataLoad];
+            // notify via delegate
+            if (weakSelf.delegate){
+                [weakSelf.delegate dataLoaderDidLoadData:self];
+            }
         }
     }];
 }
@@ -132,10 +138,6 @@
 -(void)successulDataLoad
 {
     _isLoadingMore = NO;
-    // notify via delegate
-    if (self.delegate){
-        [self.delegate dataLoaderDidLoadData:self];
-    }
 }
 
 -(void)unsuccessulDataLoadWithError:(NSError *)error
@@ -151,8 +153,7 @@
 
 -(void)loadMoreForIndex:(NSUInteger)index
 {
-    if (!_isLoadingMore)
-    {
+    if (!_isLoadingMore){
         _offset = index;
         [self load];
     }
@@ -160,8 +161,7 @@
 
 -(void)load
 {
-    if (!_isLoadingMore)
-    {
+    if (!_isLoadingMore){
         _isLoadingMore = YES;
         _task = [self prepareURLSessionTask];
         [_task resume];
@@ -193,6 +193,12 @@
     _searchString = searchString;
     [self forceReload];
 }
+
+-(NSString *)collectionKeyPath
+{
+    return _collectionKeyPath;
+}
+
 
 
 

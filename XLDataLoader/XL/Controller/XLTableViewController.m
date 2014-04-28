@@ -72,9 +72,6 @@
 @synthesize searchLoadingMoreView = _searchLoadingMoreView;
 @synthesize networkStatusView = _networkStatusView;
 
-@synthesize showNetworkReachability = _showNetworkReachability;
-
-
 @synthesize supportRefreshControl = _supportRefreshControl;
 @synthesize loadingPagingEnabled = _loadingPagingEnabled;
 
@@ -213,13 +210,6 @@
     if (!self.fetchFromRemoteDataLoaderOnlyOnce || self.isBeingPresented || self.isMovingToParentViewController){
         [[self remoteDataLoader] forceReload];
     }
-    if (self.showNetworkReachability && self.remoteDataLoader){
-        [self updateNetworkReachabilityView];
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(networkingReachabilityDidChange:)
-                                                 name:AFNetworkingReachabilityDidChangeNotification
-                                               object:nil];
-    }
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(contentSizeCategoryChanged:)
                                                  name:UIContentSizeCategoryDidChangeNotification
@@ -237,19 +227,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIContentSizeCategoryDidChangeNotification
                                                   object:nil];
-    if (self.showNetworkReachability){
-        [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:AFNetworkingReachabilityDidChangeNotification
-                                                  object:nil];
-    }
+//    if (self.showNetworkReachability){
+//        [[NSNotificationCenter defaultCenter] removeObserver:self
+//                                                    name:AFNetworkingReachabilityDidChangeNotification
+//                                                  object:nil];
+//    }
 }
 
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 -(void)refreshView:(UIRefreshControl *)refresh {
     [self.localDataLoader forceReload];
@@ -352,24 +336,6 @@
     [self.tableView reloadData];
 }
 
--(void)networkingReachabilityDidChange:(NSNotification *)notification
-{
-    [self updateNetworkReachabilityView];
-}
-
--(void)updateNetworkReachabilityView
-{
-    if (![self.remoteDataLoader.sessionManager.reachabilityManager networkReachabilityStatus] == AFNetworkReachabilityStatusNotReachable){
-        if ([self.networkStatusView superview]){
-            [self.networkStatusView removeFromSuperview];
-        }
-    }
-    else{
-        if (![self.networkStatusView superview]){
-            [self.tableView addSubview:self.networkStatusView];
-        }
-    }
-}
 
 -(UISearchDisplayController *)createDisplayController
 {

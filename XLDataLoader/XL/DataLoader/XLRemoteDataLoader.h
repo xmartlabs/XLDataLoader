@@ -29,7 +29,22 @@
 #import "AFNetworking.h"
 #import "XLDataLoader.h"
 
+
+NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse;
+
+@class XLRemoteDataLoader;
+
 @protocol XLRemoteDataLoaderDelegate <XLDataLoaderDelegate>
+
+@end
+
+@protocol XLRemoteDataLoaderCoreDataProviderProtocol <NSObject>
+
+@required
++(void)remoteDataLoaderCreateOrUpdateObjects:(XLRemoteDataLoader *)remoteDatLoader;
++(NSString *)remoteDataLoaderURLString:(XLRemoteDataLoader *)remoteDatLoader;
++(NSDictionary *)remoteDataLoaderParameters:(XLRemoteDataLoader *)remoteDatLoader;
++(NSString *)remoteDataLoaderCollectionKeyPath:(XLRemoteDataLoader *)remoteDataLoader;
 
 @end
 
@@ -49,6 +64,7 @@
 @property (nonatomic, readonly) NSUInteger offset;
 @property (nonatomic, readonly) NSUInteger limit;
 @property (nonatomic, readonly) NSString * searchString;
+@property (nonatomic) NSString * collectionKeyPath;
 
 -(id)init;
 
@@ -80,6 +96,7 @@
 
 // invoqued when searchBar changes and view controller make use of searchTableViewController
 -(void)changeSearchString:(NSString *)searchString;
+
 
 
 @end

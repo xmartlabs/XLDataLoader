@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28175721190EC3C100D25038 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAE20231906DE20001B53CB /* AppDelegate.m */; };
 		2839F79318688CB800FEBD38 /* XLTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2839F79218688CB800FEBD38 /* XLTableViewController.m */; };
 		2839F7A318688D7D00FEBD38 /* XLDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2839F79E18688D7D00FEBD38 /* XLDataLoader.m */; };
 		2839F7A418688D7D00FEBD38 /* XLLocalDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2839F7A018688D7D00FEBD38 /* XLLocalDataLoader.m */; };
@@ -14,6 +15,8 @@
 		2839F7AA18688F9500FEBD38 /* XLLoadingMoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2839F7A918688F9500FEBD38 /* XLLoadingMoreView.m */; };
 		2839F7AD18688FC700FEBD38 /* XLSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2839F7AC18688FC700FEBD38 /* XLSearchBar.m */; };
 		284FDBAB18A44C800035C795 /* XLTableWithFixedSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 284FDBAA18A44C800035C795 /* XLTableWithFixedSearchViewController.m */; };
+		286D6E8C190978450077BF2E /* XLRemoteCoreDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 286D6E8B190978450077BF2E /* XLRemoteCoreDataLoader.m */; };
+		286D6E8F190995D00077BF2E /* XLStoryBoardTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 286D6E8E190995D00077BF2E /* XLStoryBoardTableViewController.m */; };
 		2896179718A282C90007B341 /* XLNetworkStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2896179618A282C90007B341 /* XLNetworkStatusView.m */; };
 		28E1DDB7181AB89D00E7FAF9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E1DDB6181AB89D00E7FAF9 /* Foundation.framework */; };
 		28E1DDB9181AB89D00E7FAF9 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E1DDB8181AB89D00E7FAF9 /* CoreGraphics.framework */; };
@@ -26,7 +29,6 @@
 		28E1DDE0181AB89D00E7FAF9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28E1DDDE181AB89D00E7FAF9 /* InfoPlist.strings */; };
 		28E1DDE2181AB89D00E7FAF9 /* XLDataLoaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E1DDE1181AB89D00E7FAF9 /* XLDataLoaderTests.m */; };
 		3C951F571906E5210016552A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3C951F561906E5210016552A /* Images.xcassets */; };
-		3CAE20631906DE20001B53CB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAE20231906DE20001B53CB /* AppDelegate.m */; };
 		3CAE20641906DE20001B53CB /* PostsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAE20271906DE20001B53CB /* PostsTableViewController.m */; };
 		3CAE20651906DE20001B53CB /* PostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAE202A1906DE20001B53CB /* PostCell.m */; };
 		3CAE20661906DE20001B53CB /* PostTextLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAE202C1906DE20001B53CB /* PostTextLabel.m */; };
@@ -82,6 +84,10 @@
 		2839F7AC18688FC700FEBD38 /* XLSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLSearchBar.m; path = XL/View/XLSearchBar.m; sourceTree = "<group>"; };
 		284FDBA918A44C800035C795 /* XLTableWithFixedSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLTableWithFixedSearchViewController.h; path = XL/Controller/XLTableWithFixedSearchViewController.h; sourceTree = "<group>"; };
 		284FDBAA18A44C800035C795 /* XLTableWithFixedSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLTableWithFixedSearchViewController.m; path = XL/Controller/XLTableWithFixedSearchViewController.m; sourceTree = "<group>"; };
+		286D6E8A190978450077BF2E /* XLRemoteCoreDataLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLRemoteCoreDataLoader.h; path = XL/DataLoader/XLRemoteCoreDataLoader.h; sourceTree = "<group>"; };
+		286D6E8B190978450077BF2E /* XLRemoteCoreDataLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLRemoteCoreDataLoader.m; path = XL/DataLoader/XLRemoteCoreDataLoader.m; sourceTree = "<group>"; };
+		286D6E8D190995D00077BF2E /* XLStoryBoardTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLStoryBoardTableViewController.h; path = XL/DataLoader/XLStoryBoardTableViewController.h; sourceTree = "<group>"; };
+		286D6E8E190995D00077BF2E /* XLStoryBoardTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLStoryBoardTableViewController.m; path = XL/DataLoader/XLStoryBoardTableViewController.m; sourceTree = "<group>"; };
 		2896179518A282C90007B341 /* XLNetworkStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLNetworkStatusView.h; path = XL/View/XLNetworkStatusView.h; sourceTree = "<group>"; };
 		2896179618A282C90007B341 /* XLNetworkStatusView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLNetworkStatusView.m; path = XL/View/XLNetworkStatusView.m; sourceTree = "<group>"; };
 		28E1DDB3181AB89D00E7FAF9 /* XLDataLoader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XLDataLoader.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -286,6 +292,8 @@
 				2839F7A018688D7D00FEBD38 /* XLLocalDataLoader.m */,
 				2839F7A118688D7D00FEBD38 /* XLRemoteDataLoader.h */,
 				2839F7A218688D7D00FEBD38 /* XLRemoteDataLoader.m */,
+				286D6E8A190978450077BF2E /* XLRemoteCoreDataLoader.h */,
+				286D6E8B190978450077BF2E /* XLRemoteCoreDataLoader.m */,
 			);
 			name = DataLoader;
 			sourceTree = "<group>";
@@ -299,6 +307,8 @@
 				2839F79218688CB800FEBD38 /* XLTableViewController.m */,
 				284FDBA918A44C800035C795 /* XLTableWithFixedSearchViewController.h */,
 				284FDBAA18A44C800035C795 /* XLTableWithFixedSearchViewController.m */,
+				286D6E8D190995D00077BF2E /* XLStoryBoardTableViewController.h */,
+				286D6E8E190995D00077BF2E /* XLStoryBoardTableViewController.m */,
 			);
 			name = Controller;
 			sourceTree = "<group>";
@@ -583,7 +593,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3CAE20691906DE20001B53CB /* UsersTableWithFixedSearchViewController.m in Sources */,
-				3CAE20631906DE20001B53CB /* AppDelegate.m in Sources */,
 				B23749691887283F002E0B8E /* XLCollectionViewController.m in Sources */,
 				3CAE20791906DE20001B53CB /* HTTPSessionManager.m in Sources */,
 				3CAE20781906DE20001B53CB /* Constants.m in Sources */,
@@ -597,11 +606,13 @@
 				3CAE20771906DE20001B53CB /* UIView+Additions.m in Sources */,
 				3CAE20661906DE20001B53CB /* PostTextLabel.m in Sources */,
 				2839F79318688CB800FEBD38 /* XLTableViewController.m in Sources */,
+				286D6E8F190995D00077BF2E /* XLStoryBoardTableViewController.m in Sources */,
 				3CAE207A1906DE20001B53CB /* PostLocalDataLoader.m in Sources */,
 				3CAE206E1906DE20001B53CB /* User+Additions.m in Sources */,
 				3CAE20721906DE20001B53CB /* NSError+Additions.m in Sources */,
 				2839F7AD18688FC700FEBD38 /* XLSearchBar.m in Sources */,
 				3CAE20741906DE20001B53CB /* NSObject+Additions.m in Sources */,
+				28175721190EC3C100D25038 /* AppDelegate.m in Sources */,
 				3CAE20731906DE20001B53CB /* NSManagedObject+Additions.m in Sources */,
 				3CAE206F1906DE20001B53CB /* User.m in Sources */,
 				2839F7A418688D7D00FEBD38 /* XLLocalDataLoader.m in Sources */,
@@ -610,6 +621,7 @@
 				28E1DDC3181AB89D00E7FAF9 /* main.m in Sources */,
 				3CAE206D1906DE20001B53CB /* Post.m in Sources */,
 				2896179718A282C90007B341 /* XLNetworkStatusView.m in Sources */,
+				286D6E8C190978450077BF2E /* XLRemoteCoreDataLoader.m in Sources */,
 				3CAE20641906DE20001B53CB /* PostsTableViewController.m in Sources */,
 				2839F7AA18688F9500FEBD38 /* XLLoadingMoreView.m in Sources */,
 				3CAE20711906DE20001B53CB /* AppDelegate+Additions.m in Sources */,

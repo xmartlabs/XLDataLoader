@@ -38,17 +38,11 @@
 
 -(void)successulDataLoad {
     // change flags
-    
-    // This flag indicates whether more data is being loaded
-    _isLoadingMore = NO;
-    
     // [self fetchedData] contains the data coming from the server
-    NSArray * itemsArray = [[self fetchedData] valueOrNil];
-    
+    NSArray * itemsArray = [[self fetchedData] objectForKey:kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse];
+
     // This flag indicates if there is more data to load
     _hasMoreToLoad = !((itemsArray.count == 0) || (itemsArray.count < _limit && itemsArray.count != 0));
-
-    
     [[AppDelegate managedObjectContext] performBlockAndWait:^{
         for (NSDictionary *item in itemsArray) {
             // Creates or updates the User and the user who created it with the data that came from the server

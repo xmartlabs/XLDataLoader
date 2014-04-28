@@ -97,8 +97,7 @@
 
 -(void)setPredicate:(NSPredicate *)predicate
 {
-    if (_fetchedResultsController)
-    {
+    if (_fetchedResultsController){
         [_fetchedResultsController.fetchRequest setPredicate:predicate];
         [self forceReload];
     }
