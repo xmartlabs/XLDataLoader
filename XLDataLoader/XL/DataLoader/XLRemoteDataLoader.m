@@ -43,6 +43,7 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
 
 @implementation XLRemoteDataLoader
 
+@synthesize tag = _tag;
 @synthesize delegate = _delegate;
 
 // configutration properties
@@ -65,6 +66,15 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
     self = [super init];
     if (self){
         [self setDefaultValues];
+    }
+    return self;
+}
+
+-(id)initWithTag:(NSString *)tag
+{
+    self = [self init];
+    if (self){
+        _tag = tag;
     }
     return self;
 }

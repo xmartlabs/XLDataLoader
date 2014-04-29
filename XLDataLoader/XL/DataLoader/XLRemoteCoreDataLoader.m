@@ -19,11 +19,16 @@
 
 @synthesize filters = _filters;
 
--(id)initWithCoreDataProviderClass:(Class<XLRemoteDataLoaderCoreDataProviderProtocol>)coreDataProviderClass
+-(id)initWithCoreDataProviderClass:(Class<XLRemoteDataLoaderCoreDataProviderProtocol>)class
 {
-    self = [super init];
+    return [self initWithCoreDataProviderClass:class tag:nil];
+}
+
+-(id)initWithCoreDataProviderClass:(Class<XLRemoteDataLoaderCoreDataProviderProtocol>)class tag:(NSString *)tag
+{
+    self = [super initWithTag:tag];
     if (self){
-        _coreDataProviderClass = coreDataProviderClass;
+        _coreDataProviderClass = class;
     }
     return self;
 }

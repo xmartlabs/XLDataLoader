@@ -57,7 +57,7 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse;
     NSDictionary * _data;
     NSString * _searchString;
 }
-
+@property (nonatomic, readonly) NSString * tag;
 @property (weak) id<XLRemoteDataLoaderDelegate> delegate;
 @property (readonly) BOOL isLoadingMore;
 @property (readonly) BOOL hasMoreToLoad;
@@ -66,7 +66,10 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse;
 @property (nonatomic, readonly) NSString * searchString;
 @property (nonatomic) NSString * collectionKeyPath;
 
+
 -(id)init;
+
+-(id)initWithTag:(NSString *)tag;
 
 // call this method to force reload of data with the current offset limit values
 -(void)forceReload;

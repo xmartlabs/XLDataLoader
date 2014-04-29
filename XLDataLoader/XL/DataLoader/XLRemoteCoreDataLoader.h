@@ -11,6 +11,7 @@
 @interface XLRemoteCoreDataLoader : XLRemoteDataLoader
 
 -(id)initWithCoreDataProviderClass:(Class<XLRemoteDataLoaderCoreDataProviderProtocol>)class;
+-(id)initWithCoreDataProviderClass:(Class<XLRemoteDataLoaderCoreDataProviderProtocol>)class tag:(NSString *)tag;
 
 @property (readonly) NSMutableDictionary * filters;
 
