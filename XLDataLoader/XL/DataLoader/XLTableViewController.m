@@ -10,7 +10,7 @@
 #import "XLLoadingMoreView.h"
 #import "XLNetworkStatusView.h"
 #import "XLSearchBar.h"
-#import <SVPullToRefresh/UIScrollView+SVInfiniteScrolling.h>
+#import "UIScrollView+SVInfiniteScrolling.h"
 
 
 #import "XLTableViewController.h"
@@ -212,6 +212,9 @@
                 [weakSelf.tableView.infiniteScrollingView startAnimating];
                 [weakSelf.remoteDataLoader loadMoreForIndex:[weakSelf.localDataLoader totalNumberOfObjects]];
             }
+            else{
+               // [weakSelf.tableView.infiniteScrollingView stopAnimating];
+            }
         }];
     }
     if (self.searchLoadingPagingEnabled){
@@ -317,7 +320,10 @@
         [self.tableView.infiniteScrollingView stopAnimating];
         [self.refreshControl endRefreshing];
         if (self.localDataLoader){
+            
             [self.localDataLoader changeOffsetTo:self.remoteDataLoader.offset];
+            //self.tableView
+            //[self.tableView reloadData];
         }
     }
     else if (dataLoader ==  self.searchRemoteDataLoader){

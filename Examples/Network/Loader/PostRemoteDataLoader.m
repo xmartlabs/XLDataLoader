@@ -41,25 +41,16 @@
     // This flag indicates if there is more data to load
     _hasMoreToLoad = !((itemsArray.count == 0) || (itemsArray.count < _limit && itemsArray.count != 0));
     
-    NSManagedObjectContext * mainMoc = [XLDataLoaderCoreDataStore mainQueueContext];
-    
-    NSManagedObjectContext * moc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-    moc.parentContext = mainMoc;
-    
-    [moc performBlock:^{
+    [[XLDataLoaderCoreDataStore privateQueueContext] performBlock:^{
         for (NSDictionary *item in itemsArray) {
             // Creates or updates the Post and the user who created it with the data that came from the server
-            [Post createOrUpdateWithServiceResult:item[POST_TAG] inContext:moc];
+            [Post createOrUpdateWithServiceResult:item[POST_TAG] inContext:[XLDataLoaderCoreDataStore privateQueueContext]];
         }
         
         // Remove outdated data
-        [self removeOutdatedData:itemsArray inContext:moc];
+        [self removeOutdatedData:itemsArray inContext:[XLDataLoaderCoreDataStore privateQueueContext]];
         
-        [moc save:nil];
-        [mainMoc performBlock:^{
-            [mainMoc save:nil];
-        }];
-        // call super
+        [XLDataLoaderCoreDataStore savePrivateQueueContext];
     }];
     [super successulDataLoad];
 }

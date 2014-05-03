@@ -89,7 +89,6 @@
     if (_fetchedResultsController != fetchedResultsController)
     {
         _fetchedResultsController = fetchedResultsController;
-        //[_fetchedResultsController setDelegate:self];
         [self forceReload];
     }
 }

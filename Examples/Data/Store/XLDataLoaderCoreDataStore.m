@@ -88,6 +88,9 @@ static NSString *const TBCoreDataModelFileName = @"Model";
 {
     @synchronized(self) {
         [self.mainQueueContext performBlock:^{
+            for(NSManagedObject *object in [[notification userInfo] objectForKey:NSUpdatedObjectsKey]) {
+                [[self.mainQueueContext objectWithID:[object objectID]] willAccessValueForKey:nil];
+            }
             [self.mainQueueContext mergeChangesFromContextDidSaveNotification:notification];
         }];
     }
