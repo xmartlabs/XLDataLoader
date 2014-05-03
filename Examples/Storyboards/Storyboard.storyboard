@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="oSt-cZ-XWt">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -7,7 +7,7 @@
         <!--Users Table With Fixed Search View Controller - Storyboard example-->
         <scene sceneID="lgV-MV-0m3">
             <objects>
-                <viewController id="dP1-od-kvl" customClass="UsersTableWithFixedSearchViewController" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" id="dP1-od-kvl" customClass="UsersTableWithFixedSearchViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Uhy-sT-4T9"/>
                         <viewControllerLayoutGuide type="bottom" id="GN3-hy-cYn"/>
@@ -16,12 +16,7 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="19u-wr-ms5">
-                                <rect key="frame" x="0.0" y="44" width="320" height="460"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            </tableView>
-                            <searchBar contentMode="redraw" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ACG-GP-Z0T" customClass="XLSearchBar">
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="ACG-GP-Z0T" customClass="XLSearchBar">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textInputTraits key="textInputTraits"/>
@@ -29,11 +24,26 @@
                                     <outlet property="delegate" destination="dP1-od-kvl" id="x70-Xy-9Dd"/>
                                 </connections>
                             </searchBar>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="19u-wr-ms5">
+                                <rect key="frame" x="0.0" y="44" width="320" height="460"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </tableView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="19u-wr-ms5" firstAttribute="top" secondItem="ACG-GP-Z0T" secondAttribute="bottom" id="2LS-qo-AUz"/>
+                            <constraint firstAttribute="trailing" secondItem="ACG-GP-Z0T" secondAttribute="trailing" id="3zJ-9R-0Hh"/>
+                            <constraint firstItem="GN3-hy-cYn" firstAttribute="top" secondItem="19u-wr-ms5" secondAttribute="bottom" id="Eth-b7-IN6"/>
+                            <constraint firstItem="ACG-GP-Z0T" firstAttribute="leading" secondItem="U0p-2q-dXJ" secondAttribute="leading" id="TpP-Ic-0xx"/>
+                            <constraint firstItem="ACG-GP-Z0T" firstAttribute="top" secondItem="Uhy-sT-4T9" secondAttribute="bottom" id="ZyX-SZ-xjI"/>
+                            <constraint firstAttribute="trailing" secondItem="19u-wr-ms5" secondAttribute="trailing" id="eEK-FH-gFx"/>
+                            <constraint firstItem="19u-wr-ms5" firstAttribute="leading" secondItem="U0p-2q-dXJ" secondAttribute="leading" id="nXR-J3-Vc8"/>
+                        </constraints>
                     </view>
-                    <extendedEdge key="edgesForExtendedLayout" bottom="YES"/>
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" title="Storyboard example" id="9rk-PH-fYT"/>
+                    <size key="freeformSize" width="320" height="568"/>
                     <connections>
                         <outlet property="searchBar" destination="ACG-GP-Z0T" id="UXt-It-f7G"/>
                         <outlet property="searchDisplayController" destination="URc-Af-4nd" id="6XA-l4-XaD"/>

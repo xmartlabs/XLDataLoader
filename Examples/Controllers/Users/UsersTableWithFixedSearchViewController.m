@@ -133,11 +133,4 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
     return emptyCollectionView;
 }
 
-//- (void)viewDidLayoutSubviews {
-//    // Overrides the superclass method
-//    [self.tableView setFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y + self.topLayoutGuide.length + 44, self.view.bounds.size.width, self.view.bounds.size.height - self.topLayoutGuide.length - 44)];
-//    [self.searchDisplayController.searchResultsTableView setContentInset:UIEdgeInsetsZero];
-//}
-
-
 @end
