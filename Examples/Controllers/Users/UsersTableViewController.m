@@ -46,13 +46,6 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
     return self;
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-
 - (void)viewDidLoad {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
@@ -66,7 +59,6 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
     
     [self customizeAppearance];
 }
-
 
 #pragma mark - UITableViewDataSource
 

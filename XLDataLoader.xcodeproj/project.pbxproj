@@ -28,6 +28,7 @@
 		28E1DDD8181AB89D00E7FAF9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E1DDBA181AB89D00E7FAF9 /* UIKit.framework */; };
 		28E1DDE0181AB89D00E7FAF9 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 28E1DDDE181AB89D00E7FAF9 /* InfoPlist.strings */; };
 		28E1DDE2181AB89D00E7FAF9 /* XLDataLoaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 28E1DDE1181AB89D00E7FAF9 /* XLDataLoaderTests.m */; };
+		28ED7AF719152F93000AAF88 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 28ED7AF619152F93000AAF88 /* Storyboard.storyboard */; };
 		3C951F571906E5210016552A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3C951F561906E5210016552A /* Images.xcassets */; };
 		3CAE20641906DE20001B53CB /* PostsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAE20271906DE20001B53CB /* PostsTableViewController.m */; };
 		3CAE20651906DE20001B53CB /* PostCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAE202A1906DE20001B53CB /* PostCell.m */; };
@@ -103,6 +104,7 @@
 		28E1DDDD181AB89D00E7FAF9 /* XLDataLoaderTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "XLDataLoaderTests-Info.plist"; sourceTree = "<group>"; };
 		28E1DDDF181AB89D00E7FAF9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		28E1DDE1181AB89D00E7FAF9 /* XLDataLoaderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = XLDataLoaderTests.m; sourceTree = "<group>"; };
+		28ED7AF619152F93000AAF88 /* Storyboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Storyboard.storyboard; path = Storyboards/Storyboard.storyboard; sourceTree = "<group>"; };
 		3C951F561906E5210016552A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		3CAE20221906DE20001B53CB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		3CAE20231906DE20001B53CB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -313,9 +315,18 @@
 			name = Controller;
 			sourceTree = "<group>";
 		};
+		28ED7AF519152F67000AAF88 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				28ED7AF619152F93000AAF88 /* Storyboard.storyboard */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
 		3CAE20211906DD89001B53CB /* Examples */ = {
 			isa = PBXGroup;
 			children = (
+				28ED7AF519152F67000AAF88 /* Storyboards */,
 				3CAE20221906DE20001B53CB /* AppDelegate.h */,
 				3CAE20231906DE20001B53CB /* AppDelegate.m */,
 				3CAE20241906DE20001B53CB /* Controllers */,
@@ -541,6 +552,7 @@
 			files = (
 				28E1DDC1181AB89D00E7FAF9 /* InfoPlist.strings in Resources */,
 				3C951F571906E5210016552A /* Images.xcassets in Resources */,
+				28ED7AF719152F93000AAF88 /* Storyboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,7 +15,7 @@
 @interface XLStoryBoardTableViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UISearchDisplayDelegate>
 
 @property IBOutlet UITableView * tableView;
-@property IBOutlet XLSearchBar * searchBar;
+@property (nonatomic) IBOutlet UISearchBar * searchBar;
 
 @property (nonatomic) XLRemoteDataLoader * remoteDataLoader;
 @property (nonatomic) XLLocalDataLoader  * localDataLoader;
@@ -23,7 +23,6 @@
 @property (nonatomic) XLRemoteDataLoader * searchRemoteDataLoader;
 @property (nonatomic) XLLocalDataLoader  * searchLocalDataLoader;
 
-@property (nonatomic, readonly) XLLoadingMoreView * loadingMoreView;
 @property (nonatomic) UIRefreshControl * refreshControl;
 
 @property (nonatomic) UIView * backgroundViewForEmptyTableView;
@@ -33,6 +32,7 @@
 @property BOOL showNetworkReachability; //Default YES
 @property BOOL supportSearchController; // default NO
 @property BOOL fetchFromRemoteDataLoaderOnlyOnce; // Default YES
+@property UITableViewStyle tableViewStyle; //Default UITableViewStylePlain, only used on non-storyboard controller
 
 // The loader notifies the controller using these methods. override it from your concrete class.
 
