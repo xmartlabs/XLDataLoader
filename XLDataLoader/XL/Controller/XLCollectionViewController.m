@@ -25,7 +25,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-#import <SVPullToRefresh/SVPullToRefresh.h>
+#import  "UIScrollView+SVInfiniteScrolling.h"
 
 #import "XLLoadingMoreView.h"
 #import "XLNetworkStatusView.h"

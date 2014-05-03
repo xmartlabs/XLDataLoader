@@ -8,7 +8,7 @@
 
 #import "PostLocalDataLoader.h"
 #import "Post+Additions.h"
-#import "AppDelegate+Additions.h"
+#import "XLDataLoaderCoreDataStore.h"
 
 @implementation PostLocalDataLoader
 
@@ -19,7 +19,7 @@
         // Post Fetch Request
         NSFetchRequest * fetchRequest = [Post getFetchRequest];
         NSFetchedResultsController * fetchResultController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                                                 managedObjectContext:[AppDelegate managedObjectContext]
+                                                                                                 managedObjectContext:[XLDataLoaderCoreDataStore mainQueueContext]
                                                                                                    sectionNameKeyPath:nil
                                                                                                             cacheName:nil];
         [self setFetchedResultsController:fetchResultController];

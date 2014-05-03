@@ -8,8 +8,7 @@
 
 #import "UserLocalDataLoader.h"
 #import "User+Additions.h"
-#import "AppDelegate+Additions.h"
-
+#import "XLDataLoaderCoreDataStore.h"
 
 @implementation UserLocalDataLoader
 {
@@ -22,7 +21,7 @@
         
         NSFetchRequest * fetchRequest = [User getFetchRequest];
         NSFetchedResultsController * fetchResultController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest
-                                                                                                 managedObjectContext:[AppDelegate managedObjectContext]
+                                                                                                 managedObjectContext:[XLDataLoaderCoreDataStore mainQueueContext]
                                                                                                    sectionNameKeyPath:nil
                                                                                                             cacheName:nil];
         [self setFetchedResultsController:fetchResultController];

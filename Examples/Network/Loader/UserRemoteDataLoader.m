@@ -8,7 +8,7 @@
 
 #import "UserRemoteDataLoader.h"
 #import "HTTPSessionManager.h"
-#import "AppDelegate+Additions.h"
+#import "XLDataLoaderCoreDataStore.h"
 #import "User+Additions.h"
 
 #import "NSError+Additions.h"
@@ -43,23 +43,22 @@
 
     // This flag indicates if there is more data to load
     _hasMoreToLoad = !((itemsArray.count == 0) || (itemsArray.count < _limit && itemsArray.count != 0));
-    [[AppDelegate managedObjectContext] performBlockAndWait:^{
+    [[XLDataLoaderCoreDataStore privateQueueContext] performBlock:^{
         for (NSDictionary *item in itemsArray) {
             // Creates or updates the User and the user who created it with the data that came from the server
-            [User createOrUpdateWithServiceResult:item[USER_TAG] saveContext:NO];
+            [User createOrUpdateWithServiceResult:item[USER_TAG] inContext:[XLDataLoaderCoreDataStore privateQueueContext]];
         }
-        [self removeOutdatedData:itemsArray];
-        [AppDelegate saveContext];
+        [self removeOutdatedData:itemsArray inContext:[XLDataLoaderCoreDataStore privateQueueContext]];
+        [XLDataLoaderCoreDataStore savePrivateQueueContext];
+        // call super
     }];
-    
-    // call super
     [super successulDataLoad];
 }
 
 
 #pragma mark - Auxiliary Functions
 
-- (void)removeOutdatedData:(NSArray *)data
+- (void)removeOutdatedData:(NSArray *)data inContext:(NSManagedObjectContext *)context
 {
     // First, remove older data
     NSFetchRequest * fetchRequest = [User getFetchRequestBySearchInput:self.searchString];
@@ -68,7 +67,7 @@
     fetchRequest.fetchOffset = self.offset;
     
     NSError *error;
-    NSArray * oldObjects = [[AppDelegate managedObjectContext] executeFetchRequest:fetchRequest error:&error];
+    NSArray * oldObjects = [context executeFetchRequest:fetchRequest error:&error];
     
     NSArray * arrayToIterate = [oldObjects copy];
     
@@ -82,7 +81,7 @@
         NSArray *filteredArray = [data filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"user.id = %@" argumentArray:@[user.userId]]];
         if (filteredArray.count == 0) {
             // This User no longer exists
-            [[AppDelegate managedObjectContext] deleteObject:user];
+            [context deleteObject:user];
         }
     }
 }

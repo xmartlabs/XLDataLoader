@@ -96,7 +96,7 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
     return cell;
 }
 
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!self.offScreenCell)
     {
@@ -161,6 +161,7 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
 {
     [self.tableView setBackgroundColor:[UIColor colorWithHex:__COLOR_GRAY_VERY_LIGHT]];
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    self.tableView.tableFooterView = [UIView new];
 }
 
 - (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{

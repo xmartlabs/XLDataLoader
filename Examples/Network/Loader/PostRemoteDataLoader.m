@@ -8,9 +8,8 @@
 
 #import "PostRemoteDataLoader.h"
 #import "Post+Additions.h"
-#import "AppDelegate+Additions.h"
+#import "XLDataLoaderCoreDataStore.h"
 #import "HTTPSessionManager.h"
-
 #import "NSError+Additions.h"
 #import "NSObject+Additions.h"
 
@@ -42,26 +41,33 @@
     // This flag indicates if there is more data to load
     _hasMoreToLoad = !((itemsArray.count == 0) || (itemsArray.count < _limit && itemsArray.count != 0));
     
-    [[AppDelegate managedObjectContext] performBlockAndWait:^{
+    NSManagedObjectContext * mainMoc = [XLDataLoaderCoreDataStore mainQueueContext];
+    
+    NSManagedObjectContext * moc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    moc.parentContext = mainMoc;
+    
+    [moc performBlock:^{
         for (NSDictionary *item in itemsArray) {
             // Creates or updates the Post and the user who created it with the data that came from the server
-            [Post createOrUpdateWithServiceResult:item[POST_TAG] saveContext:NO];
+            [Post createOrUpdateWithServiceResult:item[POST_TAG] inContext:moc];
         }
         
         // Remove outdated data
-        [self removeOutdatedData:itemsArray];
+        [self removeOutdatedData:itemsArray inContext:moc];
         
-        [AppDelegate saveContext];
+        [moc save:nil];
+        [mainMoc performBlock:^{
+            [mainMoc save:nil];
+        }];
+        // call super
     }];
-    
-    // call super
     [super successulDataLoad];
 }
 
 
 #pragma mark - Auxiliary Functions
 
-- (void)removeOutdatedData:(NSArray *)data
+- (void)removeOutdatedData:(NSArray *)data inContext:(NSManagedObjectContext *)context
 {
     // First, remove older data
     NSFetchRequest * fetchRequest = [Post getFetchRequest];
@@ -69,7 +75,7 @@
     fetchRequest.fetchOffset = self.offset;
     
     NSError *error;
-    NSArray * oldObjects = [[AppDelegate managedObjectContext] executeFetchRequest:fetchRequest error:&error];
+    NSArray * oldObjects = [context executeFetchRequest:fetchRequest error:&error];
     
     NSArray * arrayToIterate = [oldObjects copy];
     
@@ -83,7 +89,7 @@
         NSArray *filteredArray = [data filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"post.id = %@" argumentArray:@[post.postId]]];
        if (filteredArray.count == 0) {
             // This Post no longer exists
-            [[AppDelegate managedObjectContext] deleteObject:post];
+            [context deleteObject:post];
         }
     }
 }

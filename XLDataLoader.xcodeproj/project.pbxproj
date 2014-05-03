@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		28175721190EC3C100D25038 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3CAE20231906DE20001B53CB /* AppDelegate.m */; };
+		282F87791915623B00F06083 /* UIScrollView+SVInfiniteScrolling.m in Sources */ = {isa = PBXBuildFile; fileRef = 282F87781915623B00F06083 /* UIScrollView+SVInfiniteScrolling.m */; };
+		282F877D1915648900F06083 /* XLDataLoaderCoreDataStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 282F877C1915648900F06083 /* XLDataLoaderCoreDataStore.m */; };
 		2839F7A318688D7D00FEBD38 /* XLDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2839F79E18688D7D00FEBD38 /* XLDataLoader.m */; };
 		2839F7A418688D7D00FEBD38 /* XLLocalDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2839F7A018688D7D00FEBD38 /* XLLocalDataLoader.m */; };
 		2839F7A518688D7D00FEBD38 /* XLRemoteDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2839F7A218688D7D00FEBD38 /* XLRemoteDataLoader.m */; };
@@ -69,6 +71,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		282F87771915623B00F06083 /* UIScrollView+SVInfiniteScrolling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIScrollView+SVInfiniteScrolling.h"; path = "XL/Helpers/UIScrollView+SVInfiniteScrolling.h"; sourceTree = "<group>"; };
+		282F87781915623B00F06083 /* UIScrollView+SVInfiniteScrolling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIScrollView+SVInfiniteScrolling.m"; path = "XL/Helpers/UIScrollView+SVInfiniteScrolling.m"; sourceTree = "<group>"; };
+		282F877B1915648900F06083 /* XLDataLoaderCoreDataStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLDataLoaderCoreDataStore.h; path = Store/XLDataLoaderCoreDataStore.h; sourceTree = "<group>"; };
+		282F877C1915648900F06083 /* XLDataLoaderCoreDataStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLDataLoaderCoreDataStore.m; path = Store/XLDataLoaderCoreDataStore.m; sourceTree = "<group>"; };
 		2839F79D18688D7D00FEBD38 /* XLDataLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLDataLoader.h; path = XL/DataLoader/XLDataLoader.h; sourceTree = "<group>"; };
 		2839F79E18688D7D00FEBD38 /* XLDataLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLDataLoader.m; path = XL/DataLoader/XLDataLoader.m; sourceTree = "<group>"; };
 		2839F79F18688D7D00FEBD38 /* XLLocalDataLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLLocalDataLoader.h; path = XL/DataLoader/XLLocalDataLoader.h; sourceTree = "<group>"; };
@@ -184,6 +190,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		282F87761915620900F06083 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				282F87771915623B00F06083 /* UIScrollView+SVInfiniteScrolling.h */,
+				282F87781915623B00F06083 /* UIScrollView+SVInfiniteScrolling.m */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		282F877A1915646D00F06083 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				282F877B1915648900F06083 /* XLDataLoaderCoreDataStore.h */,
+				282F877C1915648900F06083 /* XLDataLoaderCoreDataStore.m */,
+			);
+			name = Store;
+			sourceTree = "<group>";
+		};
 		2839F7A718688F2900FEBD38 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -272,6 +296,7 @@
 		28E1DDEB181ABAA600E7FAF9 /* XL */ = {
 			isa = PBXGroup;
 			children = (
+				282F87761915620900F06083 /* Helpers */,
 				2839F7A718688F2900FEBD38 /* View */,
 				28E1DDED181AD03300E7FAF9 /* Controller */,
 				28E1DDEC181ACFF400E7FAF9 /* DataLoader */,
@@ -384,6 +409,7 @@
 		3CAE20371906DE20001B53CB /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				282F877A1915646D00F06083 /* Store */,
 				3CAE20381906DE20001B53CB /* Model.xcdatamodeld */,
 				3CAE203A1906DE20001B53CB /* Post+Additions.h */,
 				3CAE203B1906DE20001B53CB /* Post+Additions.m */,
@@ -508,7 +534,7 @@
 		28E1DDAB181AB89D00E7FAF9 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Xmartlabs;
 				TargetAttributes = {
 					28E1DDD3181AB89D00E7FAF9 = {
@@ -596,6 +622,7 @@
 			files = (
 				3CAE20691906DE20001B53CB /* UsersTableWithFixedSearchViewController.m in Sources */,
 				B23749691887283F002E0B8E /* XLCollectionViewController.m in Sources */,
+				282F877D1915648900F06083 /* XLDataLoaderCoreDataStore.m in Sources */,
 				3CAE20791906DE20001B53CB /* HTTPSessionManager.m in Sources */,
 				3CAE20781906DE20001B53CB /* Constants.m in Sources */,
 				3CAE206C1906DE20001B53CB /* Post+Additions.m in Sources */,
@@ -612,6 +639,7 @@
 				3CAE20721906DE20001B53CB /* NSError+Additions.m in Sources */,
 				2839F7AD18688FC700FEBD38 /* XLSearchBar.m in Sources */,
 				3CAE20741906DE20001B53CB /* NSObject+Additions.m in Sources */,
+				282F87791915623B00F06083 /* UIScrollView+SVInfiniteScrolling.m in Sources */,
 				28175721190EC3C100D25038 /* AppDelegate.m in Sources */,
 				3CAE20731906DE20001B53CB /* NSManagedObject+Additions.m in Sources */,
 				3CAE206F1906DE20001B53CB /* User.m in Sources */,
@@ -676,7 +704,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -715,7 +742,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -775,7 +801,6 @@
 		28E1DDE9181AB89D00E7FAF9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/XLDataLoader.app/XLDataLoader";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",
@@ -798,7 +823,6 @@
 		28E1DDEA181AB89D00E7FAF9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/XLDataLoader.app/XLDataLoader";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(SDKROOT)/Developer/Library/Frameworks",

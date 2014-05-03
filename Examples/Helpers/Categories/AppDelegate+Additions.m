@@ -10,17 +10,6 @@
 
 @implementation AppDelegate (Additions)
 
-+(NSManagedObjectContext *)managedObjectContext
-{
-    AppDelegate * appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    return appDelegate.managedObjectContext;
-}
-
-+(void)saveContext
-{
-    AppDelegate * appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate saveContext];
-}
 
 +(NSDate *)dateFromString:(NSString *)dateString
 {
