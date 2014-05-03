@@ -44,10 +44,8 @@
     UsersTableViewController *usersTableViewController = [[UsersTableViewController alloc] init];
     UINavigationController * userNavigationController = [[UINavigationController alloc] initWithRootViewController:usersTableViewController];
     [tabViewControllers addObject:userNavigationController];
-    
-//    UsersTableWithFixedSearchViewController * usersTableWithFixedSearchViewController = [[UsersTableWithFixedSearchViewController alloc] init];
+
     UINavigationController * userFixSearchNavigationController = [[UIStoryboard storyboardWithName:@"Storyboard" bundle:nil] instantiateViewControllerWithIdentifier:@"userFixSearchNavigationController"];
-    //[[UINavigationController alloc] initWithRootViewController:usersTableWithFixedSearchViewController];
     [tabViewControllers addObject:userFixSearchNavigationController];
     
     [self setViewControllers:tabViewControllers];
@@ -66,10 +64,5 @@
     userFixSearchNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Users" image:usersImageUnselected selectedImage:usersImageSelected];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 @end

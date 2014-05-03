@@ -33,17 +33,25 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        
-        // Enable the pagination
-        self.loadingPagingEnabled = YES;
-        
-        // Support Search Controller
-        self.supportSearchController = YES;
-        
-        // Initialize Data Loaders
-        [self initializeDataLoaders];
+        [self initialize];
     }
     return self;
+}
+
+-(void)initialize
+{
+    // Enable the pagination
+    self.loadingPagingEnabled = YES;
+    
+    // Support Search Controller
+    self.supportSearchController = YES;
+    
+    [self setLocalDataLoader:[[UserLocalDataLoader alloc] init]];
+    [self setRemoteDataLoader:[[UserRemoteDataLoader alloc] init]];
+    
+    // Search
+    [self setSearchLocalDataLoader:[[UserLocalDataLoader alloc] init]];
+    [self setSearchRemoteDataLoader:[[UserRemoteDataLoader alloc] init]];
 }
 
 - (void)viewDidLoad {
@@ -96,16 +104,6 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
 
 
 #pragma mark - Helpers
-
--(void)initializeDataLoaders
-{
-    [self setLocalDataLoader:[[UserLocalDataLoader alloc] init]];
-    [self setRemoteDataLoader:[[UserRemoteDataLoader alloc] init]];
-    
-    // Search
-    [self setSearchLocalDataLoader:[[UserLocalDataLoader alloc] init]];
-    [self setSearchRemoteDataLoader:[[UserRemoteDataLoader alloc] init]];
-}
 
 -(void)customizeAppearance
 {
