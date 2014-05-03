@@ -36,7 +36,6 @@
 
 @property (readonly) BOOL searchLoadingPagingEnabled;
 
-@property (nonatomic) UIRefreshControl * refreshControl;
 
 @end
 
@@ -64,6 +63,8 @@
 @synthesize supportRefreshControl = _supportRefreshControl;
 @synthesize loadingPagingEnabled = _loadingPagingEnabled;
 
+@synthesize supportSearchController = _supportSearchController;
+
 @synthesize backgroundViewForEmptyTableView = _backgroundViewForEmptyTableView;
 
 
@@ -89,6 +90,7 @@
     self.searchLocalDataLoader = nil;
     self.supportRefreshControl = YES;
     self.loadingPagingEnabled = YES;
+    self.supportSearchController = NO;
     self.showNetworkReachability = YES;
 
 }
@@ -180,12 +182,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UISearchDisplayController * searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
-    
-    searchDisplayController.delegate = self;
-    searchDisplayController.searchResultsDataSource = self;
-    searchDisplayController.searchResultsDelegate = self;
-    [self performSelector:@selector(setSearchDisplayController:) withObject:searchDisplayController];
+    if (self.supportSearchController && !self.supportSearchController){
+        UISearchDisplayController * searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
+        
+        searchDisplayController.delegate = self;
+        searchDisplayController.searchResultsDataSource = self;
+        searchDisplayController.searchResultsDelegate = self;
+        [self performSelector:@selector(setSearchDisplayController:) withObject:searchDisplayController];
+    }
     
     if (self.loadingPagingEnabled == NO){
         [[self localDataLoader] setLimit:0];

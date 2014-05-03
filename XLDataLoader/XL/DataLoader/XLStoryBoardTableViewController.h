@@ -23,13 +23,15 @@
 @property (nonatomic) XLRemoteDataLoader * searchRemoteDataLoader;
 @property (nonatomic) XLLocalDataLoader  * searchLocalDataLoader;
 
-@property (readonly) XLLoadingMoreView * loadingMoreView;
+@property (nonatomic, readonly) XLLoadingMoreView * loadingMoreView;
+@property (nonatomic) UIRefreshControl * refreshControl;
 
 @property (nonatomic) UIView * backgroundViewForEmptyTableView;
 
 @property BOOL supportRefreshControl; // default YES
 @property BOOL loadingPagingEnabled;  // default YES
 @property BOOL showNetworkReachability; //Default YES
+@property BOOL supportSearchController; // default NO
 @property BOOL fetchFromRemoteDataLoaderOnlyOnce; // Default YES
 
 // The loader notifies the controller using these methods. override it from your concrete class.
