@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 Xmartlabs. All rights reserved.
 //
 
-#import "XLTableViewController.h"
 #import "XLRemoteDataLoader.h"
 #import "XLLoadingMoreView.h"
 #import "XLNetworkStatusView.h"
@@ -14,7 +13,7 @@
 #import <SVPullToRefresh/UIScrollView+SVInfiniteScrolling.h>
 
 
-#import "XLStoryBoardTableViewController.h"
+#import "XLTableViewController.h"
 
 @protocol FixSetSearchViewController <NSObject>
 
@@ -24,22 +23,21 @@
 
 @end
 
-@interface XLStoryBoardTableViewController () <XLRemoteDataLoaderDelegate, XLLocalDataLoaderDelegate>
+@interface XLTableViewController () <XLRemoteDataLoaderDelegate, XLLocalDataLoaderDelegate>
 {
     NSTimer * _searchDelayTimer;
 }
 
 @property BOOL beganUpdates;
 @property BOOL searchBeganUpdates;
-@property (nonatomic) XLLoadingMoreView * searchLoadingMoreView;
-@property (nonatomic) XLNetworkStatusView * networkStatusView;
 
+@property (nonatomic) XLNetworkStatusView * networkStatusView;
 @property (readonly) BOOL searchLoadingPagingEnabled;
 
 
 @end
 
-@implementation XLStoryBoardTableViewController
+@implementation XLTableViewController
 
 @synthesize tableView = _tableView;
 @synthesize refreshControl = _refreshControl;
@@ -55,7 +53,6 @@
 @synthesize beganUpdates     = _beganUpdates;
 @synthesize searchBeganUpdates = _searchBeganUpdates;
 
-@synthesize searchLoadingMoreView = _searchLoadingMoreView;
 @synthesize networkStatusView = _networkStatusView;
 
 @synthesize supportRefreshControl = _supportRefreshControl;
@@ -113,13 +110,6 @@
     _refreshControl = [[UIRefreshControl alloc] init];
     [_refreshControl addTarget:self action:@selector(refreshView:) forControlEvents:UIControlEventValueChanged];
     return _refreshControl;
-}
-
--(XLLoadingMoreView *)searchLoadingMoreView
-{
-    if (_searchLoadingMoreView) return _searchLoadingMoreView;
-    _searchLoadingMoreView = [[XLLoadingMoreView alloc] init];
-    return _searchLoadingMoreView;
 }
 
 -(XLNetworkStatusView *)networkStatusView
@@ -187,13 +177,17 @@
     [super viewDidLoad];
     if (!self.tableView){
         self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds
-                                                      style:self.tableViewStyle];
-        self.tableView.delegate = self;
-        self.tableView.dataSource = self;
+                                                    style:self.tableViewStyle];
         self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     }
     if (!self.tableView.superview){
         [self.view addSubview:self.tableView];;
+    }
+    if (!self.tableView.delegate){
+        self.tableView.delegate = self;
+    }
+    if (!self.tableView.dataSource){
+        self.tableView.dataSource = self;
     }
     if (self.supportSearchController && !self.searchDisplayController){
         UISearchDisplayController * searchDisplayController = [[UISearchDisplayController alloc] initWithSearchBar:self.searchBar contentsController:self];
@@ -219,6 +213,16 @@
                 [weakSelf.remoteDataLoader loadMoreForIndex:[weakSelf.localDataLoader totalNumberOfObjects]];
             }
         }];
+    }
+    if (self.searchLoadingPagingEnabled){
+         __typeof__(self) __weak weakSelf = self;
+        [self.searchDisplayController.searchResultsTableView addInfiniteScrollingWithActionHandler:^{
+            if (!self.searchRemoteDataLoader.isLoadingMore){
+                [self.searchDisplayController.searchResultsTableView.infiniteScrollingView startAnimating];
+                [self.searchRemoteDataLoader loadMoreForIndex:[weakSelf.searchLocalDataLoader totalNumberOfObjects]];
+            }
+        }];
+
     }
     
 }
@@ -283,12 +287,6 @@
 
 -(UIView *)tableViewFooter:(UITableView *)tableView
 {
-    if (tableView == self.searchDisplayController.searchResultsTableView)
-    {
-        if (self.searchLoadingPagingEnabled){
-            return self.searchLoadingMoreView;
-        }
-    }
     return [[UIView alloc] initWithFrame:CGRectZero];
 }
 
@@ -303,7 +301,7 @@
     }
     else if (dataLoader == self.searchRemoteDataLoader){
         if (self.searchLoadingPagingEnabled){
-            [self.searchLoadingMoreView.activityViewIndicator startAnimating];
+            [self.searchDisplayController.searchResultsTableView.infiniteScrollingView startAnimating];
         }
         if ([self.searchDisplayController.searchBar isKindOfClass:[XLSearchBar class]]){
             XLSearchBar * searchBar = (XLSearchBar *)self.searchDisplayController.searchBar;
@@ -323,7 +321,7 @@
         }
     }
     else if (dataLoader ==  self.searchRemoteDataLoader){
-        [self.searchLoadingMoreView.activityViewIndicator stopAnimating];
+        [self.searchDisplayController.searchResultsTableView.infiniteScrollingView stopAnimating];
         if ([self.searchDisplayController.searchBar isKindOfClass:[XLSearchBar class]]){
             XLSearchBar * searchBar = (XLSearchBar *)self.searchDisplayController.searchBar;
             [searchBar stopActivityIndicator];
@@ -346,13 +344,12 @@
 -(void)dataLoaderDidFailLoadData:(XLDataLoader *)dataLoader withError:(NSError *)error
 {
     if ([dataLoader isKindOfClass:[XLRemoteDataLoader class]]){
-        if (dataLoader == self.remoteDataLoader)
-        {
+        if (dataLoader == self.remoteDataLoader){
             [self.tableView.infiniteScrollingView stopAnimating];
             [self.refreshControl endRefreshing];
         }
         else{
-            [self.searchLoadingMoreView.activityViewIndicator stopAnimating];
+            [self.searchDisplayController.searchResultsTableView.infiniteScrollingView  stopAnimating];
             if ([self.searchDisplayController.searchBar isKindOfClass:[XLSearchBar class]]){
                 XLSearchBar * searchBar = (XLSearchBar *)self.searchDisplayController.searchBar;
                 [searchBar stopActivityIndicator];
@@ -394,21 +391,6 @@
     return searchDisplayController;
 }
 
-
--(BOOL)isLastSection:(NSUInteger)section inTableView:(UITableView*)tableView
-{
-    return (section == ([self numberOfSectionsInTableView:tableView] - 1));
-}
-
--(BOOL)isLastRowOfSection:(NSUInteger)section row:(NSUInteger)row inTableView:(UITableView*)tableView
-{
-    return (row == ([self tableView:tableView numberOfRowsInSection:section] - 1));
-}
-
--(BOOL)isLastCellIndex:(NSIndexPath *)indexPath tableView:(UITableView *)tableView
-{
-    return ([self isLastSection:indexPath.section inTableView:tableView] && [self isLastRowOfSection:indexPath.section row:indexPath.row inTableView:tableView]);
-}
 
 -(NSUInteger)indexWithoutSection:(NSIndexPath *)indexPath localDataLoader:(XLLocalDataLoader *)localDataLoader
 {
@@ -493,27 +475,6 @@
     }
     return nil;
 }
-
-
-#pragma mark - UITableViewDelegate
-
-
--(void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (self.searchDisplayController.searchResultsTableView == tableView)
-    {
-        if (self.searchLoadingPagingEnabled){
-            if ([self isLastCellIndex:indexPath tableView:tableView]){
-                if (!self.searchRemoteDataLoader.isLoadingMore){
-                    [self.searchLoadingMoreView.activityViewIndicator startAnimating];
-                    [self.searchRemoteDataLoader loadMoreForIndex:([self indexWithoutSection:indexPath localDataLoader:self.searchLocalDataLoader] + 1)];
-                }
-            }
-        }
-    }
-}
-
-
 
 
 #pragma mark - XLLocalDataLoaderDelegate
@@ -693,8 +654,7 @@
 ///
 - (void)beginRemoteSearch:(NSTimer *)sender
 {
-    if (self.searchRemoteDataLoader)
-    {
+    if (self.searchRemoteDataLoader){
         NSString *filter = sender.userInfo[@"searchString"];
         if ([self.searchDisplayController.searchBar isKindOfClass:[XLSearchBar class]]){
             XLSearchBar * searchBar = (XLSearchBar *)self.searchDisplayController.searchBar;

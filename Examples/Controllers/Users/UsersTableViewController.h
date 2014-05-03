@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 XmartLabs. All rights reserved.
 //
 
-#import "XLStoryBoardTableViewController.h"
+#import "XLTableViewController.h"
 
-@interface UsersTableViewController : XLStoryBoardTableViewController
+@interface UsersTableViewController : XLTableViewController
 
 @end

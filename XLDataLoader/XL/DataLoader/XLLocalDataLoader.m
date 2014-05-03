@@ -89,7 +89,6 @@
     if (_fetchedResultsController != fetchedResultsController)
     {
         _fetchedResultsController = fetchedResultsController;
-        // set delegate to track changes
         //[_fetchedResultsController setDelegate:self];
         [self forceReload];
     }
@@ -99,7 +98,7 @@
 {
     if (_fetchedResultsController){
         [_fetchedResultsController.fetchRequest setPredicate:predicate];
-        //[self forceReload];
+        [self forceReload];
     }
 }
 

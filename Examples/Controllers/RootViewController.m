@@ -45,8 +45,9 @@
     UINavigationController * userNavigationController = [[UINavigationController alloc] initWithRootViewController:usersTableViewController];
     [tabViewControllers addObject:userNavigationController];
     
-    UsersTableWithFixedSearchViewController * usersTableWithFixedSearchViewController = [[UsersTableWithFixedSearchViewController alloc] init];
-    UINavigationController * userFixSearchNavigationController = [[UINavigationController alloc] initWithRootViewController:usersTableWithFixedSearchViewController];
+//    UsersTableWithFixedSearchViewController * usersTableWithFixedSearchViewController = [[UsersTableWithFixedSearchViewController alloc] init];
+    UINavigationController * userFixSearchNavigationController = [[UIStoryboard storyboardWithName:@"Storyboard" bundle:nil] instantiateViewControllerWithIdentifier:@"userFixSearchNavigationController"];
+    //[[UINavigationController alloc] initWithRootViewController:usersTableWithFixedSearchViewController];
     [tabViewControllers addObject:userFixSearchNavigationController];
     
     [self setViewControllers:tabViewControllers];
@@ -62,7 +63,7 @@
     
     usersTableViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Users" image:usersImageUnselected selectedImage:usersImageSelected];
     
-    usersTableWithFixedSearchViewController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Users" image:usersImageUnselected selectedImage:usersImageSelected];
+    userFixSearchNavigationController.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Users" image:usersImageUnselected selectedImage:usersImageSelected];
 }
 
 - (void)didReceiveMemoryWarning

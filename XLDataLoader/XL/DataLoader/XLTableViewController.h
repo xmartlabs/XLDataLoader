@@ -12,7 +12,7 @@
 #import "XLLoadingMoreView.h"
 #import <UIKit/UIKit.h>
 
-@interface XLStoryBoardTableViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UISearchDisplayDelegate>
+@interface XLTableViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UISearchDisplayDelegate>
 
 @property IBOutlet UITableView * tableView;
 @property (nonatomic) IBOutlet UISearchBar * searchBar;

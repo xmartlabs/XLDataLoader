@@ -43,17 +43,14 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        
-        // Enable the pagination
-        self.loadingPagingEnabled = YES;
-        
-        // Initialize Data Loaders
-        [self initializeDataLoaders];
+        [self initialize];
     }
     return self;
 }
 
--(void)initializeDataLoaders {
+-(void)initialize {
+    // Enable the pagination
+    self.loadingPagingEnabled = YES;
     [self setLocalDataLoader:[[PostLocalDataLoader alloc] init]];
     [self setRemoteDataLoader:[[PostRemoteDataLoader alloc] init]];
 }
