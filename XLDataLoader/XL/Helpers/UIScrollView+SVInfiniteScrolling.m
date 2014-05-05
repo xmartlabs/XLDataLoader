@@ -199,9 +199,9 @@ UIEdgeInsets scrollViewOriginalContentInsets;
     if(self.state != SVInfiniteScrollingStateLoading && self.enabled) {
         CGFloat scrollViewContentHeight = self.scrollView.contentSize.height - self.scrollView.contentInset.top - self.scrollView.contentInset.bottom;
         
-        UIView *customView = [self.viewForState objectAtIndex:self.state];
-        BOOL hasCustomView = [customView isKindOfClass:[UIView class]];
-        float currentViewHeight = hasCustomView?customView.bounds.size.height:SVInfiniteScrollingViewHeight;
+        //UIView *customView = [self.viewForState objectAtIndex:self.state];
+        //BOOL hasCustomView = [customView isKindOfClass:[UIView class]];
+        //float currentViewHeight = hasCustomView?customView.bounds.size.height:SVInfiniteScrollingViewHeight;
         
         CGFloat scrollOffsetThreshold = scrollViewContentHeight - self.scrollView.bounds.size.height + self.sensitivity;
         

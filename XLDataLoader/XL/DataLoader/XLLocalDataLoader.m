@@ -97,7 +97,6 @@
 {
     if (_fetchedResultsController){
         [_fetchedResultsController.fetchRequest setPredicate:predicate];
-        [self forceReload];
     }
 }
 

@@ -51,6 +51,7 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
 -(void)initialize {
     // Enable the pagination
     self.loadingPagingEnabled = YES;
+    self.showNetworkReachability = YES;
     [self setLocalDataLoader:[[PostLocalDataLoader alloc] init]];
     [self setRemoteDataLoader:[[PostRemoteDataLoader alloc] init]];
 }

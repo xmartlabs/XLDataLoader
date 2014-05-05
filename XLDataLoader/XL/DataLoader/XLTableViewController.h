@@ -9,7 +9,6 @@
 #import "XLRemoteDataLoader.h"
 #import "XLLocalDataLoader.h"
 #import "XLSearchBar.h"
-#import "XLLoadingMoreView.h"
 #import <UIKit/UIKit.h>
 
 @interface XLTableViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UISearchDisplayDelegate>
@@ -23,7 +22,7 @@
 @property (nonatomic) XLRemoteDataLoader * searchRemoteDataLoader;
 @property (nonatomic) XLLocalDataLoader  * searchLocalDataLoader;
 
-@property (nonatomic) UIRefreshControl * refreshControl;
+@property (readonly, nonatomic) UIRefreshControl * refreshControl;
 
 @property (nonatomic) UIView * backgroundViewForEmptyTableView;
 

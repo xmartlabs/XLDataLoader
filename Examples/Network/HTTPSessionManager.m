@@ -21,6 +21,7 @@ static NSString * const AFAppDotNetAPIBaseURLString = @"http://obscure-refuge-31
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _sharedClient = [[HTTPSessionManager alloc] initWithBaseURL:[NSURL URLWithString:AFAppDotNetAPIBaseURLString]];
+        [_sharedClient.reachabilityManager startMonitoring];
         _sharedClient.securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeNone];
     });
     

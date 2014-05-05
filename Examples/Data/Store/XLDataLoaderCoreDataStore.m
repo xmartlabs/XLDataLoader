@@ -47,17 +47,15 @@ static NSString *const TBCoreDataModelFileName = @"Model";
 +(void)savePrivateQueueContext
 {
     NSError * error;
-    if  (![[self privateQueueContext] save:&error]){
-        NSLog([error localizedDescription]);
-    }
+    [[self privateQueueContext] save:&error];
+    NSAssert(!error, [error localizedDescription]);
 }
 
 + (void)saveMainQueueContext
 {
     NSError * error;
-    if  (![[self mainQueueContext] save:&error]){
-        NSLog([error localizedDescription]);
-    }
+    [[self mainQueueContext] save:&error];
+    NSAssert(!error, [error localizedDescription]);
 }
 
 + (NSManagedObjectID *)managedObjectIDFromString:(NSString *)managedObjectIDString

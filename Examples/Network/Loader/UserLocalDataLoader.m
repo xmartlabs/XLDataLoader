@@ -39,6 +39,7 @@
 - (void)refreshPredicate
 {
     [self setPredicate:[User getPredicateBySearchInput:_searchString]];
+    
 }
 
 @end
