@@ -76,7 +76,6 @@
     if (delegate){
         _delegate = delegate;
         _fetchedResultsController.delegate = self;
-        [self forceReload];
     }
     else{
         _fetchedResultsController.delegate = nil;
@@ -89,7 +88,6 @@
     if (_fetchedResultsController != fetchedResultsController)
     {
         _fetchedResultsController = fetchedResultsController;
-        [self forceReload];
     }
 }
 
@@ -101,13 +99,20 @@
 }
 
 
-
--(void)forceReload
+-(void)reload
 {
-    NSError *error;
-    _offset = 0;
+
+}
+
+
+-(void)forceReload:(BOOL)defaultValues
+{
+    if (defaultValues){
+        _offset = 0;
+    }
     [self.fetchedResultsController.fetchRequest setFetchLimit:(_offset + _limit)];
     [self.fetchedResultsController.fetchRequest setFetchOffset:0];
+    NSError *error;
     if ([self.fetchedResultsController performFetch:&error]){
         [self.delegate dataLoaderDidLoadData:self];
     }

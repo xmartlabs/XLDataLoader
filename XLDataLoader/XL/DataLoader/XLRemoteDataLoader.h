@@ -72,7 +72,7 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse;
 -(id)initWithTag:(NSString *)tag;
 
 // call this method to force reload of data with the current offset limit values
--(void)forceReload;
+-(void)forceReload:(BOOL)defaultValues;
 
 -(void)loadMoreForIndex:(NSUInteger)index;
 

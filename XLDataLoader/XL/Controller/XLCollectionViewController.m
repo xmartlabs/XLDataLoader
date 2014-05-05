@@ -186,7 +186,7 @@
     if (self.loadingPagingEnabled == NO){
         [[self localDataLoader] setLimit:0];
     }
-    [[self localDataLoader] forceReload];
+    [[self localDataLoader] forceReload:YES];
     if (self.loadingPagingEnabled){
         __typeof__(self) __weak weakSelf = self;
         [self.collectionView addInfiniteScrollingWithActionHandler:^{
@@ -213,14 +213,16 @@
     [super viewWillAppear:animated];
     self.remoteDataLoader.delegate = self;
     self.localDataLoader.delegate = self;
+    [self.localDataLoader forceReload:NO];
     [[self collectionView] reloadData];
     self.searchRemoteDataLoader.delegate = self;
     if (self.searchDisplayController.isActive){
         self.searchLocalDataLoader.delegate = self;
+        [self.searchLocalDataLoader forceReload:YES];
         [self.searchDisplayController.searchResultsTableView reloadData];
     }
     if (!self.fetchFromRemoteDataLoaderOnlyOnce || self.isBeingPresented || self.isMovingToParentViewController){
-        [[self remoteDataLoader] forceReload];
+        [[self remoteDataLoader] forceReload:NO];
     }
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(contentSizeCategoryDidChange:)
@@ -252,8 +254,8 @@
 }
 
 -(void)refreshView:(UIRefreshControl *)refresh {
-    [self.localDataLoader forceReload];
-    [self.remoteDataLoader forceReload];
+    [self.localDataLoader forceReload:YES];
+    [self.remoteDataLoader forceReload:YES];
     [self.collectionView reloadData];
 }
 
@@ -614,7 +616,7 @@
 {
     self.localDataLoader.delegate = nil;
     self.searchLocalDataLoader.delegate = self;
-    [self.searchLocalDataLoader forceReload];
+    [self.searchLocalDataLoader forceReload:YES];
     [self.searchDisplayController.searchResultsTableView reloadData];
 }
 
@@ -622,7 +624,7 @@
 {
     self.searchLocalDataLoader.delegate = nil;
     self.localDataLoader.delegate = self;
-    [self.localDataLoader forceReload];
+    [self.localDataLoader forceReload:NO];
     [self.collectionView reloadData];
 }
 
@@ -645,7 +647,7 @@
                                                        userInfo:@{ @"searchString" : [searchString copy] }
                                                         repeats:NO];
     [self.searchLocalDataLoader changeSearchString:[searchString copy]];
-    [self.searchDisplayController.searchResultsTableView reloadData];
+    [self.searchLocalDataLoader forceReload:YES];
     return YES;
 }
 
@@ -665,7 +667,7 @@
             [searchBar startActivityIndicator];
         }
         [self.searchRemoteDataLoader changeSearchString:filter];
-        
+        [self.searchRemoteDataLoader forceReload:YES];
         _searchDelayTimer = nil;
     }
 }
