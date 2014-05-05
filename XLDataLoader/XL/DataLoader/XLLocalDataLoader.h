@@ -113,8 +113,9 @@
 
 -(NSIndexPath *)indexPathForObject:(id)object;
 
-// call this method to force reload of data with the current offset limit values
--(void)forceReload;
+// call this method to force reload the first page results.
+-(void)forceReload:(BOOL)defaultValues;
+
 
 //// get the number of items
 //-(NSUInteger)dataCount;

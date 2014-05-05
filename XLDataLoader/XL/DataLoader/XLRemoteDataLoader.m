@@ -182,13 +182,15 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
 }
 
 
--(void)forceReload
+-(void)forceReload:(BOOL)defaultValues
 {
     if (_task){
         [_task cancel];
         _task = nil;
     }
-    [self setDefaultValues];
+    if (defaultValues){
+        [self setDefaultValues];
+    }
     [self load];
 }
 
@@ -201,7 +203,6 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
 -(void)changeSearchString:(NSString *)searchString
 {
     _searchString = searchString;
-    [self forceReload];
 }
 
 -(NSString *)collectionKeyPath

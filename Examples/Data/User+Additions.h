@@ -10,7 +10,7 @@
 
 @interface User (Additions)
 
-+ (User *)createOrUpdateWithServiceResult:(NSDictionary *)data saveContext:(BOOL)saveContext;
++ (User *)createOrUpdateWithServiceResult:(NSDictionary *)data inContext:(NSManagedObjectContext *)context;
 
 + (UIImage *)defaultProfileImage;
 

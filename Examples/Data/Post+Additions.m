@@ -19,23 +19,18 @@
 
 @implementation Post (Additions)
 
-+ (Post *)createOrUpdateWithServiceResult:(NSDictionary *)data saveContext:(BOOL)saveContext{
-    
-    Post * post = [Post findFirstByAttribute:@"postId" withValue:[data[POST_ID] valueOrNil] inContext:[AppDelegate managedObjectContext]];
++ (Post *)createOrUpdateWithServiceResult:(NSDictionary *)data inContext:(NSManagedObjectContext *)context;
+{
+    Post * post = [Post findFirstByAttribute:@"postId" withValue:[data[POST_ID] valueOrNil] inContext:context];
     if (!post)
     {
-        post = [Post insert:[AppDelegate managedObjectContext]];
+        post = [Post insert:context];
     }
     post.postId   = [data[POST_ID] valueOrNil];
     post.postText = [data[POST_TEXT] valueOrNil];
     post.postDate = [AppDelegate dateFromString:[data[POST_DATE] valueOrNil]];
     
-    post.user = [User createOrUpdateWithServiceResult:data[POST_USER] saveContext:NO];
-
-    if (saveContext) {
-        [AppDelegate saveContext];
-    }
-    
+    post.user = [User createOrUpdateWithServiceResult:data[POST_USER] inContext:context];    
     return post;
 }
 

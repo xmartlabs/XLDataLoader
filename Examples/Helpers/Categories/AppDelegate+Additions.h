@@ -10,8 +10,6 @@
 
 @interface AppDelegate (Additions)
 
-+(NSManagedObjectContext *)managedObjectContext;
-+(void)saveContext;
 +(NSDate *)dateFromString:(NSString *)dateString;
 
 @end

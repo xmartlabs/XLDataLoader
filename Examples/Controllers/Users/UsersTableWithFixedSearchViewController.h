@@ -6,8 +6,8 @@
 //  Copyright (c) 2014 XmartLabs. All rights reserved.
 //
 
-#import "XLTableWithFixedSearchViewController.h"
+#import "XLTableViewController.h"
 
-@interface UsersTableWithFixedSearchViewController : XLTableWithFixedSearchViewController
+@interface UsersTableWithFixedSearchViewController : XLTableViewController
 
 @end

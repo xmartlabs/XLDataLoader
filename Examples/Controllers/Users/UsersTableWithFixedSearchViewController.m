@@ -32,11 +32,29 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        [self setEdgesForExtendedLayout:UIRectEdgeNone];
-         self.loadingPagingEnabled = YES;
-        [self initializeDataLoaders];
+        [self initialize];
+
     }
     return self;
+}
+
+-(void)awakeFromNib
+{
+    [super awakeFromNib];
+    [self initialize];
+
+}
+
+-(void)initialize
+{
+    self.loadingPagingEnabled = YES;
+    
+    // initializeDataLoaders
+    [self setLocalDataLoader:[[UserLocalDataLoader alloc] init]];
+    [self setRemoteDataLoader:[[UserRemoteDataLoader alloc] init]];
+    // Search
+    [self setSearchLocalDataLoader:[[UserLocalDataLoader alloc] init]];
+    [self setSearchRemoteDataLoader:[[UserRemoteDataLoader alloc] init]];
 }
 
 - (void)viewDidLoad
@@ -94,16 +112,6 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
 
 #pragma mark - Helpers
 
--(void)initializeDataLoaders
-{
-    [self setLocalDataLoader:[[UserLocalDataLoader alloc] init]];
-    [self setRemoteDataLoader:[[UserRemoteDataLoader alloc] init]];
-    
-    // Search
-    [self setSearchLocalDataLoader:[[UserLocalDataLoader alloc] init]];
-    [self setSearchRemoteDataLoader:[[UserRemoteDataLoader alloc] init]];
-}
-
 -(void)customizeAppearance
 {
     [[self navigationItem] setTitle:@"Users - Fixed Search Bar"];
@@ -124,12 +132,5 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
     emptyCollectionView.textLabel.text = @"Empty";
     return emptyCollectionView;
 }
-
-- (void)viewDidLayoutSubviews {
-    // Overrides the superclass method
-    [self.tableView setFrame:CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y + self.topLayoutGuide.length + 44, self.view.bounds.size.width, self.view.bounds.size.height - self.topLayoutGuide.length - 44)];
-    [self.searchDisplayController.searchResultsTableView setContentInset:UIEdgeInsetsZero];
-}
-
 
 @end

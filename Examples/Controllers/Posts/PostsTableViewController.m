@@ -43,17 +43,15 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
-        
-        // Enable the pagination
-        self.loadingPagingEnabled = YES;
-        
-        // Initialize Data Loaders
-        [self initializeDataLoaders];
+        [self initialize];
     }
     return self;
 }
 
--(void)initializeDataLoaders {
+-(void)initialize {
+    // Enable the pagination
+    self.loadingPagingEnabled = YES;
+    self.showNetworkReachability = YES;
     [self setLocalDataLoader:[[PostLocalDataLoader alloc] init]];
     [self setRemoteDataLoader:[[PostRemoteDataLoader alloc] init]];
 }
@@ -99,7 +97,7 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
     return cell;
 }
 
-- (CGFloat) tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (!self.offScreenCell)
     {
@@ -164,6 +162,7 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
 {
     [self.tableView setBackgroundColor:[UIColor colorWithHex:__COLOR_GRAY_VERY_LIGHT]];
     [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    self.tableView.tableFooterView = [UIView new];
 }
 
 - (void) didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{

@@ -19,21 +19,16 @@
 
 @implementation User (Additions)
 
-+ (User *)createOrUpdateWithServiceResult:(NSDictionary *)data saveContext:(BOOL)saveContext
++ (User *)createOrUpdateWithServiceResult:(NSDictionary *)data inContext:(NSManagedObjectContext *)context;
 {
-    User *user = [User findFirstByAttribute:@"userId" withValue:[data[USER_ID] valueOrNil] inContext:[AppDelegate managedObjectContext]];
+    User *user = [User findFirstByAttribute:@"userId" withValue:[data[USER_ID] valueOrNil] inContext:context];
     if (!user)
     {
-        user = [User insert:[AppDelegate managedObjectContext]];
+        user = [User insert:context];
     }
     user.userId = [data[USER_ID] valueOrNil];
     user.userImageURL = [data[USER_IMAGE_URL] valueOrNil];
     user.userName = [data[USER_NAME] valueOrNil];
-    
-    if (saveContext) {
-        [AppDelegate saveContext];
-    }
-    
     return user;
 }
 

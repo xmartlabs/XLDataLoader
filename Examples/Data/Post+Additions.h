@@ -10,7 +10,7 @@
 
 @interface Post (Additions)
 
-+ (Post *)createOrUpdateWithServiceResult:(NSDictionary *)data saveContext:(BOOL)saveContext;
++ (Post *)createOrUpdateWithServiceResult:(NSDictionary *)data inContext:(NSManagedObjectContext *)context;
 
 + (NSFetchRequest *)getFetchRequest;
 
