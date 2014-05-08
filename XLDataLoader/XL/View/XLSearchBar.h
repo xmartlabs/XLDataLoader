@@ -34,4 +34,6 @@
 
 -(void)stopActivityIndicator;
 
+-(UITextField *)textField;
+
 @end

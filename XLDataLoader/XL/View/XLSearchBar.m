@@ -34,15 +34,21 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code
-        UITextField * textField = [self textField:self];
+        self.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        self.autocorrectionType = UITextAutocorrectionTypeNo;
+        UITextField * textField = [XLSearchBar textField:self];
         textField.clearButtonMode = UITextFieldViewModeNever;
         self.placeholder = NSLocalizedString(@"Search", @"Search");
     }
     return self;
 }
 
+-(UITextField *)textField
+{
+    return [XLSearchBar textField:self];
+}
 
--(UITextField *)textField:(UIView *)view
++(UITextField *)textField:(UIView *)view
 {
     if ([view isKindOfClass:[UITextField class]]){
         return (UITextField *)view;
@@ -56,7 +62,7 @@
 
 -(void)stopActivityIndicator
 {
-    UITextField *searchField = [self textField:self];
+    UITextField *searchField = [XLSearchBar textField:self];
     if (searchField) {
         if ([searchField.rightView isKindOfClass:[UIActivityIndicatorView class]]){
             [((UIActivityIndicatorView *)searchField.rightView) stopAnimating];
@@ -67,7 +73,7 @@
 
 -(void)startActivityIndicator
 {
-    UITextField *searchField = [self textField:self];
+    UITextField *searchField = [XLSearchBar textField:self];
     if (searchField) {
         if (![searchField.rightView isKindOfClass:[UIActivityIndicatorView class]]){
             UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
