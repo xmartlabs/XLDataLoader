@@ -11,7 +11,13 @@
 #import "XLSearchBar.h"
 #import <UIKit/UIKit.h>
 
-@interface XLTableViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UISearchDisplayDelegate>
+@protocol XLTableViewControllerDelegate <NSObject>
+
+-(void)showError:(NSError*)error;
+
+@end
+
+@interface XLTableViewController : UIViewController<XLTableViewControllerDelegate, UITableViewDelegate, UITableViewDataSource, UISearchDisplayDelegate>
 
 @property IBOutlet UITableView * tableView;
 @property (nonatomic) IBOutlet UISearchBar * searchBar;
@@ -29,6 +35,7 @@
 @property BOOL supportRefreshControl; // default YES
 @property BOOL loadingPagingEnabled;  // default YES
 @property BOOL showNetworkReachability; //Default YES
+@property BOOL showNetworkConnectivityErrors; // Default YES
 @property BOOL supportSearchController; // default NO
 @property BOOL fetchFromRemoteDataLoaderOnlyOnce; // Default YES
 @property UITableViewStyle tableViewStyle; //Default UITableViewStylePlain, only used on non-storyboard controller

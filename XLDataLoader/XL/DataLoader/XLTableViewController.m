@@ -88,6 +88,7 @@
     self.loadingPagingEnabled = YES;
     self.supportSearchController = NO;
     self.showNetworkReachability = YES;
+    self.showNetworkConnectivityErrors = YES;
     self.tableViewStyle = UITableViewStylePlain;
 
 }
@@ -361,12 +362,13 @@
 
 -(void)showError:(NSError*)error{
     if (error.code != NSURLErrorCancelled){
-        // don't show cancel operation error
-        UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error loading data"
-                                                            message:error.localizedDescription
-                                                           delegate:nil
-                                                  cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
-        [alertView show];
+        if (error.code != NSURLErrorNotConnectedToInternet || self.showNetworkConnectivityErrors){
+            UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:@"Error loading data"
+                                                                message:error.localizedDescription
+                                                               delegate:nil
+                                                      cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil, nil];
+            [alertView show];
+        }
     }
 }
 

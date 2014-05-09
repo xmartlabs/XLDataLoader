@@ -31,7 +31,13 @@
 #import "XLRemoteDataLoader.h"
 #import "XLLocalDataLoader.h"
 
-@interface XLCollectionViewController : UICollectionViewController <XLRemoteDataLoaderDelegate, XLLocalDataLoaderDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
+@protocol XLCollectionViewControllerDelegate <NSObject>
+
+-(void)showError:(NSError*)error;
+
+@end
+
+@interface XLCollectionViewController : UICollectionViewController <XLCollectionViewControllerDelegate, XLRemoteDataLoaderDelegate, XLLocalDataLoaderDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) IBOutlet UISearchBar * searchBar;
 
@@ -47,6 +53,7 @@
 @property BOOL supportRefreshControl; // default YES
 @property BOOL loadingPagingEnabled;  // default YES
 @property BOOL showNetworkReachability; //Default YES
+@property BOOL showNetworkConnectivityErrors; // Default YES
 @property BOOL supportSearchController; // default NO
 @property BOOL fetchFromRemoteDataLoaderOnlyOnce; // Default YES
 
