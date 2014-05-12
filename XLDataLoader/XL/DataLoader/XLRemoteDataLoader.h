@@ -64,7 +64,9 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse;
 @property (nonatomic, readonly) NSUInteger offset;
 @property (nonatomic, readonly) NSUInteger limit;
 @property (nonatomic, readonly) NSString * searchString;
+@property (readonly) NSMutableDictionary * filters;
 @property (nonatomic) NSString * collectionKeyPath;
+
 
 
 -(id)init;

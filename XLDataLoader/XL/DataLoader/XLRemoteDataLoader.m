@@ -61,6 +61,8 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
 
 @synthesize hasMoreToLoad = _hasMoreToLoad;
 
+@synthesize filters = _filters;
+
 -(id)init
 {
     self = [super init];
@@ -137,6 +139,13 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
 -(NSDictionary *)parameters
 {
     return nil;
+}
+
+-(NSMutableDictionary *)filters
+{
+    if (_filters) return _filters;
+    _filters = [NSMutableDictionary dictionary];
+    return _filters;
 }
 
 -(AFHTTPSessionManager *)sessionManager;

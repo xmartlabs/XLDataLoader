@@ -17,8 +17,6 @@
 
 @implementation XLRemoteCoreDataLoader
 
-@synthesize filters = _filters;
-
 -(id)initWithCoreDataProviderClass:(Class<XLRemoteDataLoaderCoreDataProviderProtocol>)class
 {
     return [self initWithCoreDataProviderClass:class tag:nil];
@@ -49,12 +47,6 @@
     [self.coreDataProviderClass remoteDataLoaderCreateOrUpdateObjects:self];
 }
 
--(NSMutableDictionary *)filters
-{
-    if (_filters) return _filters;
-    _filters = [NSMutableDictionary dictionary];
-    return _filters;
-}
 
 -(NSString *)collectionKeyPath
 {
