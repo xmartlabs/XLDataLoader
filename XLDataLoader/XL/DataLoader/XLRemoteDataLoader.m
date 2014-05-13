@@ -93,6 +93,13 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
     _hasMoreToLoad = YES;
 }
 
+
+-(NSString *)collectionKeyPath
+{
+    if (_collectionKeyPath) return _collectionKeyPath;
+    return kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse;
+}
+
 -(void)setData:(NSDictionary *)data
 {
     _data = data;
@@ -157,6 +164,9 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
 -(void)successulDataLoad
 {
     _isLoadingMore = NO;
+    if (_limit != 0){
+        _hasMoreToLoad = ([[[self fetchedData] objectForKey:self.collectionKeyPath] count] >= _limit);
+    }
 }
 
 -(void)unsuccessulDataLoadWithError:(NSError *)error
@@ -214,10 +224,6 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
     _searchString = searchString;
 }
 
--(NSString *)collectionKeyPath
-{
-    return _collectionKeyPath;
-}
 
 
 
