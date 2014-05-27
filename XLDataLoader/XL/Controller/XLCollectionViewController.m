@@ -39,7 +39,7 @@
 
 @end
 
-@interface XLCollectionViewController()
+@interface XLCollectionViewController() <FixSetSearchViewController>
 {
     NSMutableArray *_objectChanges;
     NSMutableArray *_sectionChanges;

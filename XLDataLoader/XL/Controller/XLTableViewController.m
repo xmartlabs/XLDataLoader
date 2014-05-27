@@ -22,7 +22,7 @@
 
 @end
 
-@interface XLTableViewController () <XLRemoteDataLoaderDelegate, XLLocalDataLoaderDelegate>
+@interface XLTableViewController () <XLRemoteDataLoaderDelegate, XLLocalDataLoaderDelegate, FixSetSearchViewController>
 {
     NSTimer * _searchDelayTimer;
 }
