@@ -28,7 +28,13 @@
 #import "XLRemoteDataLoader.h"
 #import "XLLocalDataLoader.h"
 
-@interface XLTableViewController : UITableViewController<UISearchDisplayDelegate>
+@protocol XLTableViewControllerDelegate <NSObject>
+
+-(void)showError:(NSError*)error;
+
+@end
+
+@interface XLTableViewController : UITableViewController<XLTableViewControllerDelegate, UISearchDisplayDelegate>
 
 
 @property (nonatomic) XLRemoteDataLoader * remoteDataLoader;

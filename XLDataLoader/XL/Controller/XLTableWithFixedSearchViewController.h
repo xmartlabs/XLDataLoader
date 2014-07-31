@@ -30,7 +30,15 @@
 
 #import <UIKit/UIKit.h>
 
-@interface XLTableWithFixedSearchViewController : UIViewController<UITableViewDelegate, UITableViewDataSource, UISearchDisplayDelegate>
+
+@protocol XLTableWithFixedSearchViewControllerDelegate <NSObject>
+
+-(void)showError:(NSError*)error;
+
+@end
+
+
+@interface XLTableWithFixedSearchViewController : UIViewController<XLTableWithFixedSearchViewControllerDelegate, UITableViewDelegate, UITableViewDataSource, UISearchDisplayDelegate>
 
 
 @property (weak, nonatomic) UITableView * tableView;
