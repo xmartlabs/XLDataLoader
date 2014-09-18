@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name     = 'XLDataLoader'
-  s.version  = '1.0.0'
+  s.version  = '1.1.0'
   s.license  = 'MIT'
   s.summary  = 'Flexible and powerful AFNetworking data loaders.'
   s.description = <<-DESC 
@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
                   DESC
   s.homepage = 'https://github.com/xmartlabs/XLDataLoader'
   s.authors  = { 'Martin Barreto' => 'martin@xmartlabs.com', 'Miguel Revetria' => 'miguel@xmartlabs.com' }
-  s.source   = { :git => 'https://github.com/xmartlabs/XLDataLoader.git', :tag => 'v1.0.0'}
+  s.source   = { :git => 'https://github.com/xmartlabs/XLDataLoader.git', :tag => 'v1.1.0'}
   s.source_files = 'XLDataLoader/XL/**/*.{h,m}'
   s.requires_arc = true
   s.dependency 'AFNetworking', '~> 2.0'
