@@ -180,7 +180,7 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
     }
 }
 
--(void)cancelTask
+-(void)cancelRequest
 {
     [_task cancel];
     _task = nil;
@@ -210,7 +210,7 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
 -(void)forceReload:(BOOL)defaultValues
 {
     if (_task){
-        [self cancelTask];
+        [self cancelRequest];
     }
     if (defaultValues){
         [self setDefaultValues];

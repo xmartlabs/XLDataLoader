@@ -97,7 +97,7 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse;
 -(void)unsuccessulDataLoadWithError:(NSError *)error;
 
 // cancels the active request
--(void)cancelTask;
+-(void)cancelRequest;
 
 // call to obtain the related fetched data
 -(NSDictionary *)fetchedData;
