@@ -124,4 +124,11 @@
     return result;
 }
 
+
+-(void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.postText.preferredMaxLayoutWidth = self.bounds.size.width;
+}
+
 @end

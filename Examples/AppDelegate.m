@@ -27,9 +27,6 @@
 //    }];
 //    [[AFNetworkActivityLogger sharedLogger] startLogging];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    
-    // AFNetworking Activity Indicator
     AFNetworkActivityIndicatorManager.sharedManager.enabled = YES;
     
     [self customizeAppearance];
