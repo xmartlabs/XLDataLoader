@@ -91,15 +91,18 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-// method called after a successful data load, if overrited by subclass don't forget to call super method (delegate is called from there).
+// method called after a successful data load, if overwritten by a subclass don't forget to call super method (delegate is called from there).
 -(void)successulDataLoad;
-// method called after a failure on data load, if overrited by subclass don't forget to call super method (delegate is called from there).
+// method called after a failure on data load, if overwritten by a subclass don't forget to call super method (delegate is called from there).
 -(void)unsuccessulDataLoadWithError:(NSError *)error;
 
-// call for obtain the related fetched
+// cancels the active request
+-(void)cancelTask;
+
+// call to obtain the related fetched data
 -(NSDictionary *)fetchedData;
 
-// invoqued when searchBar changes and view controller make use of searchTableViewController
+// invoked when searchBar changes and view controller make use of searchTableViewController
 -(void)changeSearchString:(NSString *)searchString;
 
 

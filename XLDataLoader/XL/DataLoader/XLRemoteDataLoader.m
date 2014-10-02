@@ -180,6 +180,12 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
     }
 }
 
+-(void)cancelTask
+{
+    [_task cancel];
+    _task = nil;
+}
+
 -(void)loadMoreForIndex:(NSUInteger)index
 {
     if (!_isLoadingMore){
@@ -204,8 +210,7 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
 -(void)forceReload:(BOOL)defaultValues
 {
     if (_task){
-        [_task cancel];
-        _task = nil;
+        [self cancelTask];
     }
     if (defaultValues){
         [self setDefaultValues];
@@ -218,7 +223,7 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
     return _data;
 }
 
-// invoqued when searchBar changes and view controller make use of searchTableViewController
+// invoked when searchBar changes and view controller make use of searchTableViewController
 -(void)changeSearchString:(NSString *)searchString
 {
     _searchString = searchString;
