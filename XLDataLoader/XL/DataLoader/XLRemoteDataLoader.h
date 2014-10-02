@@ -68,7 +68,7 @@
 // You must override this method.
 -(AFHTTPSessionManager *)sessionManager;
 
--(NSMutableURLRequest *)prepareURLRequest
+-(NSMutableURLRequest *)prepareURLRequest;
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
