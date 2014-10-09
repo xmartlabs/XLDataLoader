@@ -89,6 +89,8 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse;
 // You must override this method.
 -(AFHTTPSessionManager *)sessionManager;
 
+-(NSMutableURLRequest *)prepareURLRequest;
+
 //////////////////////////////////////////////////////////////////////////////////////////
 
 // method called after a successful data load, if overwritten by a subclass don't forget to call super method (delegate is called from there).
