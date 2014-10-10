@@ -68,11 +68,13 @@
     return self;
 }
 
--(void)awakeFromNib
+- (instancetype)initWithCoder:(NSCoder *)coder
 {
-    [super awakeFromNib];
-    [self initializeXLCollectionViewController];
-    
+    self = [super initWithCoder:coder];
+    if (self) {
+        [self initializeXLCollectionViewController];
+    }
+    return self;
 }
 
 -(void)initializeXLCollectionViewController
@@ -246,12 +248,6 @@
     self.searchLocalDataLoader.delegate = nil;
     self.searchRemoteDataLoader.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 -(void)refreshView:(UIRefreshControl *)refresh {

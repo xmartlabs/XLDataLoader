@@ -62,19 +62,21 @@
 @synthesize backgroundViewForEmptyTableView = _backgroundViewForEmptyTableView;
 
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) [self initializeXLTableViewController];
     return self;
 }
 
--(void)awakeFromNib
+- (instancetype)initWithCoder:(NSCoder *)coder
 {
-    [super awakeFromNib];
-    [self initializeXLTableViewController];
+    self = [super initWithCoder:coder];
+    if (self) {
+        [self initializeXLTableViewController];
+    }
+    return self;
 }
-
 
 -(void)initializeXLTableViewController{
     _searchDelayTimer = nil;
@@ -268,13 +270,6 @@
     self.searchLocalDataLoader.delegate = nil;
     self.searchRemoteDataLoader.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 -(void)refreshView:(UIRefreshControl *)refresh {
