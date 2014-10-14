@@ -165,7 +165,7 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
 {
     _isLoadingMore = NO;
     if (_limit != 0){
-        _hasMoreToLoad = ([[[self fetchedData] objectForKey:self.collectionKeyPath] count] >= _limit);
+        _hasMoreToLoad = ([[[self fetchedData] valueForKeyPath:self.collectionKeyPath] count] >= _limit);
     }
 }
 
