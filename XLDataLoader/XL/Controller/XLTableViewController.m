@@ -398,6 +398,9 @@
     }
     else{
         if (![self.networkStatusView superview]){
+            CGRect frame = self.networkStatusView.frame;
+            frame.size.width = self.tableView.bounds.size.width;
+            self.networkStatusView.frame = frame;
             [self.tableView addSubview:self.networkStatusView];
         }
     }
