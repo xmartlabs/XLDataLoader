@@ -78,6 +78,15 @@
     return self;
 }
 
+-(void)dealloc
+{
+    self.tableView.delegate                              = nil;
+    self.tableView.dataSource                            = nil;
+    self.searchDisplayController.delegate                = nil;
+    self.searchDisplayController.searchResultsDataSource = nil;
+    self.searchDisplayController.searchResultsDelegate   = nil;
+}
+
 -(void)initializeXLTableViewController{
     _searchDelayTimer = nil;
     // Dataloaders
