@@ -23,20 +23,18 @@
 @end
 
 @interface XLTableViewController () <XLRemoteDataLoaderDelegate, XLLocalDataLoaderDelegate, FixSetSearchViewController>
-{
-    NSTimer * _searchDelayTimer;
-}
 
 @property BOOL beganUpdates;
 @property BOOL searchBeganUpdates;
-
-@property (nonatomic) XLNetworkStatusView * networkStatusView;
 @property (readonly) BOOL searchLoadingPagingEnabled;
-
 
 @end
 
 @implementation XLTableViewController
+{
+    UIView * _networkStatusView;
+    NSTimer * _searchDelayTimer;
+}
 
 @synthesize tableView = _tableView;
 @synthesize refreshControl = _refreshControl;
@@ -51,8 +49,6 @@
 
 @synthesize beganUpdates     = _beganUpdates;
 @synthesize searchBeganUpdates = _searchBeganUpdates;
-
-@synthesize networkStatusView = _networkStatusView;
 
 @synthesize supportRefreshControl = _supportRefreshControl;
 @synthesize loadingPagingEnabled = _loadingPagingEnabled;
@@ -88,6 +84,7 @@
 }
 
 -(void)initializeXLTableViewController{
+    _networkStatusView = nil;
     _searchDelayTimer = nil;
     // Dataloaders
     self.remoteDataLoader = nil;
@@ -123,11 +120,10 @@
     return _refreshControl;
 }
 
--(XLNetworkStatusView *)networkStatusView
+-(UIView *)networkStatusView
 {
     if (!_networkStatusView){
         _networkStatusView = [[XLNetworkStatusView alloc] initWithFrame:CGRectMake(0, 0, self.tableView.frame.size.width, 30)];
-        _networkStatusView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     }
     return _networkStatusView;
 }
@@ -361,8 +357,7 @@
 }
 
 
-#pragma mark - Helpers
-
+#pragma mark - XLTableViewControllerDelegate
 
 -(void)showError:(NSError*)error{
     if (error.code != NSURLErrorCancelled){
@@ -375,6 +370,8 @@
         }
     }
 }
+
+#pragma mark - Helpers
 
 -(void)networkingReachabilityDidChange:(NSNotification *)notification
 {

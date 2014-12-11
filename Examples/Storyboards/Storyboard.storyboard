@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <scenes>
-        <!--Users Table With Fixed Search View Controller - Storyboard example-->
+        <!--Storyboard example-->
         <scene sceneID="lgV-MV-0m3">
             <objects>
                 <viewController extendedLayoutIncludesOpaqueBars="YES" id="dP1-od-kvl" customClass="UsersTableWithFixedSearchViewController" sceneMemberID="viewController">
@@ -18,7 +19,6 @@
                         <subviews>
                             <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="ACG-GP-Z0T" customClass="XLSearchBar">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <textInputTraits key="textInputTraits"/>
                                 <connections>
                                     <outlet property="delegate" destination="dP1-od-kvl" id="x70-Xy-9Dd"/>
@@ -26,7 +26,6 @@
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="19u-wr-ms5">
                                 <rect key="frame" x="0.0" y="44" width="320" height="460"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </tableView>
                         </subviews>
@@ -43,7 +42,6 @@
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
                     <navigationItem key="navigationItem" title="Storyboard example" id="9rk-PH-fYT"/>
-                    <size key="freeformSize" width="320" height="568"/>
                     <connections>
                         <outlet property="searchBar" destination="ACG-GP-Z0T" id="UXt-It-f7G"/>
                         <outlet property="searchDisplayController" destination="URc-Af-4nd" id="6XA-l4-XaD"/>

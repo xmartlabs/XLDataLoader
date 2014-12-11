@@ -170,4 +170,20 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
     [self.tableView reloadData];
 }
 
+// customizing networkStatusView color
+-(UIView *)networkStatusView
+{
+    UIView * superView = [super networkStatusView];
+    superView.backgroundColor = [UIColor redColor];
+    return superView;
+}
+
+#pragma mark - XLTableViewControllerDelegate
+
+// customizing error message
+-(void)showError:(NSError *)error
+{
+    // do nothing, cause we don't want to show any message
+}
+
 @end
