@@ -60,6 +60,7 @@ static NSString *const kCellIdentifier = @"CellIdentifier";
     
     // SearchBar
     self.tableView.tableHeaderView = self.searchDisplayController.searchBar;
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
     // register cells
     [self.searchDisplayController.searchResultsTableView registerClass:[UserCell class] forCellReuseIdentifier:kCellIdentifier];

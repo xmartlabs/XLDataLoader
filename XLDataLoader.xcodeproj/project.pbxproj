@@ -16,7 +16,6 @@
 		2839F7A418688D7D00FEBD38 /* XLLocalDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2839F7A018688D7D00FEBD38 /* XLLocalDataLoader.m */; };
 		2839F7A518688D7D00FEBD38 /* XLRemoteDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2839F7A218688D7D00FEBD38 /* XLRemoteDataLoader.m */; };
 		2839F7AD18688FC700FEBD38 /* XLSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 2839F7AC18688FC700FEBD38 /* XLSearchBar.m */; };
-		286D6E8C190978450077BF2E /* XLRemoteCoreDataLoader.m in Sources */ = {isa = PBXBuildFile; fileRef = 286D6E8B190978450077BF2E /* XLRemoteCoreDataLoader.m */; };
 		286D6E8F190995D00077BF2E /* XLTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 286D6E8E190995D00077BF2E /* XLTableViewController.m */; };
 		2896179718A282C90007B341 /* XLNetworkStatusView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2896179618A282C90007B341 /* XLNetworkStatusView.m */; };
 		28E1DDB7181AB89D00E7FAF9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28E1DDB6181AB89D00E7FAF9 /* Foundation.framework */; };
@@ -88,8 +87,6 @@
 		2839F7A218688D7D00FEBD38 /* XLRemoteDataLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLRemoteDataLoader.m; path = XL/DataLoader/XLRemoteDataLoader.m; sourceTree = "<group>"; };
 		2839F7AB18688FC700FEBD38 /* XLSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLSearchBar.h; path = XL/View/XLSearchBar.h; sourceTree = "<group>"; };
 		2839F7AC18688FC700FEBD38 /* XLSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLSearchBar.m; path = XL/View/XLSearchBar.m; sourceTree = "<group>"; };
-		286D6E8A190978450077BF2E /* XLRemoteCoreDataLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLRemoteCoreDataLoader.h; path = XL/DataLoader/XLRemoteCoreDataLoader.h; sourceTree = "<group>"; };
-		286D6E8B190978450077BF2E /* XLRemoteCoreDataLoader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLRemoteCoreDataLoader.m; path = XL/DataLoader/XLRemoteCoreDataLoader.m; sourceTree = "<group>"; };
 		286D6E8D190995D00077BF2E /* XLTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLTableViewController.h; path = XL/Controller/XLTableViewController.h; sourceTree = "<group>"; };
 		286D6E8E190995D00077BF2E /* XLTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XLTableViewController.m; path = XL/Controller/XLTableViewController.m; sourceTree = "<group>"; };
 		2896179518A282C90007B341 /* XLNetworkStatusView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XLNetworkStatusView.h; path = XL/View/XLNetworkStatusView.h; sourceTree = "<group>"; };
@@ -315,8 +312,6 @@
 				2839F7A018688D7D00FEBD38 /* XLLocalDataLoader.m */,
 				2839F7A118688D7D00FEBD38 /* XLRemoteDataLoader.h */,
 				2839F7A218688D7D00FEBD38 /* XLRemoteDataLoader.m */,
-				286D6E8A190978450077BF2E /* XLRemoteCoreDataLoader.h */,
-				286D6E8B190978450077BF2E /* XLRemoteCoreDataLoader.m */,
 			);
 			name = DataLoader;
 			sourceTree = "<group>";
@@ -666,7 +661,6 @@
 				28E1DDC3181AB89D00E7FAF9 /* main.m in Sources */,
 				3CAE206D1906DE20001B53CB /* Post.m in Sources */,
 				2896179718A282C90007B341 /* XLNetworkStatusView.m in Sources */,
-				286D6E8C190978450077BF2E /* XLRemoteCoreDataLoader.m in Sources */,
 				3CAE20641906DE20001B53CB /* PostsTableViewController.m in Sources */,
 				3CAE20711906DE20001B53CB /* AppDelegate+Additions.m in Sources */,
 				2839F7A518688D7D00FEBD38 /* XLRemoteDataLoader.m in Sources */,

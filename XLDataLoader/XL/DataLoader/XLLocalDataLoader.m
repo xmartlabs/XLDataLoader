@@ -98,13 +98,6 @@
     }
 }
 
-
--(void)reload
-{
-
-}
-
-
 -(void)forceReload:(BOOL)defaultValues
 {
     if (defaultValues){
