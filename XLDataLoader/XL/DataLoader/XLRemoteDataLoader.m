@@ -67,6 +67,7 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
 {
     self = [super init];
     if (self){
+        _limit = 20;
         [self setDefaultValues];
     }
     return self;
@@ -87,7 +88,6 @@ NSString * const kXLRemoteDataLoaderDefaultKeyForNonDictionaryResponse = @"data"
 {
     _task = nil;
     _offset = 0;
-    _limit = 20;
     _data = nil;
     _isLoadingMore = NO;
     _hasMoreToLoad = YES;
